@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import hazelIcon from "../assets/hazelmoneyIcon.png"
 import { BiHomeAlt } from "react-icons/bi";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { BsCreditCard2Front } from "react-icons/bs";
@@ -8,19 +9,13 @@ import { AiOutlineFileText } from "react-icons/ai";
 
 import { AiOutlineDotChart } from "react-icons/ai";
 
-import { BsCircleFill } from "react-icons/bs";
-
-
 function Sidebar() {
     const [currentLink, setCurrentLink] = useState(1);
     return (
         <Section>
             <div className="top">
-                    <div className="brand">
-                        <BsCircleFill className="color1" />
-                        <BsCircleFill className="color2" />
-                        <BsCircleFill className="color3" />
-                        
+                    <div className="icon">
+                        <img src={hazelIcon} alt="Hazel Icon"/>
                     </div>
                     <div className="links">
                         <ul>
@@ -105,28 +100,16 @@ gap: 2rem;
     flex-direction: column;
     gap: 4rem;
     width: 100%;
-    .brand {
-        width: 100%;
-        display: flex;
-        justify-content: center;
+    .icon{
+        text-align: center;
         align-items: center;
-        gap: 1.3rem 0;
-        .color1{
-            color: red;
+        display: block;
+        gap: 1rem;
+        img{
+            transform: rotate(30deg);
+            height: 3rem;
         }
-        .color2{
-            color: yellow;
         }
-        .color3{
-            color: green;
-        }
-        svg {
-            margin: 0 2px;
-            font-size: 0.8rem;
-            
-        }
-       
-    }
     .links {
        
         ul {
@@ -142,7 +125,7 @@ gap: 2rem;
             li{
                 display: flex;
                 justify-content: center;
-               border-right: 0.2rem solid transparent;
+                border-right: 0.2rem solid transparent;
                 margin: 1rem 0;
                 list-style-type: none;
                 a {   
