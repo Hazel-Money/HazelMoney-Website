@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components'
 import {FcSimCardChip} from 'react-icons/fc'
-import mastercard from '../assets/mastercard.png'
+import mastercard from '../img/mastercard.png'
 
 function Card() {
     return (

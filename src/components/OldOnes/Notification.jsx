@@ -3,7 +3,7 @@ import styled from "styled-components"
 import {AiOutlineCalendar} from "react-icons/ai"
 import {AiOutlineBell} from "react-icons/ai"
 import {AiOutlineCaretDown} from "react-icons/ai"
-import avatarImage from "../assets/avatar.png"
+import avatarImage from "../img/avatar.png"
 
 function Notification() {
     return (

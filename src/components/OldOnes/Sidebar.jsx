@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import hazelIcon from "../assets/hazelmoneyIcon.png"
+import hazelIcon from "../img/hazelmoneyIcon.png"
 import { BiHomeAlt } from "react-icons/bi";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { BsCreditCard2Front } from "react-icons/bs";

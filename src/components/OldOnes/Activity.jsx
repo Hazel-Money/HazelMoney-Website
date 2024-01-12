@@ -81,11 +81,6 @@ function Activity() {
                 </div>
           
         </div>
-        
-        
-      
-        
-   
     </Section>
     )
 }
@@ -146,9 +141,6 @@ const Section = styled.section `
                 margin-top: -30px;
             }
         }
-        
-        
-        
     }
     
 `;

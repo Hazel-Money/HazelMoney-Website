@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import avatar from "../assets/avatar.png";
+import avatar from "../img/avatar.png";
 
 
 function History() {
