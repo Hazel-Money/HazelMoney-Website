@@ -8,7 +8,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <GlobalStyle />
-      {/*TODO wrap the entire app with a global context provider */}
-      <App />
+      <GlobalProvider>
+        <App />
+      </GlobalProvider>
   </React.StrictMode>
 );
