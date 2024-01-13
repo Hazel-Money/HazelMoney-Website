@@ -7,14 +7,15 @@ import { useGlobalContext } from '../../context/globalContext'
 function Form() {
     const {addIncome} = useGlobalContext()
     const [inputState, setInputState] = useState({
-        title: '',
+        account_id: '12',
+        category_id: '',
         amount: '',
-        date: '',
-        category: '',
-        description: '',
+        is_income:'1',
+        payment_date: '',
+        description: ''
     })
 
-    const {title,amount,date,category,description} = inputState;
+    const {account_id,amount,payment_date,category_id,description,is_income} = inputState;
 
     const handleInput = name => e => {
         setInputState({...inputState, [name]: e.target.value})
@@ -30,15 +31,6 @@ function Form() {
             <div className="input-control">
                 <input 
                     type="text" 
-                    value={title} 
-                    name={"title"}
-                    placeholder="Salary title" 
-                    onChange={handleInput("title")}
-                />
-            </div>
-            <div className="input-control">
-                <input 
-                    type="text" 
                     value={amount} 
                     name={"amount"} 
                     placeholder="Salary amount" 
@@ -47,22 +39,31 @@ function Form() {
             </div>
             <div className="input-control">
                 <DatePicker 
-                    id="date" 
+                    id="payment_date" 
                     placeholderText="Enter a date"
-                    selected={date} 
+                    selected={payment_date} 
                     dateFormat= "dd/MM/yyyy" 
-                    onChange={(date) => {
-                        setInputState({...inputState, date: date})
+                    onChange={(payment_date) => {
+                        setInputState({...inputState, payment_date: payment_date})
                     }} 
                 />
             </div>
             <div className="selects input-control">
-                <select required value={category} name="category" id="category" onChange={handleInput("category")}>
+                <select required value={category_id} name="category_id" id="category_id" onChange={handleInput("category_id")}>
                     <option value="" disabled>Select Option</option>
-                    <option value="salary">Salary</option>
+                    <option value="1">Salary</option>
                      {/* TODO: ADD DATABASE CATEGORIES */}
                     <option value="other">other</option>
                 </select>
+            </div>
+            <div className="input-control">
+                <input 
+                    type="description" 
+                    value={description} 
+                    name={"description"} 
+                    placeholder="Enter a description" 
+                    onChange={handleInput("description")}
+                />
             </div>
             <div className="submit-btn">
                 <button>Add income</button>

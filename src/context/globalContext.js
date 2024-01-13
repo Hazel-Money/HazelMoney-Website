@@ -13,11 +13,24 @@ export const GlobalProvider = ({children}) => {
     const[error, setError] = useState(null)
 
     const addIncome = async (income) => {
-        const response = await axios.post(`${BASE_URL}/transactions.php`, income)
-            .catch((err) => {
-                setError(err.response?.data?.message)
-            })
+    const { account_id, is_income } = income;  // Extract account_id and is_income from income
+
+    try {
+        const response = await axios.post(`${BASE_URL}/transactions.php`, {
+            ...income,  // Spread the existing properties of income
+            account_id,  // Include account_id
+            is_income    // Include is_income
+        });
+
+        if (response && response.data) {
+            // Process your data here
+        } else {
+            console.error("Response data is undefined or null");
+        }
+    } catch (err) {
+        setError(err.response?.data?.message || "An error occurred");
     }
+    };
 
     /*const getUsers = async () => {
         try {
