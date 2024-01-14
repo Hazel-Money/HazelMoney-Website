@@ -27,9 +27,15 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+    const getIncomes = async () => {
+        const response = await axios.get(`${BASE_URL}/transactions.php`)
+        setIncomes(response.data)
+        console.log(response.data)
+    }
+
     const getCategories = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/categories.php?user_id=5`);
+            const response = await axios.get(`${BASE_URL}/categories.php`);
 
             if (response && response.data) {
                 setCategories(response.data);
@@ -47,7 +53,12 @@ export const GlobalProvider = ({children}) => {
     }, []);
 
     return(
-        <GlobalContext.Provider value={{addIncome, categories }}>
+        <GlobalContext.Provider value={{
+            addIncome, 
+            getIncomes,
+            incomes,
+            categories 
+        }}>
             {children}
         </GlobalContext.Provider>
     )

@@ -1,19 +1,26 @@
-import React from 'react'
+import React, { useEffect  }from 'react'
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import Form from '../Form/Form'
 
 function Income() {
-  const {addIncome} = useGlobalContext()
+  const {addIncome, incomes, getIncomes} = useGlobalContext()
+
+  useEffect(() => {
+    getIncomes()
+  }, [])
+  
   return (
     <IncomeStyled>
       <InnerLayout>
         <h1>Incomes</h1>
         <div className="income-content">
-          <div className="form-container"></div>
-          <div className="incomes">
+          <div className="form-container">
               <Form />
+          </div>
+          <div className="incomes">
+              
           </div>
         </div>
         

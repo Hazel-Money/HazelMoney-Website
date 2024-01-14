@@ -35,7 +35,7 @@ function Form() {
                     type="text" 
                     value={amount} 
                     name={"amount"} 
-                    placeholder="Salary amount" 
+                    placeholder="Income amount" 
                     onChange={handleInput("amount")}
                 />
             </div>
