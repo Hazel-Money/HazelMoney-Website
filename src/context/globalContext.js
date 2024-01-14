@@ -1,5 +1,5 @@
 import axios from "axios"
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect  } from "react"
 
 const BASE_URL = "http://localhost:80/api";
 
@@ -10,46 +10,44 @@ export const GlobalProvider = ({children}) => {
 
     const[incomes, setIncomes] = useState([])
     const[expenses, setExpenses] = useState([])
+    const [categories, setCategories] = useState([]);
     const[error, setError] = useState(null)
 
     const addIncome = async (income) => {
     const { account_id, is_income } = income;  // Extract account_id and is_income from income
 
-    try {
-        const response = await axios.post(`${BASE_URL}/transactions.php`, {
-            ...income,  // Spread the existing properties of income
-            account_id,  // Include account_id
-            is_income    // Include is_income
-        });
-
-        if (response && response.data) {
-            // Process your data here
-        } else {
-            console.error("Response data is undefined or null");
+        try {
+            const response = await axios.post(`${BASE_URL}/transactions.php`, {
+                ...income,  // Spread the existing properties of income
+                account_id,  // Include account_id
+                is_income    // Include is_income
+            });
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
         }
-    } catch (err) {
-        setError(err.response?.data?.message || "An error occurred");
-    }
     };
 
-    /*const getUsers = async () => {
+    const getCategories = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/users.php`,{
-                method: 'GET'
-            });
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return await response.json();
+            const response = await axios.get(`${BASE_URL}/categories.php?user_id=5`);
 
-        } catch (error) {
-            console.error('Error:', error);
+            if (response && response.data) {
+                setCategories(response.data);
+            } else {
+                console.error("Response data is undefined or null");
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
         }
-    }*/
+    };
+
+    useEffect(() => {
+        // Fetch categories when the component mounts
+        getCategories();
+    }, []);
 
     return(
-        <GlobalContext.Provider value= {{addIncome}}>
+        <GlobalContext.Provider value={{addIncome, categories }}>
             {children}
         </GlobalContext.Provider>
     )

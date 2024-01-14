@@ -23,7 +23,9 @@ function Income() {
 }
 
 const IncomeStyled = styled.div`
-    
+    .income-content{
+      margin-top: 4vh;
+    }
 `;
 
 export default Income
