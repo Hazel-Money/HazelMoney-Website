@@ -115,7 +115,7 @@ const FormStyled = styled.form`
 
     .selects{
         display: flex;
-        justify-content: flex-start;
+        justify-content: flex-end;
         select{
             color: rgba(34, 34, 96, 0.4);
             &:focus, &:active{
