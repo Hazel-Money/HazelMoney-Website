@@ -28,10 +28,33 @@ export const GlobalProvider = ({children}) => {
     };
 
     const getIncomes = async () => {
-        const response = await axios.get(`${BASE_URL}/transactions.php`)
-        setIncomes(response.data)
-        console.log(response.data)
+        try {
+            // Fetch incomes
+            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php`);
+            const incomeData = incomesResponse.data;
+    
+            // Fetch categories
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php`);
+            const categoriesData = categoriesResponse.data;
+    
+            // Map category IDs to category names
+            const categoryMap = {};
+            categoriesData.forEach(category => {
+                categoryMap[category.id] = category.name;
+            });
+    
+            // Update income data with category names
+            const incomesWithCategories = incomeData.map(income => ({
+                ...income,
+                categoryName: categoryMap[income.category_id]
+            }));
+    
+            setIncomes(incomesWithCategories);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
     }
+    
 
     const getCategories = async () => {
         try {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { trash, comment, calender, dollar, food} from '../../utils/Icons'
+import { trash, comment, calender, dollar, food, transport, medical} from '../../utils/Icons'
 import Button from '../Button/Button'
 
 
@@ -10,7 +10,7 @@ function currencyFormat(num) {
 function IncomeItem({
     id,
     account_id,
-    category_id,
+    category,
     amount,
     is_income,
     payment_date,
@@ -26,6 +26,10 @@ function IncomeItem({
                 return food
             case 'salary':
                 return dollar
+            case 'transport':
+                return transport
+            case 'medical':
+                return medical
         }
     }
 
@@ -35,7 +39,7 @@ function IncomeItem({
             {categoryIcon()}
         </div>
         <div className="content">
-            <h5>{category_id}</h5>
+            <h5>{category}</h5>
             <div className="inner-content">
                 <div className="text">
                     <p>{dollar} {currencyFormat(amount)}</p>

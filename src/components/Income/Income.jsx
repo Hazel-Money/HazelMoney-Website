@@ -22,12 +22,12 @@ function Income() {
           </div>
           <div className="incomes">
             {incomes.map((income) => {
-              const {id, account_id , category_id, amount, is_income, payment_date, description, icon} = income;
+              const {id, account_id , categoryName, amount, is_income, payment_date, description, icon} = income;
               return <IncomeItem 
                   key={id}
                   id={id}
                   account_id={account_id}
-                  category_id={category_id}
+                  category={categoryName}
                   amount={amount}
                   is_income={is_income}
                   payment_date={payment_date}
