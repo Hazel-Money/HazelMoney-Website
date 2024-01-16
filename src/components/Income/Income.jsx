@@ -10,7 +10,7 @@ function Income() {
 
   useEffect(() => {
     getIncomes()
-  }, [])
+  }, [incomes])
   
   return (
     <IncomeStyled>
@@ -22,7 +22,7 @@ function Income() {
           </div>
           <div className="incomes">
             {incomes.map((income) => {
-              const {id, account_id , categoryName, amount, is_income, payment_date, description, icon} = income;
+              const {id, account_id , categoryName, amount, is_income, payment_date, description, icon, categoryColor} = income;
               return <IncomeItem 
                   key={id}
                   id={id}
@@ -33,6 +33,7 @@ function Income() {
                   payment_date={payment_date}
                   description={description}
                   icon={icon}
+                  color={categoryColor}
                   indicatorColor="var(--color-green)"
               />
             })}

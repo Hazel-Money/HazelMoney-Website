@@ -7,7 +7,7 @@ import Button from '../Button/Button'
 import { plus } from '../../utils/Icons'
 
 function Form() {
-    const {addIncome, categories} = useGlobalContext()
+    const {addIncome, categories, getIncomes} = useGlobalContext()
     const [inputState, setInputState] = useState({
         account_id: '12',
         category_id: '',
@@ -26,6 +26,7 @@ function Form() {
     const handleSubmit = e => {
         e.preventDefault()
         addIncome(inputState)
+        getIncomes()
     }
 
     return (

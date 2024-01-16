@@ -36,17 +36,17 @@ export const GlobalProvider = ({children}) => {
             // Fetch categories
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php`);
             const categoriesData = categoriesResponse.data;
-    
             // Map category IDs to category names
             const categoryMap = {};
             categoriesData.forEach(category => {
-                categoryMap[category.id] = category.name;
+                categoryMap[category.id] = category;
             });
     
             // Update income data with category names
             const incomesWithCategories = incomeData.map(income => ({
                 ...income,
-                categoryName: categoryMap[income.category_id]
+                categoryName: categoryMap[income.category_id].name,
+                categoryColor: categoryMap[income.category_id].color
             }));
     
             setIncomes(incomesWithCategories);
