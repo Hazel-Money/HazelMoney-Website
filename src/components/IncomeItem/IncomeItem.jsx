@@ -96,6 +96,7 @@ function IncomeItem({
                         color = {'#fff'}
                         iColor = {'#fff'}
                         hColor = {'var(--color-green)'}
+                        onClick={() => deleteItem(id)}
                     />
                 </div>
             </div>

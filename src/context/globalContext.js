@@ -22,6 +22,8 @@ export const GlobalProvider = ({children}) => {
                 account_id,  // Include account_id
                 is_income    // Include is_income
             });
+
+            getIncomes()
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
@@ -34,7 +36,7 @@ export const GlobalProvider = ({children}) => {
             const incomeData = incomesResponse.data;
     
             // Fetch categories
-            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php`);
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
             const categoriesData = categoriesResponse.data;
             // Map category IDs to category names
             const categoryMap = {};
@@ -54,11 +56,20 @@ export const GlobalProvider = ({children}) => {
             setError(err.response?.data?.message || "An error occurred");
         }
     }
-    
+
+    const deleteIncomes = async (id) => {
+        const res = await axios.delete(`${BASE_URL}/transactions.php`, {
+            data: { id }
+        })
+        getIncomes()
+    }
+
+
+     
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/categories.php`);
+            const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
 
             if (response && response.data) {
                 setCategories(response.data);
@@ -79,8 +90,9 @@ export const GlobalProvider = ({children}) => {
         <GlobalContext.Provider value={{
             addIncome, 
             getIncomes,
+            deleteIncomes,
             incomes,
-            categories 
+            categories
         }}>
             {children}
         </GlobalContext.Provider>

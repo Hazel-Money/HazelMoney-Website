@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from "styled-components";
 
-function Button({name, icon, onClick, bg, bPad, color, bRad}) {
+function Button({name, icon, onClick, bg, bPad, color, bRad, type}) {
   return (
     <ButtonStyled style={{
         background: bg,
         padding: bPad,
         borderRadius: bRad,
         color: color,
-    }} onClick={onClick}>
+    }} 
+        onClick={onClick}
+        type={type}>
         {icon}
         {name}
     </ButtonStyled>
