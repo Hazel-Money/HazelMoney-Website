@@ -74,7 +74,7 @@ function IncomeItem({
   return (
     <IncomeItemStyled indicator={indicatorColor}>
         <div className="icon" style={{backgroundColor: color}}>
-            {is_income === '1'   ? categoryIcon() : expenseCatIcon()}
+            {is_income == '1'   ? categoryIcon() : expenseCatIcon()}
         </div>
         <div className="content">
             <h5>{category}</h5>

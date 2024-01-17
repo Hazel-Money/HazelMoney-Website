@@ -10,9 +10,11 @@ export const GlobalProvider = ({children}) => {
 
     const[incomes, setIncomes] = useState([])
     const[expenses, setExpenses] = useState([])
-    const [categories, setCategories] = useState([]);
+    const [Incomescategories, setIncomeCategories] = useState([]);
+    const [Expensescategories, setExpenseCategories] = useState([]);
     const[error, setError] = useState(null)
 
+    //calculate incomes
     const addIncome = async (income) => {
     const { account_id, is_income } = income;  // Extract account_id and is_income from income
 
@@ -32,7 +34,7 @@ export const GlobalProvider = ({children}) => {
     const getIncomes = async () => {
         try {
             // Fetch incomes
-            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php`);
+            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php?is_income=1`);
             const incomeData = incomesResponse.data;
     
             // Fetch categories
@@ -50,7 +52,7 @@ export const GlobalProvider = ({children}) => {
                 categoryName: categoryMap[income.category_id].name,
                 categoryColor: categoryMap[income.category_id].color
             }));
-    
+
             setIncomes(incomesWithCategories);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -64,15 +66,97 @@ export const GlobalProvider = ({children}) => {
         getIncomes()
     }
 
+    const totalIncome = () => {
+        let totalIncome = 0;
+        incomes.forEach((income) => {
+            totalIncome = totalIncome + parseInt(income.amount)
+        })
+        
+        return totalIncome;
+    }
 
-     
+    //calculate expenses
+    const addExpense = async (expense) => {
+        const { account_id, is_income } = expense;  
+    
+            try {
+                const response = await axios.post(`${BASE_URL}/transactions.php`, {
+                    ...expense,  
+                    account_id,  
+                    is_income    
+                });
+    
+                getExpenses()
+            } catch (err) {
+                setError(err.response?.data?.message || "An error occurred");
+            }
+        };
+    
+    const getExpenses = async () => {
+        try {
+            const expensesResponse = await axios.get(`${BASE_URL}/transactions.php?is_income=0`);
+            const expensesData = expensesResponse.data;
+            
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=5`);
+            const categoriesData = categoriesResponse.data;
+            
+            const categoryMap = {};
+            categoriesData.forEach(category => {
+                categoryMap[category.id] = category;
+            });
+            
+            const expensesWithCategories = expensesData.map(expense => ({
+                ...expense,
+                categoryName: categoryMap[expense.category_id]['name'],
+                categoryColor: categoryMap[expense.category_id]['color']
+            }));
 
-    const getCategories = async () => {
+            console.log(expensesWithCategories);
+            //consoling blank space
+    
+            setExpenses(expensesWithCategories);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+        
+    const deleteExpense = async (id) => {
+        const res = await axios.delete(`${BASE_URL}/transactions.php`, {
+            data: { id }
+        })
+        getExpenses()
+    }
+
+    const totalExpenses = () => {
+        let totalExpense = 0;
+        expenses.forEach((expense) => {
+            totalExpense = totalExpense + parseInt(expense.amount)
+        })
+        
+        return totalExpense;
+    }
+    
+
+    const getIncomesCategories = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
 
             if (response && response.data) {
-                setCategories(response.data);
+                setIncomeCategories(response.data);
+            } else {
+                console.error("Response data is undefined or null");
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    };
+
+    const getExpensesCategories = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=5`);
+
+            if (response && response.data) {
+                setExpenseCategories(response.data);
             } else {
                 console.error("Response data is undefined or null");
             }
@@ -83,7 +167,8 @@ export const GlobalProvider = ({children}) => {
 
     useEffect(() => {
         // Fetch categories when the component mounts
-        getCategories();
+        getExpensesCategories();
+        getIncomesCategories();
     }, []);
 
     return(
@@ -91,8 +176,15 @@ export const GlobalProvider = ({children}) => {
             addIncome, 
             getIncomes,
             deleteIncomes,
+            totalIncome,
+            addExpense,
+            getExpenses,
+            deleteExpense,
+            totalExpenses,
             incomes,
-            categories
+            expenses,
+            Incomescategories,
+            Expensescategories
         }}>
             {children}
         </GlobalContext.Provider>

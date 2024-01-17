@@ -32,3 +32,4 @@ export const transport = <i className="fa-solid fa-car"></i>
 export const salary = <i className="fa-solid fa-money-bill"></i>
 export const dining = <i className="fa-solid fa-utensils"></i>
 export const date = <i className="fa-solid fa-calendar-days"></i>
+export const list = <i className="fa-solid fa-list"></i>

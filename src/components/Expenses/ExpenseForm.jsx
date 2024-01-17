@@ -14,13 +14,13 @@ import { date, plus } from '../../utils/Icons';
 registerLocale('pt', pt);
 setDefaultLocale('pt');
 
-function Form() {
-    const { addIncome, Incomescategories, getIncomes } = useGlobalContext();
+function ExpenseForm() {
+    const { addExpense, Expensescategories } = useGlobalContext();
     const [inputState, setInputState] = useState({
       account_id: '12',
       category_id: '',
       amount: '',
-      is_income: '1',
+      is_income: '0',
       payment_date: '',
       description: ''
     });
@@ -45,25 +45,25 @@ function Form() {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      addIncome(inputState);
+      addExpense(inputState);
       setInputState({
         account_id: '12',
         category_id: '',
         amount: '',
-        is_income: '1',
+        is_income: '0',
         payment_date: '',
         description: ''
       })
     };
   
     return (
-        <FormStyled onSubmit={handleSubmit} autoComplete="off">
+        <ExpenseFormStyled onSubmit={handleSubmit} autoComplete="off">
           <div className="input-control">
             <input
               type="text"
               value={amount}
               name={"amount"}
-              placeholder="Income amount"
+              placeholder="Expense amount"
               onChange={handleInput("amount")}
             />
           </div>
@@ -95,7 +95,7 @@ function Form() {
           <div className="selects input-control">
             <select required value={category_id} name="category_id" id="category_id" onChange={handleInput("category_id")}>
               <option value="" disabled>Select Option</option>
-              {Incomescategories.map((category) => (
+              {Expensescategories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
@@ -115,7 +115,7 @@ function Form() {
           </div>
           <div className="submit-btn">
             <Button
-              name={"Add income"}
+              name={"Add Expense"}
               icon={plus}
               bPad={".8rem 1.6rem"}
               bRad={"30px"}
@@ -124,11 +124,11 @@ function Form() {
               hColor={"red"}
             />
           </div>
-        </FormStyled>
+        </ExpenseFormStyled>
       );
     }
 
-const FormStyled = styled.form`
+const ExpenseFormStyled = styled.form`
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -190,4 +190,4 @@ const FormStyled = styled.form`
     }
 `;
 
-export default Form
+export default ExpenseForm
