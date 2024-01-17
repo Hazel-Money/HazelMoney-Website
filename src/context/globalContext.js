@@ -110,9 +110,6 @@ export const GlobalProvider = ({children}) => {
                 categoryName: categoryMap[expense.category_id]['name'],
                 categoryColor: categoryMap[expense.category_id]['color']
             }));
-
-            console.log(expensesWithCategories);
-            //consoling blank space
     
             setExpenses(expensesWithCategories);
         } catch (err) {
@@ -134,6 +131,18 @@ export const GlobalProvider = ({children}) => {
         })
         
         return totalExpense;
+    }
+
+    const totalBalance = () => {
+        return totalIncome() - totalExpenses()
+    }
+
+    const transactionHistory = () => {
+        const history = [...incomes, ...expenses]
+        history.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt)
+        })
+        return history.slice(0, 3)
     }
     
 
@@ -181,6 +190,8 @@ export const GlobalProvider = ({children}) => {
             getExpenses,
             deleteExpense,
             totalExpenses,
+            totalBalance,
+            transactionHistory,
             incomes,
             expenses,
             Incomescategories,
