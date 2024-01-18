@@ -11,10 +11,11 @@ function currencyFormat(num) {
 }
 
 function Dashboard() {
-  const {totalExpenses, incomes, expenses, totalIncome, totalBalance, getIncomes, getExpenses} = useGlobalContext()
+  const {totalExpenses, incomes, expenses, totalIncome, totalBalance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
   //Render data when running website
   useEffect(() => {
+    getAllTransactions()
     getIncomes()
     getExpenses()
   }, [])
@@ -36,7 +37,7 @@ function Dashboard() {
               <div className="expense">
                 <h2>Total Expense</h2>
                 <p>
-                  {dollar} {currencyFormat(totalExpenses())}
+                  {dollar} -{currencyFormat(totalExpenses())}
                 </p>
               </div>
               <div className="balance">
@@ -50,24 +51,7 @@ function Dashboard() {
           </div>
           <div className="history-con">
               <History />
-              <h2 className="salary-category">Min <span>Income</span>Max</h2>
-              <div className="salary-item">
-                <p>
-                  {Math.min(...incomes.map(item => currencyFormat(item.amount)))}
-                </p>
-                <p>
-                  {Math.max(...incomes.map(item => currencyFormat(item.amount)))}
-                </p>
-              </div>
-              <h2 className="salary-category">Min <span>Expense</span>Max</h2>
-              <div className="salary-item">
-                <p>
-                  {Math.min(...expenses.map(item => currencyFormat(item.amount)))}
-                </p>
-                <p>
-                  {Math.max(...expenses.map(item => currencyFormat(item.amount)))}
-                </p>
-              </div>
+
           </div>
         </div>
       </InnerLayout>
@@ -90,7 +74,11 @@ const DashBoardStyled = styled.div`
         gap: 2rem;
         margin-top: 2rem;
         .income, .expense{
+          text-align: center;
           grid-column: span 2;
+          p{
+            text-align: center;
+          }
         }
         .income, .expense, .balance{
           background: #FCF6F9;
@@ -131,20 +119,6 @@ const DashBoardStyled = styled.div`
         font-size: 1.2rem;
         span{
           font-size: 1.8rem;
-        }
-      }
-      .salary-item{
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-        padding: 1rem;
-        border-radius: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        p{
-          font-weight: 600;
-          font-size: 1.6rem;
         }
       }
     }

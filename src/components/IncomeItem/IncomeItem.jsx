@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { trash, comment, calender, dollar, food, medical, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, tv, takeaway, clothing, circle, transport, dining} from '../../utils/Icons'
 import Button from '../Button/Button'
-import { dateFormat } from '../../utils/dateFormat';
-
+import IconCategory from '../../utils/iconCategory';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -21,61 +20,11 @@ function IncomeItem({
     deleteItem,
     indicatorColor
 }){
-    
-    const categoryIcon = () => {
-        switch(icon){
-            case 'salary':
-                return money
-            case 'freelancing':
-                return freelance
-            case 'investments':
-                return stocks
-            case 'stocks':
-                return users
-            case 'bitcoin':
-                return bitcoin
-            case 'bank':
-                return card
-            case 'youtube':
-                return yt
-            case 'other':
-                return piggy
-            default:
-                return ''
-        }
-    }
-
-    const expenseCatIcon = () => {
-        switch (icon) {
-            case 'education':
-                return book
-            case 'groceries':
-                return food
-            case 'health':
-                return medical
-            case 'subscriptions':
-                return tv
-            case 'takeaways':
-                return takeaway
-            case 'dining':
-                return dining
-            case 'clothing':
-                return clothing
-            case 'travelling':
-                return freelance
-            case 'transport':
-                return transport
-            case 'other':
-                return circle
-            default:
-                return ''
-        }
-    }
 
   return (
     <IncomeItemStyled indicator={indicatorColor}>
-        <div className="icon" style={{backgroundColor: color}}>
-            {is_income == '1'   ? categoryIcon() : expenseCatIcon()}
+        <div className="icon" style={{color: color}}>
+            <IconCategory category={icon} />
         </div>
         <div className="content">
             <h5>{category}</h5>

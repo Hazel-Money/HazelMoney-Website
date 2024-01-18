@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useGlobalContext } from '../../context/globalContext';
+import IconCategory from '../../utils/iconCategory';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -14,9 +15,10 @@ function History() {
         <HistoryStyled>
             <h2>Recent History</h2>
             {history.map((item) => {
-                const{id, categoryName, amount, is_income} = item
+                const{id, categoryName, amount, is_income, icon} = item
                 return (
                     <div key={id} className="history-item">
+                        <IconCategory category={icon} />
                         <p style={{
                             color: is_income == '0' ? 'red' : 'var(--color-green)'
                         }}>

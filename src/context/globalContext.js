@@ -10,6 +10,7 @@ export const GlobalProvider = ({children}) => {
 
     const[incomes, setIncomes] = useState([])
     const[expenses, setExpenses] = useState([])
+    const[transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([]);
     const [Expensescategories, setExpenseCategories] = useState([]);
     const[error, setError] = useState(null)
@@ -137,14 +138,38 @@ export const GlobalProvider = ({children}) => {
         return totalIncome() - totalExpenses()
     }
 
+    const getAllTransactions = async () => {
+        try {
+            const transactionsResponse = await axios.get(`${BASE_URL}/transactions.php?account_id=12`);
+            const transactionsData = transactionsResponse.data;
+            
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=5`);
+            const categoriesData = categoriesResponse.data;
+            const categoryMap = {};
+            categoriesData.forEach(category => {
+                categoryMap[category.id] = category;
+            });
+            
+            const transactionsWithCategories = transactionsData.map(transaction => ({
+                ...transaction,
+                categoryName: categoryMap[transaction.category_id]['name'],
+                categoryColor: categoryMap[transaction.category_id]['color']
+            }));
+            setTransactions(transactionsWithCategories);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+
     const transactionHistory = () => {
-        const history = [...incomes, ...expenses]
+        const history = [...transactions]
+
         history.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
         })
-        return history.slice(0, 3)
+        return history.slice(0, 6)
     }
-    
+
 
     const getIncomesCategories = async () => {
         try {
@@ -176,6 +201,7 @@ export const GlobalProvider = ({children}) => {
 
     useEffect(() => {
         // Fetch categories when the component mounts
+        getAllTransactions();
         getExpensesCategories();
         getIncomesCategories();
     }, []);
@@ -192,6 +218,8 @@ export const GlobalProvider = ({children}) => {
             totalExpenses,
             totalBalance,
             transactionHistory,
+            getAllTransactions,
+            transactions,
             incomes,
             expenses,
             Incomescategories,
