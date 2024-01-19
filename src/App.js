@@ -8,36 +8,36 @@ import Income from "./components/Income/Income";
 import Expenses from "./components/Expenses/Expenses";
 import { useGlobalContext } from "./context/globalContext";
 
-
 function App() {
-  const [active, setActive] = useState(1)
+  const [active, setActive] = useState(1);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const global = useGlobalContext()
+  const global = useGlobalContext();
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   const displayData = () => {
-    switch(active){
-      case 1: 
-        return <Dashboard />
-      case 2: 
-        return <Dashboard />
+    switch (active) {
+      case 1:
+        return <Dashboard />;
+      case 2:
+        return <Dashboard />;
       case 3:
-        return <Income />
+        return <Income />;
       case 4:
-        return <Expenses />
-      default: 
-        return <Dashboard />
-      }
-  }
+        return <Expenses />;
+      default:
+        return <Dashboard />;
+    }
+  };
 
-
-  
   return (
-    <AppStyled bg ={bg} className="App">
+    <AppStyled bg={bg} className="App">
       <MainLayout>
-        <Navigation active={active} setActive={setActive} />
-        <main>
-            {displayData()}
-        </main>
+          <Navigation active={active} setActive={setActive} />
+          <main>{displayData()}</main>
       </MainLayout>
     </AppStyled>
   );
