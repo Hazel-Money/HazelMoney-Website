@@ -1,12 +1,56 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {user, email, pass} from '../../utils/Icons'
+import {user, emailIcon, pass} from '../../utils/Icons'
+import { useGlobalContext } from '../../context/globalContext';
 
 const LoginSignup = () => {
+  const {registerUser, loginUser} = useGlobalContext();
 
   const [action, setAction] = useState('Login');
+  const [signUpInputState, setSignUpInputState] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+
+  const [loginInputState, setLoginInputState] = useState({
+    email: '',
+    password: ''
+  });
+
+  const { email, username, password } = signUpInputState;
+  const { email: loginEmail, password: loginPassword } = loginInputState;
+  
+  const handleInput = (name) => (e) => {
+    if (action === 'Sign Up'){
+      setSignUpInputState({ ...signUpInputState, [name]: e.target.value });
+    } else {
+      setLoginInputState({ ...loginInputState, [name]: e.target.value });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(action==='Sign Up'){
+      registerUser(signUpInputState);
+      setSignUpInputState({
+        email: '', 
+        username: '',
+        password: '',
+      })
+    } else {
+      loginUser(loginInputState)
+      setLoginInputState({
+        email: '', 
+        password: '',
+      })
+    }
+
+    
+  };
+
   return (
-    <LoginSignupStyled>
+    <LoginSignupStyled  autoComplete="off">
       <div className='container'>
         <div className="header">
           <div className="text">{action}</div>
@@ -18,20 +62,20 @@ const LoginSignup = () => {
               <span>
                 {user}
               </span>
-              <input type="text" placeholder='Name'/>
+              <input type="text" placeholder='Username' onChange={handleInput("username")}/>
             </div>
           }
           <div className="input">
             <span>
-              {email}
+              {emailIcon}
             </span>
-            <input type="email" placeholder='Email' />
+            <input type="email" placeholder='Email' onChange={handleInput("email")}/>
           </div>
           <div className="input">
             <span>
               {pass}
             </span>
-            <input type="password" placeholder='Password'/>
+            <input type="password" placeholder='Password' onChange={handleInput("password")}/>
           </div>
         </div>
         {action==='Sign Up' ? <div></div> : 
@@ -40,8 +84,8 @@ const LoginSignup = () => {
           </div>
         }
         <div className='submit-container'>
-          <div className={action === 'Sign Up' ? 'submit gray' : 'submit'} onClick={() => {setAction("Sign Up")}}>Sign Up</div>
-          <div className={action === 'Login' ? 'submit gray' : 'submit'}  onClick={() => {setAction("Login")}}>Login</div>
+          <div className={action === 'Sign Up' ? 'submit gray' : 'submit'} onClick={() => { setAction("Sign Up")}}>Sign Up</div>
+          <div className={action === 'Login' ? 'submit gray' : 'submit'} onClick={() => { setAction("Login")}}>Login</div>
         </div>
       </div>
     </LoginSignupStyled>
@@ -50,7 +94,7 @@ const LoginSignup = () => {
 
 
 
-const LoginSignupStyled = styled.div`
+const LoginSignupStyled = styled.form`
   height: 100vh;
   background: linear-gradient(135deg, #cb6e00,#9f4c00);
   display:flex;

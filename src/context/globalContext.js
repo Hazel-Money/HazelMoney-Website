@@ -79,19 +79,18 @@ export const GlobalProvider = ({children}) => {
     //calculate expenses
     const addExpense = async (expense) => {
         const { account_id, is_income } = expense;  
-    
-            try {
-                const response = await axios.post(`${BASE_URL}/transactions.php`, {
-                    ...expense,  
-                    account_id,  
-                    is_income    
-                });
-    
-                getExpenses()
-            } catch (err) {
-                setError(err.response?.data?.message || "An error occurred");
-            }
-        };
+        try {
+            const response = await axios.post(`${BASE_URL}/transactions.php`, {
+                ...expense,  
+                account_id,  
+                is_income    
+            });
+
+            getExpenses()
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    };
     
     const getExpenses = async () => {
         try {
@@ -199,6 +198,22 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+    const registerUser = async (user) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/register.php`, user);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+
+    const loginUser = async (user) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/login.php`, user);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+
     useEffect(() => {
         // Fetch categories when the component mounts
         getAllTransactions();
@@ -219,6 +234,8 @@ export const GlobalProvider = ({children}) => {
             totalBalance,
             transactionHistory,
             getAllTransactions,
+            registerUser,
+            loginUser,
             transactions,
             incomes,
             expenses,

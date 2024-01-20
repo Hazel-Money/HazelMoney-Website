@@ -13,7 +13,6 @@ function History() {
     const [...history] = transactionHistory()
     return (
         <HistoryStyled>
-            <h2>Recent History</h2>
             {history.map((item) => {
                 const{id, categoryName, amount, is_income, icon} = item
                 return (

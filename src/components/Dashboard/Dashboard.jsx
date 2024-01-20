@@ -23,8 +23,9 @@ function Dashboard() {
   return (
     <DashBoardStyled>
       <InnerLayout>
-        <h1 className='h1-transaction'>All Transactions</h1>
         <div className="stats-con">
+          <h1 className='h1-transaction'>All Transactions</h1>
+          <h2 className='h2-history'>Recent History</h2>
           <div className="chart-con">
             <Chart />
             <div className="amount-con">
@@ -51,7 +52,6 @@ function Dashboard() {
           </div>
           <div className="history-con">
               <History />
-
           </div>
         </div>
       </InnerLayout>
@@ -64,57 +64,65 @@ const DashBoardStyled = styled.div`
  .stats-con{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 2rem;
+    column-gap: 2rem;
     .chart-con{
       grid-column: 1 / 4;
       height: 40vh;
-      .amount-con{
+      .amount-con {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
         margin-top: 2rem;
         .income, .expense{
-          text-align: center;
           grid-column: span 2;
-          p{
-            text-align: center;
-          }
         }
-        .income, .expense, .balance{
+        .income, .expense, .balance {
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
           background: #FCF6F9;
           border: 2px solid #FFFFFF;
           box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
           border-radius: 20px;
           padding: 0.8rem;
-          p{
-            font-size: 2.5rem;
+          p {
+            font-size: 1.5rem;
             font-weight: 700;
+          }
+          h2 {
+            font-size: 1.5rem;
+          }
+          p, h2 {
+            text-align: center;
           }
         }
 
-        .balance{
+        .balance {
           grid-column: 2 / 4;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
           p{
             color: var(--color-green);
             opacity: 0.6;
-            font-size: 2.5rem;
+            font-size: 1.7rem;
           }
         }
       }
     }
 
-    .history-con{
+    h1 {
+      grid-column: 1 / 4;
+    }
+    
+    h2 {
       grid-column: 4 / -1;
-      h2{
-        margin: 1rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .history-con{
+      grid-column: 4 /  -1;
       .salary-title{
         font-size: 1.2rem;
         span{
@@ -124,5 +132,6 @@ const DashBoardStyled = styled.div`
     }
   }
 `;
+
 
 export default Dashboard;

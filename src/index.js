@@ -42,7 +42,9 @@ if (getCookie('jwt')) {
   root.render(
     <React.StrictMode>
       <GlobalStyle />
-      <LoginSignup/>
+        <GlobalProvider>
+          <LoginSignup />
+        </GlobalProvider>
     </React.StrictMode>
   );
 }
