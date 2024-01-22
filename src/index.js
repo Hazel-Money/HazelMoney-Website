@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { GlobalStyle } from './styles/GlobalStyle';
-import { GlobalProvider } from './context/globalContext';
+import { GlobalProvider, useGlobalContext } from './context/globalContext';
 import LoginSignup from './components/Login/login'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -28,23 +28,11 @@ function getCookie(name) {
   return decodeURI(dc.substring(begin + prefix.length, end));
 } 
 
-console.log(getCookie('jwt'));
-if (getCookie('jwt')) {
-  root.render(
-    <React.StrictMode>
-      <GlobalStyle />
-        <GlobalProvider>
-          <App />
-        </GlobalProvider>
-    </React.StrictMode>
-  );
-} else{
-  root.render(
-    <React.StrictMode>
-      <GlobalStyle />
-        <GlobalProvider>
-          <LoginSignup />
-        </GlobalProvider>
-    </React.StrictMode>
-  );
-}
+root.render(
+  <React.StrictMode>
+    <GlobalStyle />
+      <GlobalProvider>
+        <App /> 
+      </GlobalProvider>
+  </React.StrictMode>
+);

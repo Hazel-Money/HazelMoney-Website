@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import {user, emailIcon, pass} from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext';
+import Button from '../Button/Button';
+import { plus } from '../../utils/Icons';
 
 const LoginSignup = () => {
   const {registerUser, loginUser} = useGlobalContext();
@@ -50,7 +52,7 @@ const LoginSignup = () => {
   };
 
   return (
-    <LoginSignupStyled  autoComplete="off">
+    <LoginSignupStyled onSubmit={handleSubmit} autoComplete="off">
       <div className='container'>
         <div className="header">
           <div className="text">{action}</div>
@@ -78,15 +80,22 @@ const LoginSignup = () => {
             <input type="password" placeholder='Password' onChange={handleInput("password")}/>
           </div>
         </div>
-        {action==='Sign Up' ? <div></div> : 
-          <div className='forgot-password'>
-            Lost Password? <span>Click here!</span>
-          </div>
-        }
         <div className='submit-container'>
-          <div className={action === 'Sign Up' ? 'submit gray' : 'submit'} onClick={() => { setAction("Sign Up")}}>Sign Up</div>
-          <div className={action === 'Login' ? 'submit gray' : 'submit'} onClick={() => { setAction("Login")}}>Login</div>
+          Go to
+          <p className='go' onClick={() => { setAction(action === 'Login' ? 'Sign Up' : 'Login') }}>
+            {action === 'Login' ? 'Sign Up' : 'Login'}
+          </p>
         </div>
+        <div className="submit-btn">
+            <Button
+              name={action==='Login' ? 'Login' : 'Sign Up'}
+              bPad={".8rem 1.6rem"}
+              bRad={"50px"}
+              bg={"#4c00b4"}
+              color={"#fff"}
+              cursor={"pointer"}
+            />
+          </div>
       </div>
     </LoginSignupStyled>
   );
@@ -163,31 +172,32 @@ const LoginSignupStyled = styled.form`
     color: #797979;
     font-size: 18px;
   }
-  .forgot-password span{
-    color: #4c00b4;
-    cursor: pointer;
-  }
   .submit-container{
     display: flex;
-    gap: 30px;
-    margin: 60px auto;
+    gap: 10px;
+    margin: 20px auto;
+    margin-left: 10vh; 
   }
-  .submit{
+  .Button{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 220px;
     height: 59px;
-    color: #fff;
-    background: #4c00b4;
-    border-radius: 50px;
     font-size: 19px;
     font-weight: 700;
     cursor: pointer;
   }
-  .gray{
-    background: #eaeaea;
-    color: #676767;
+  .submit-btn{
+    margin-top: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .go{
+    color: #3c009d;
+    cursor: pointer;
+    margin-left: 0;
   }
 
 `;

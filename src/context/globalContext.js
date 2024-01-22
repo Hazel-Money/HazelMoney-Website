@@ -1,5 +1,7 @@
-import axios from "axios"
-import React, { useContext, useState, useEffect  } from "react"
+import axios from "axios";
+import React, { useContext, useState, useEffect  } from "react";
+import Cookies from "universal-cookie";
+import {jwtDecode} from "jwt-decode";
 
 const BASE_URL = "http://localhost:80/api";
 
@@ -7,13 +9,14 @@ const GlobalContext = React.createContext()
 
 
 export const GlobalProvider = ({children}) => {
-
+    const cookies = new Cookies();
     const[incomes, setIncomes] = useState([])
     const[expenses, setExpenses] = useState([])
     const[transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([]);
     const [Expensescategories, setExpenseCategories] = useState([]);
     const[error, setError] = useState(null)
+    const[user, setUser] = useState(null)
 
     //calculate incomes
     const addIncome = async (income) => {
@@ -169,7 +172,6 @@ export const GlobalProvider = ({children}) => {
         return history.slice(0, 6)
     }
 
-
     const getIncomesCategories = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
@@ -198,21 +200,51 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
-    const registerUser = async (user) => {
+    const registerUser = async (credentials) => {
         try {
-            const response = await axios.post(`${BASE_URL}/register.php`, user);
+            const response = await axios.post(`${BASE_URL}/register.php`, credentials);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
     }
 
-    const loginUser = async (user) => {
+    const loginUser = async (credentials) => {
         try {
-            const response = await axios.post(`${BASE_URL}/login.php`, user);
+            const response = await axios.post(`${BASE_URL}/login.php`, credentials);
+            
+            // const d1 = new Date()
+            // const currentTime = parseInt(d1.getTime() / 1000)
+            // const maxAge = response.expiresAt - currentTime
+            
+            const token = jwtDecode(response.data.jwt);
+            const userData = token.data;
+
+            cookies.set('jwt', response.data.jwt, {
+                expires: new Date(token.exp * 1000),
+            });
+
+            setUser(userData);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
+            console.log(err.response?.data?.message || "An error occurred");
         }
     }
+
+    const getUserFromCookies = () => {
+        try {
+            const cookie = cookies.get('jwt');
+            const userData = jwtDecode(cookie).data;
+            return userData;
+        } catch (err) {
+            return err;
+        }
+    };
+    
+    const getUser = () => {
+        const userData = getUserFromCookies();
+    
+        setUser(userData);
+    };
 
     useEffect(() => {
         // Fetch categories when the component mounts
@@ -236,6 +268,8 @@ export const GlobalProvider = ({children}) => {
             getAllTransactions,
             registerUser,
             loginUser,
+            getUser,
+            user,
             transactions,
             incomes,
             expenses,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import bg from "./img/bg.png";
 import {MainLayout} from "./styles/Layouts";
@@ -7,17 +7,21 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Income from "./components/Income/Income";
 import Expenses from "./components/Expenses/Expenses";
 import { useGlobalContext } from "./context/globalContext";
+import Cookies from "universal-cookie";
+import LoginSignup from "./components/Login/login";
 
 function App() {
+  const {getUser, user} = useGlobalContext();
+  useEffect(() => {
+    if (!user) {
+      getUser()
+    }
+  }, [user, getUser])
   const [active, setActive] = useState(1);
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const global = useGlobalContext();
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
+  
+  if (!user) {
+    return <LoginSignup/>
+  }
   const displayData = () => {
     switch (active) {
       case 1:
