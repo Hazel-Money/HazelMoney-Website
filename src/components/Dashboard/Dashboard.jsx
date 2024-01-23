@@ -27,7 +27,6 @@ function Dashboard() {
           <h1 className='h1-transaction'>All Transactions</h1>
           <h2 className='h2-history'>Recent History</h2>
           <div className="chart-con">
-            <Chart />
             <div className="amount-con">
               <div className="income">
                 <h2>Total Income</h2>

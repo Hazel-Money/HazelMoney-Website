@@ -30,7 +30,6 @@ export const GlobalProvider = ({children}) => {
                 account_id,  // Include account_id
                 is_income    // Include is_income
             });
-
             getIncomes()
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -228,7 +227,6 @@ export const GlobalProvider = ({children}) => {
             setUser(userData);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
-            console.log(err.response?.data?.message || "An error occurred");
         }
     }
 

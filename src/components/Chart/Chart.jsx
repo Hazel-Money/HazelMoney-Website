@@ -2,44 +2,56 @@ import React, {useState, useEffect} from 'react'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
-function Balance() {
+import { format } from "date-fns";
+function Chart() {
+    const dateFormat = 'M/d';
+    function getDatesBetweenNowAndXDaysAgo(x) {
+        var currentDate = new Date();
+        var xDaysAgo = new Date();
+        xDaysAgo.setDate(currentDate.getDate() - x);
+      
+        var datesArray = [];
+      
+        while (xDaysAgo <= currentDate) {
+          datesArray.push(format(new Date(xDaysAgo), dateFormat));
+          xDaysAgo.setDate(xDaysAgo.getDate() + 1);
+        }
+      
+        return datesArray;
+    }
 
-    const {getAllTransactions} = useGlobalContext();
+    const {transactionHistory} = useGlobalContext()
+    const [...history] = transactionHistory()
+    console.log(history)
+    
+    var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
-    const [chartData, setChartData] = useState([]);
+    // Filter transactions for expenses and incomes
+    const expenses = history.filter((transaction) => !transaction.is_income);
+    const incomes = history.filter((transaction) => transaction.is_income);
 
-    useEffect(() => {
-        // Fetch transactions data when the component mounts
-        const fetchData = async () => {
-            try {
-                const transactions = await getAllTransactions();
-                
-                // Check if transactions is not undefined and not empty
-                if (transactions && transactions.length > 0) {
-                    // Process the transactions data and set it in the state
-                    const processedChartData = transactions.map(transaction => ({
-                        name: transaction.payment_date, // Assuming payment_date is the date field
-                        Income: transaction.is_income === '1' ? transaction.amount : 0,
-                        Expense: transaction.is_income === '0' ? transaction.amount : 0,
-                    }));
-                    
-                    setChartData(processedChartData);
-                } else {
-                    // Handle the case where transactions is undefined or empty
-                    console.error("No transactions data available");
-                }
-            } catch (error) {
-                // Handle any errors that might occur during the fetch
-                console.error("Error fetching transactions:", error);
-            }
+    // Organize data for the BarChart
+    const chartData = datesBetweenNowAndXDaysAgo.map((date) => {
+        const dateString = format(date, dateFormat);
+        const expenseAmount = expenses
+        .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
+        .reduce((sum, transaction) => sum + transaction.amount, 0);
+        const incomeAmount = incomes
+        .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
+        .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+        return {
+            name: dateString,
+            Expense: expenseAmount,
+            Income: incomeAmount,
         };
-    
-        fetchData();
-    }, [getAllTransactions]); // Add getAllTransactions to the dependency array
-    
+    });
+
 
     return (
         <Section>
+        <div className="chart-con">
+           
             <div className="sales">
                 <div className="sales__details">
                     <div>
@@ -50,7 +62,7 @@ function Balance() {
                     </div>
                 </div>
                 <div className="sales__graph">
-                    <ResponsiveContainer width="100%" height="150%">
+                    <ResponsiveContainer width="100%" height="350%">
 
                     <BarChart
                         width={500}
@@ -74,11 +86,12 @@ function Balance() {
                     </ResponsiveContainer>
                 </div>
             </div>
+        </div>
         </Section>
     )
 }
 
-export default Balance
+export default Chart
 const Section = styled.section`
 .sales{
     color: black;

@@ -9,6 +9,7 @@ import Expenses from "./components/Expenses/Expenses";
 import { useGlobalContext } from "./context/globalContext";
 import Cookies from "universal-cookie";
 import LoginSignup from "./components/Login/login";
+import Chart from "./components/Chart/Chart"
 
 function App() {
   const {getUser, user} = useGlobalContext();
@@ -27,7 +28,7 @@ function App() {
       case 1:
         return <Dashboard />;
       case 2:
-        return <Dashboard />;
+        return <Chart />;
       case 3:
         return <Income />;
       case 4:

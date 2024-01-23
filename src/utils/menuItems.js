@@ -4,13 +4,13 @@ export const menuItems = [
     {
         id: 1,
         title: 'Dashboard',
-        icon: dashboard,
+        icon: list,
         link: '/dashboard'
     },
     {
         id: 2,
-        title: "Categories",
-        icon: list,
+        title: "Chart",
+        icon: dashboard,
         link: "/dashboard",
     },
     {
