@@ -4,9 +4,11 @@ import {user, emailIcon, pass} from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icons';
+import Swal from 'sweetalert2'
+
 
 const LoginSignup = () => {
-  const {registerUser, loginUser} = useGlobalContext();
+  const {registerUser, loginUser, loginError, setLoginError} = useGlobalContext();
 
   const [action, setAction] = useState('Login');
   const [signUpInputState, setSignUpInputState] = useState({
@@ -24,6 +26,7 @@ const LoginSignup = () => {
   const { email: loginEmail, password: loginPassword } = loginInputState;
   
   const handleInput = (name) => (e) => {
+    setLoginError('');
     if (action === 'Sign Up'){
       setSignUpInputState({ ...signUpInputState, [name]: e.target.value });
     } else {
@@ -86,6 +89,7 @@ const LoginSignup = () => {
             {action === 'Login' ? 'Sign Up' : 'Login'}
           </p>
         </div>
+        {loginError && <p className='error'>{loginError}</p>}
         <div className="submit-btn">
             <Button
               name={action==='Login' ? 'Login' : 'Sign Up'}
@@ -119,6 +123,9 @@ const LoginSignupStyled = styled.form`
     width: 80vh;
     height: 80vh;
     border-radius: 7%;
+    .error {
+      text-align: center;
+    }
   }
   .header{
     display:flex;

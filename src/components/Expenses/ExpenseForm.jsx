@@ -62,7 +62,7 @@ function ExpenseForm() {
   
     return (
         <ExpenseFormStyled onSubmit={handleSubmit} autoComplete="off">
-          {error && <p className='error'>{error}</p>}
+          {error && <center><p className='error'>{error}</p></center>}
           <div className="input-control">
             <input
               type="text"

@@ -1,8 +1,18 @@
 import React, {useState, useEffect} from 'react'
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
 import { format } from "date-fns";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+function currencyFormat(num) {
+    return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 function Chart() {
     const dateFormat = 'M/d';
     function getDatesBetweenNowAndXDaysAgo(x) {
@@ -42,11 +52,31 @@ function Chart() {
 
         return {
             name: dateString,
-            Expense: expenseAmount,
-            Income: incomeAmount,
+            Expense: currencyFormat(expenseAmount),
+            Income: currencyFormat(incomeAmount),
         };
     });
 
+    const chartDataForPie = datesBetweenNowAndXDaysAgo.map((date) => {
+        const dateString = format(date, dateFormat);
+        const expenseAmount = expenses
+          .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+        const incomeAmount = incomes
+          .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+      
+        return {
+          name: dateString,
+          value: expenseAmount + incomeAmount,
+        };
+      });
+
+    const [chart, setChart] = useState('bar');
+
+    const handleChange = (event) => {
+        setChart(event.target.value);
+      };
 
     return (
         <Section>
@@ -54,13 +84,24 @@ function Chart() {
            
             <div className="sales">
                 <div className="sales__details">
-                    <div>
-                        <h4>Balance</h4>
-                    </div>
+                <FormControl>
+                <InputLabel id="demo-simple-select-label">Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={chart}
+                    label="Chart"
+                    onChange={handleChange}
+                >
+                    <MenuItem value={"bar"}>Bar chart</MenuItem>
+                    <MenuItem value={"pie"}>Pie chart</MenuItem>
+                </Select>
+                </FormControl>
                     <div>
                         <h5>PAST 30 DAY</h5>
                     </div>
                 </div>
+                {chart === "bar" ? 
                 <div className="sales__graph">
                     <ResponsiveContainer width="100%" height="350%">
 
@@ -85,6 +126,26 @@ function Chart() {
                      </BarChart>
                     </ResponsiveContainer>
                 </div>
+                : 
+                <div>
+                <ResponsiveContainer width="100%" height="350%">
+                  <PieChart>
+                    <Pie
+                      dataKey="value"
+                      isAnimationActive={false}
+                      data={chartDataForPie}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      label
+                    >
+                    <Legend/>
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+                </div>
+                }   
             </div>
         </div>
         </Section>
@@ -118,5 +179,6 @@ const Section = styled.section`
         }
     }
 }
+
 
 `;

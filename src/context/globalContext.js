@@ -19,6 +19,7 @@ export const GlobalProvider = ({children}) => {
     const [Expensescategories, setExpenseCategories] = useState([]);
     const[error, setError] = useState(null)
     const[user, setUser] = useState(null)
+    const[loginError, setLoginError] = useState(null)
 
     //calculate incomes
     const addIncome = async (income) => {
@@ -204,8 +205,15 @@ export const GlobalProvider = ({children}) => {
     const registerUser = async (credentials) => {
         try {
             const response = await axios.post(`${BASE_URL}/register.php`, credentials);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Registado com sucesso",
+                showConfirmButton: false,
+                timer: 1500
+              });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setLoginError(err.response?.data?.message || "An error occurred");
         }
     }
 
@@ -225,8 +233,16 @@ export const GlobalProvider = ({children}) => {
             });
 
             setUser(userData);
+
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Login com sucesso",
+                showConfirmButton: false,
+                timer: 1500
+              });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setLoginError(err.response?.data?.message || "An error occurred");
         }
     }
 
@@ -286,8 +302,10 @@ export const GlobalProvider = ({children}) => {
             loginUser,
             getUser,
             logout,
-            error,
             setError,
+            setLoginError,
+            loginError,
+            error,
             user,
             transactions,
             incomes,
