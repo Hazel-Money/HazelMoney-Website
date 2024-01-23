@@ -15,7 +15,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function Form() {
-    const { addIncome, Incomescategories, getIncomes } = useGlobalContext();
+    const { addIncome, Incomescategories, getIncomes, error, setError } = useGlobalContext();
     const [inputState, setInputState] = useState({
       account_id: '12',
       category_id: '',
@@ -29,6 +29,7 @@ function Form() {
   
     const handleInput = (name) => (e) => {
       setInputState({ ...inputState, [name]: e.target.value });
+      setError('');
     };
   
     const toggleCurrentTime = () => {
@@ -58,6 +59,7 @@ function Form() {
   
     return (
         <FormStyled onSubmit={handleSubmit} autoComplete="off">
+          {error && <p className='error'>{error}</p>}
           <div className="input-control">
             <input
               type="text"

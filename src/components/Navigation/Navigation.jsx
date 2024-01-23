@@ -3,15 +3,20 @@ import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
+import { useGlobalContext } from '../../context/globalContext';
 
 function Navigation({active, setActive}) {
+    const { logout, user } = useGlobalContext();
+    const handleSignOut = () => {
+        logout();
+    };
     
     return (
         <NavStyled>
             <div className="user-con">
                 <img src={avatar} alt="" />
                 <div className="text">
-                    <h2>Mashack</h2>
+                    <h2>{user.username}</h2>
                     <p>$2022100</p>
                 </div>
             </div>
@@ -28,7 +33,7 @@ function Navigation({active, setActive}) {
                 })}
             </ul>
             <div className="bottom-nav">
-                <li>
+                <li onClick={handleSignOut}>
                     {signout} Sign Out
                 </li>
             </div>
@@ -109,6 +114,10 @@ const NavStyled = styled.nav`
             background: #222260;
             border-radius: 0 10px 10px 0;
         }
+    }
+    
+    .bottom-nav{
+        cursor: pointer;
     }
 `;
 

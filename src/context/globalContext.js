@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useContext, useState, useEffect  } from "react";
-import Cookies from "universal-cookie";
-import {jwtDecode} from "jwt-decode";
+import Cookies from "universal-cookie"
+import {jwtDecode} from "jwt-decode"
+import Swal from 'sweetalert2'
+
 
 const BASE_URL = "http://localhost:80/api";
 
@@ -236,7 +238,7 @@ export const GlobalProvider = ({children}) => {
             const userData = jwtDecode(cookie).data;
             return userData;
         } catch (err) {
-            return err;
+        
         }
     };
     
@@ -244,6 +246,22 @@ export const GlobalProvider = ({children}) => {
         const userData = getUserFromCookies();
     
         setUser(userData);
+    };
+
+    const logout = () => {
+        Swal.fire({
+            title: "Do you to sign out ?",
+            showDenyButton: true,   
+            confirmButtonText: "Sign out",
+            denyButtonText: `Cancel`
+          }).then((result) => {
+            if (result.isConfirmed) {
+                cookies.remove('jwt');
+                setUser(null);
+            } else if (result.isDenied) {
+              Swal.fire("Changes are not saved", "", "info");
+            }
+          });
     };
 
     useEffect(() => {
@@ -269,12 +287,16 @@ export const GlobalProvider = ({children}) => {
             registerUser,
             loginUser,
             getUser,
+            logout,
+            error,
+            setError,
             user,
             transactions,
             incomes,
             expenses,
             Incomescategories,
-            Expensescategories
+            Expensescategories,
+            
         }}>
             {children}
         </GlobalContext.Provider>
