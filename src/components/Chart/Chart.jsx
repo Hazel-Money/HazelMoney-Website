@@ -3,7 +3,6 @@ import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
 import { format } from "date-fns";
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -30,15 +29,13 @@ function Chart() {
         return datesArray;
     }
 
-    const {transactionHistory} = useGlobalContext()
-    const [...history] = transactionHistory()
-    console.log(history)
+    const {transactions, getAllTransactions} = useGlobalContext()
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
     // Filter transactions for expenses and incomes
-    const expenses = history.filter((transaction) => !transaction.is_income);
-    const incomes = history.filter((transaction) => transaction.is_income);
+    const expenses = transactions.filter((transaction) => !transaction.is_income);
+    const incomes = transactions.filter((transaction) => transaction.is_income);
 
     // Organize data for the BarChart
     const chartData = datesBetweenNowAndXDaysAgo.map((date) => {
@@ -76,7 +73,11 @@ function Chart() {
 
     const handleChange = (event) => {
         setChart(event.target.value);
-      };
+    };
+    
+    useEffect(() => {
+    getAllTransactions()
+    }, [])
 
     return (
         <Section>
@@ -122,7 +123,7 @@ function Chart() {
                         <Tooltip />
                         <Legend />
                         <Bar dataKey="Expense" stackId="a" fill="red" />
-                        <Bar dataKey="Income" stackId="a" fill="green" />
+                        <Bar dataKey="Income" stackId="a" fill="var(--color-green)" />
                      </BarChart>
                     </ResponsiveContainer>
                 </div>

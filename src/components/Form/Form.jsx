@@ -46,7 +46,10 @@ function Form() {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      addIncome(inputState);
+      const amountInCents = (parseFloat(inputState.amount) * 100).toString();
+
+      addIncome({ ...inputState, amount: amountInCents });
+
       setInputState({
         account_id: '12',
         category_id: '',
@@ -62,6 +65,7 @@ function Form() {
           {error && <p className='error'>{error}</p>}
           <div className="input-control">
             <input
+              required
               type="text"
               value={amount}
               name={"amount"}
@@ -71,6 +75,7 @@ function Form() {
           </div>
           <div className="input-control">
             <DatePicker
+              required
               locale="pt"
               id="payment_date"
               placeholderText="Enter a date"

@@ -32,6 +32,13 @@ export const GlobalProvider = ({children}) => {
                 is_income    // Include is_income
             });
             getIncomes()
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Income added successfully",
+                showConfirmButton: false,
+                timer: 1500
+              });
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
@@ -92,6 +99,13 @@ export const GlobalProvider = ({children}) => {
             });
 
             getExpenses()
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Expense added successfully",
+                showConfirmButton: false,
+                timer: 1500
+              });
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
@@ -171,7 +185,22 @@ export const GlobalProvider = ({children}) => {
         history.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
         })
-        return history.slice(0, 6)
+        return history.slice(0, 5)
+    }
+
+    const addCategory = async (category) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/categories.php`, category);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Category successfully added",
+                showConfirmButton: false,
+                timer: 1500
+              });
+        } catch (err) {
+            setLoginError(err.response?.data?.message || "An error occurred");
+        }
     }
 
     const getIncomesCategories = async () => {
@@ -208,7 +237,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Registado com sucesso",
+                title: "Successfully registered",
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -220,11 +249,7 @@ export const GlobalProvider = ({children}) => {
     const loginUser = async (credentials) => {
         try {
             const response = await axios.post(`${BASE_URL}/login.php`, credentials);
-            
-            // const d1 = new Date()
-            // const currentTime = parseInt(d1.getTime() / 1000)
-            // const maxAge = response.expiresAt - currentTime
-            
+        
             const token = jwtDecode(response.data.jwt);
             const userData = token.data;
 
@@ -237,7 +262,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Login com sucesso",
+                title: "Successful logged in",
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -302,6 +327,7 @@ export const GlobalProvider = ({children}) => {
             loginUser,
             getUser,
             logout,
+            addCategory,
             setError,
             setLoginError,
             loginError,

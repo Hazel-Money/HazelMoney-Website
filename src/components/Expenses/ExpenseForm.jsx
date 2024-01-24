@@ -6,9 +6,6 @@ import pt from 'date-fns/locale/pt';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { date, plus } from '../../utils/Icons';
 
 registerLocale('pt', pt);
@@ -65,6 +62,7 @@ function ExpenseForm() {
           {error && <center><p className='error'>{error}</p></center>}
           <div className="input-control">
             <input
+              required
               type="text"
               value={amount}
               name={"amount"}
@@ -74,6 +72,7 @@ function ExpenseForm() {
           </div>
           <div className="input-control">
             <DatePicker
+              required
               locale="pt"
               id="payment_date"
               placeholderText="Enter a date"
@@ -138,60 +137,60 @@ const ExpenseFormStyled = styled.form`
     flex-direction: column;
     gap: 2rem;
     input, textarea, select{
-        width: 100%;
-        font-family: inherit;
-        font-size: inherit;
-        outline: none;
-        border: none;
-        padding: .5rem 1rem;
-        border-radius: 5px;
-        border: 2px solid #fff;
-        background: transparent;
-        resize: none;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-        color: rgba(34, 34, 96, 0.9);
-        &::placeholder{
-            color: rgba(34, 34, 96, 0.4);
-        }
+      width: 100%;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: 5px;
+      border: 2px solid #fff;
+      background: transparent;
+      resize: none;
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      color: rgba(34, 34, 96, 0.9);
+      &::placeholder{
+          color: rgba(34, 34, 96, 0.4);
+      }
     }
 
     .datepicker-disabled {
-        color: rgba(34, 34, 96, 0.4);
-        cursor: not-allowed; 
+      color: rgba(34, 34, 96, 0.4);
+      cursor: not-allowed; 
     }
 
     .input-control{
-        display: flex;
-        align-items: center;
-        input{
-            width: 100%;
-        }
-        Button{
-            margin-left: 3vh;
-            display: flex;
-        }
+      display: flex;
+      align-items: center;
+      input{
+          width: 100%;
+      }
+      Button{
+          margin-left: 3vh;
+          display: flex;
+      }
     }
 
     .selects{
-        display: flex;
-        justify-content: flex-end;
-        align-items:center;
-        
-        select{
-            color: rgba(34, 34, 96, 0.4);
-            &:focus, &:active{
-                color: rgba(34, 34, 96, 1);
-            }
-        }
+      display: flex;
+      justify-content: flex-end;
+      align-items:center;
+      
+      select{
+          color: rgba(34, 34, 96, 0.4);
+          &:focus, &:active{
+              color: rgba(34, 34, 96, 1);
+          }
+      }
     }
 
     .submit-btn{
-        button{
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-            &:hover{
-                background: var(--color-green) !important;            
-            }
-        }
+      button{
+          box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+          &:hover{
+            background: var(--color-green) !important;            
+          }
+      }
     }
 `;
 

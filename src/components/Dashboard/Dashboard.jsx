@@ -72,6 +72,12 @@ const DashBoardStyled = styled.div`
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
         margin-top: 2rem;
+        .income p{
+          color: var(--color-green) !important;
+        }
+        .expense p{
+          color: red !important;
+        }
         .income, .expense{
           grid-column: span 2;
         }
