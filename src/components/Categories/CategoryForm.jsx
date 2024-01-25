@@ -28,7 +28,7 @@ function CategoryForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addCategory({inputState});
+    addCategory({...inputState, user_id: user_id});
     setInputState({
       user_id: user.id,
       name: '',
@@ -41,7 +41,7 @@ function CategoryForm() {
   const handleIconSelect = (icon, iconName) => {
     setSelectedIcon(icon);
     setSelectedIconName(iconName);
-    setInputState({ ...inputState, icon: icon });
+    setInputState({ ...inputState, icon: iconName });
   };
   
   return (
@@ -81,8 +81,8 @@ function CategoryForm() {
               onChange={handleInput("icon")}
             />
           </div>
-          Color picker
           <div className="color-picker">
+            <label>Color picker</label>
             <input
               required
               type="color"
@@ -90,6 +90,16 @@ function CategoryForm() {
               name="color"
               placeholder="color"
               onChange={handleInput("color")}
+            />
+          </div>
+          <div className="submit-btn">
+            <Button
+              name={"Add Category"}
+              bPad={".8rem 1.6rem"}
+              bRad={"30px"}
+              bg={"var(--color-accent"}
+              color={"#fff"}
+              hColor={"red"}
             />
           </div>
         </div>
@@ -110,16 +120,6 @@ function CategoryForm() {
           </div>
         </div>
       </div>
-      <div className="submit-btn">
-        <Button
-          name={"Add Expense"}
-          bPad={".8rem 1.6rem"}
-          bRad={"30px"}
-          bg={"var(--color-accent"}
-          color={"#fff"}
-          hColor={"red"}
-        />
-      </div>
     </CategoryFormStyled>
   );
     }
@@ -129,15 +129,40 @@ const CategoryFormStyled = styled.form`
     flex-direction: column;
     gap: 2rem;
 
+    input, textarea, select{
+      width: 100%;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: 5px;
+      border: 2px solid #fff;
+      background: transparent;
+      resize: none;
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      color: rgba(34, 34, 96, 0.9);
+      &::placeholder{
+          color: rgba(34, 34, 96, 0.4);
+      }
+    }
+
     .form-content {
       display: flex;
       gap: 6rem;
     }
-
     .form-inputs {
       flex: 1;
-      .color-picker{
-        width: 2vh;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      height: 10%;
+      .color-picker label{
+        margin-right: 4vh;
+      }
+      .color-picker input{
+        height: 8vh;
+        width: 13vh;
       }
     }
 
@@ -172,24 +197,6 @@ const CategoryFormStyled = styled.form`
 
     .icon.selected {
       color: var(--primary-color);
-    }
-
-    input, textarea, select{
-      width: 100%;
-      font-family: inherit;
-      font-size: inherit;
-      outline: none;
-      border: none;
-      padding: .5rem 1rem;
-      border-radius: 5px;
-      border: 2px solid #fff;
-      background: transparent;
-      resize: none;
-      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-      color: rgba(34, 34, 96, 0.9);
-      &::placeholder{
-        color: rgba(34, 34, 96, 0.4);
-      }
     }
 
     .input-control{

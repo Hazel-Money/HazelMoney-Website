@@ -10,7 +10,7 @@ function Categories() {
       <InnerLayout>
         <h1>Add category</h1>
         <div className="form-container">
-              <CategoryForm />
+          <CategoryForm />
         </div>
       </InnerLayout>
     </CategoriesStyled>

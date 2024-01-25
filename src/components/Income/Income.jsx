@@ -10,10 +10,11 @@ function currencyFormat(num) {
 }
 
 function Income() {
-  const {addIncome, incomes, getIncomes, deleteIncomes, totalIncome} = useGlobalContext()
+  const {addIncome, incomes, getIncomes, deleteIncomes, totalIncome, getIncomesCategories} = useGlobalContext()
 
   useEffect(() => {
     getIncomes()
+    getIncomesCategories();
   }, [])
   
   return (

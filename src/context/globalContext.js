@@ -20,6 +20,7 @@ export const GlobalProvider = ({children}) => {
     const[error, setError] = useState(null)
     const[user, setUser] = useState(null)
     const[loginError, setLoginError] = useState(null)
+    
 
     //calculate incomes
     const addIncome = async (income) => {
@@ -189,8 +190,13 @@ export const GlobalProvider = ({children}) => {
     }
 
     const addCategory = async (category) => {
+        const { user_id } = category;  
+        console.log(user_id)
         try {
-            const response = await axios.post(`${BASE_URL}/categories.php`, category);
+            const response = await axios.post(`${BASE_URL}/categories.php`, {
+                ...category,
+                user_id});
+            console.log(response);
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -314,10 +320,12 @@ export const GlobalProvider = ({children}) => {
         <GlobalContext.Provider value={{
             addIncome, 
             getIncomes,
+            getIncomesCategories,
             deleteIncomes,
             totalIncome,
             addExpense,
             getExpenses,
+            getExpensesCategories,
             deleteExpense,
             totalExpenses,
             totalBalance,
