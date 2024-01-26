@@ -13,9 +13,9 @@ function Income() {
   const {addIncome, incomes, getIncomes, deleteIncomes, totalIncome, getIncomesCategories} = useGlobalContext()
 
   useEffect(() => {
-    getIncomes()
+    getIncomes();
     getIncomesCategories();
-  }, [])
+  }, []);
   
   return (
     <IncomeStyled>

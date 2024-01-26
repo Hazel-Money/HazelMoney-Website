@@ -35,3 +35,8 @@ export const list = <i className="fa-solid fa-list"></i>
 export const user = <i className="fa-solid fa-user"></i>
 export const emailIcon = <i className="fa-solid fa-envelope"></i>
 export const pass = <i className="fa-solid fa-lock"></i>
+export const gift = <i className="fa-solid fa-gift"></i>
+export const code = <i className="fa-solid fa-code"></i>
+export const key = <i className="fa-solid fa-key"></i>
+export const briefcase = <i className="fa-solid fa-briefcase"></i>
+export const cat = <i className="fa-solid fa-cat"></i>

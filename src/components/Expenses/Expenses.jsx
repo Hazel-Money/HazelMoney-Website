@@ -10,12 +10,12 @@ function currencyFormat(num) {
 }
 
 function Expenses() {
-  const {expenses, getExpenses, deleteExpense, totalExpenses, getExpensesCategories} = useGlobalContext()
+  const {expenses, getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
 
   useEffect(() => {
     getExpenses();
-    getExpensesCategories();
-  }, [])
+    getExpensesCategories();   
+  }, []);
   
   return (
     <ExpenseStyled>

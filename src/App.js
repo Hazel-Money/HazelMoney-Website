@@ -11,17 +11,13 @@ import Cookies from "universal-cookie";
 import LoginSignup from "./components/Login/login";
 import Chart from "./components/Chart/Chart"
 import Categories from './components/Categories/Categories';
+import RegularPayments from './components/RegularPayments/RegularPayments'
 
 function App() {
-  const {getUser, user} = useGlobalContext();
-  useEffect(() => {
-    if (!user) {
-      getUser()
-    }
-  }, [user, getUser])
   const [active, setActive] = useState(1);
   
-  if (!user) {
+  const cookies = new Cookies();
+  if (!cookies.get('jwt')) {
     return <LoginSignup/>
   }
   const displayData = () => {
@@ -36,6 +32,8 @@ function App() {
         return <Expenses />;
       case 5:
         return <Categories />;
+      case 6:
+        return <RegularPayments />;
       default:
         return <Dashboard />;
     }

@@ -15,7 +15,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function Form() {
-    const { addIncome, Incomescategories, getIncomes, error, setError } = useGlobalContext();
+    const { addIncome, Incomescategories, error, setError } = useGlobalContext();
     const [inputState, setInputState] = useState({
       account_id: '12',
       category_id: '',

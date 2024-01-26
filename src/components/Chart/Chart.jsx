@@ -29,7 +29,7 @@ function Chart() {
         return datesArray;
     }
 
-    const {transactions, getAllTransactions} = useGlobalContext()
+    const {transactions, getAllTransactions, getUserFromCookies} = useGlobalContext()
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
@@ -74,9 +74,9 @@ function Chart() {
     const handleChange = (event) => {
         setChart(event.target.value);
     };
-    
+    const user = getUserFromCookies();
     useEffect(() => {
-    getAllTransactions()
+    getAllTransactions(user.id)
     }, [])
 
     return (

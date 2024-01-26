@@ -18,63 +18,70 @@ export const GlobalProvider = ({children}) => {
     const [Incomescategories, setIncomeCategories] = useState([]);
     const [Expensescategories, setExpenseCategories] = useState([]);
     const[error, setError] = useState(null)
-    const[user, setUser] = useState(null)
+    const[historyError, setHistoryError] = useState(null)
     const[loginError, setLoginError] = useState(null)
-    
 
     //calculate incomes
     const addIncome = async (income) => {
-    const { account_id, is_income } = income;  // Extract account_id and is_income from income
-
+        const { account_id, is_income } = income;
         try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
-                ...income,  // Spread the existing properties of income
-                account_id,  // Include account_id
-                is_income    // Include is_income
+                ...income,
+                account_id,
+                is_income
             });
-            getIncomes()
+            getIncomes(user.id); 
             Swal.fire({
                 position: "center",
                 icon: "success",
                 title: "Income added successfully",
                 showConfirmButton: false,
                 timer: 1500
-              });
+            });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred1");
         }
     };
 
+    
     const getIncomes = async () => {
         try {
-            // Fetch incomes
-            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php?is_income=1`);
-            const incomeData = incomesResponse.data;
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}&is_income=1`);
+            const incomesData = incomesResponse.data;
     
-            // Fetch categories
-            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}&is_income=1`);
             const categoriesData = categoriesResponse.data;
-            // Map category IDs to category names
+    
             const categoryMap = {};
             categoriesData.forEach(category => {
                 categoryMap[category.id] = category;
             });
     
-            // Update income data with category names
-            const incomesWithCategories = incomeData.map(income => ({
-                ...income,
-                categoryName: categoryMap[income.category_id].name,
-                categoryColor: categoryMap[income.category_id].color
-            }));
-
-            setIncomes(incomesWithCategories);
+            const incomesWithCategories = incomesData.length > 0
+                ? incomesData.map(income => ({
+                    ...income,
+                    categoryName: categoryMap[income.category_id]?.name || 'Unknown', // Check if defined
+                    categoryColor: categoryMap[income.category_id]?.color || 'gray', // Provide default color
+                }))
+                : [];
+    
+            if (incomesWithCategories.length > 0) {
+                setIncomes(incomesWithCategories);
+            }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred2");
+            console.error("Error in getIncomes:", err);
         }
-    }
-
+    };
+    
+    
     const deleteIncomes = async (id) => {
-        const res = await axios.delete(`${BASE_URL}/transactions.php`, {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const res = await axios.delete(`${BASE_URL}/transactions.php`, {
             data: { id }
         })
         getIncomes()
@@ -93,13 +100,15 @@ export const GlobalProvider = ({children}) => {
     const addExpense = async (expense) => {
         const { account_id, is_income } = expense;  
         try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
                 ...expense,  
                 account_id,  
                 is_income    
             });
 
-            getExpenses()
+            getExpenses(user.id)
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -108,37 +117,44 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred3");
         }
     };
     
     const getExpenses = async () => {
         try {
-            const expensesResponse = await axios.get(`${BASE_URL}/transactions.php?is_income=0`);
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const expensesResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}&is_income=0`);
             const expensesData = expensesResponse.data;
-            
-            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=5`);
+
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}&is_income=0`);
             const categoriesData = categoriesResponse.data;
-            
+
             const categoryMap = {};
             categoriesData.forEach(category => {
                 categoryMap[category.id] = category;
             });
             
-            const expensesWithCategories = expensesData.map(expense => ({
-                ...expense,
-                categoryName: categoryMap[expense.category_id]['name'],
-                categoryColor: categoryMap[expense.category_id]['color']
-            }));
-    
-            setExpenses(expensesWithCategories);
+            const expensesWithCategories = expensesData.length > 0
+                ? expensesData.map(expense => ({
+                    ...expense,
+                    categoryName: categoryMap[expense.category_id]?.name || 'Unknown',
+                    categoryColor: categoryMap[expense.category_id]?.color || 'gray',
+                }))
+                : [];
+
+            if (expensesWithCategories.length > 0) {
+                setExpenses(expensesWithCategories);
+            }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred4");
         }
     }
         
     const deleteExpense = async (id) => {
-        const res = await axios.delete(`${BASE_URL}/transactions.php`, {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const res = await axios.delete(`${BASE_URL}/transactions.php`, {
             data: { id }
         })
         getExpenses()
@@ -159,24 +175,32 @@ export const GlobalProvider = ({children}) => {
 
     const getAllTransactions = async () => {
         try {
-            const transactionsResponse = await axios.get(`${BASE_URL}/transactions.php?account_id=12`);
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const transactionsResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}`);
             const transactionsData = transactionsResponse.data;
-            
-            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=5`);
+
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
             const categoriesData = categoriesResponse.data;
             const categoryMap = {};
             categoriesData.forEach(category => {
                 categoryMap[category.id] = category;
             });
-            
-            const transactionsWithCategories = transactionsData.map(transaction => ({
+
+            const transactionsWithCategories = transactionsData.length > 0
+             ? transactionsData.map(transaction => ({
                 ...transaction,
-                categoryName: categoryMap[transaction.category_id]['name'],
-                categoryColor: categoryMap[transaction.category_id]['color']
-            }));
-            setTransactions(transactionsWithCategories);
+                categoryName: categoryMap[transaction.category_id]?.name,
+                categoryColor: categoryMap[transaction.category_id]?.color,
+            }))
+            : [];
+
+            if (transactionsWithCategories.length > 0) {
+                setTransactions(transactionsWithCategories);
+            }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setHistoryError(err.response?.data?.message || "An error occurred5");
+            console.log(err.response?.data?.message || "An error occurred5");
         }
     }
 
@@ -191,8 +215,8 @@ export const GlobalProvider = ({children}) => {
 
     const addCategory = async (category) => {
         const { user_id } = category;  
-        console.log(user_id)
         try {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.post(`${BASE_URL}/categories.php`, {
                 ...category,
                 user_id});
@@ -205,13 +229,15 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setLoginError(err.response?.data?.message || "An error occurred");
+            setLoginError(err.response?.data?.message || "An error occurred6");
         }
     }
 
     const getIncomesCategories = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=5`);
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=${user.id}`);
 
             if (response && response.data) {
                 setIncomeCategories(response.data);
@@ -219,13 +245,15 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred7");
         }
     };
 
     const getExpensesCategories = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=5`);
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=${user.id}`);
 
             if (response && response.data) {
                 setExpenseCategories(response.data);
@@ -233,7 +261,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error occurred8");
         }
     };
 
@@ -248,7 +276,7 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setLoginError(err.response?.data?.message || "An error occurred");
+            setLoginError(err.response?.data?.message || "An error occurred9");
         }
     }
 
@@ -256,14 +284,13 @@ export const GlobalProvider = ({children}) => {
         try {
             const response = await axios.post(`${BASE_URL}/login.php`, credentials);
         
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
             const token = jwtDecode(response.data.jwt);
             const userData = token.data;
 
             cookies.set('jwt', response.data.jwt, {
                 expires: new Date(token.exp * 1000),
             });
-
-            setUser(userData);
 
             Swal.fire({
                 position: "center",
@@ -287,11 +314,6 @@ export const GlobalProvider = ({children}) => {
         }
     };
     
-    const getUser = () => {
-        const userData = getUserFromCookies();
-    
-        setUser(userData);
-    };
 
     const logout = () => {
         Swal.fire({
@@ -302,7 +324,6 @@ export const GlobalProvider = ({children}) => {
           }).then((result) => {
             if (result.isConfirmed) {
                 cookies.remove('jwt');
-                setUser(null);
             } else if (result.isDenied) {
               Swal.fire("Changes are not saved", "", "info");
             }
@@ -310,7 +331,6 @@ export const GlobalProvider = ({children}) => {
     };
 
     useEffect(() => {
-        // Fetch categories when the component mounts
         getAllTransactions();
         getExpensesCategories();
         getIncomesCategories();
@@ -333,14 +353,15 @@ export const GlobalProvider = ({children}) => {
             getAllTransactions,
             registerUser,
             loginUser,
-            getUser,
             logout,
             addCategory,
             setError,
             setLoginError,
+            getUserFromCookies,
+            setHistoryError,
             loginError,
             error,
-            user,
+            historyError,
             transactions,
             incomes,
             expenses,

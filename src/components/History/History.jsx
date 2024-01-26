@@ -8,11 +8,12 @@ function currencyFormat(num) {
 }
 
 function History() {
-    const {transactionHistory} = useGlobalContext()
+    const {transactionHistory, historyError} = useGlobalContext()
 
     const [...history] = transactionHistory()
     return (
         <HistoryStyled>
+            {historyError && <p className='error'>{historyError}</p>}
             {history.map((item) => {
                 const{id, categoryName, amount, is_income, icon} = item
                 return (

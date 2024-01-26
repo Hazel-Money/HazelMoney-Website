@@ -1,4 +1,4 @@
-import { money, freelance, stocks, users, bitcoin, card, yt, piggy, book, tv, takeaway, clothing, circle, transport, dining, food, medical, dashboard, transactions, categories, accounts, settings, logout, trend, expenses, dollar, calender, comment, plus, trash, signout, salary, date, list, user, emailIcon, pass } from '../utils/Icons';
+import { money, freelance, stocks, users, bitcoin, card, yt, piggy, book, tv, takeaway, clothing, circle, transport, dining, food, medical, dashboard, transactions, categories, accounts, settings, logout, trend, expenses, dollar, calender, comment, plus, trash, signout, salary, date, list, user, emailIcon, pass, gift, code, key, briefcase, cat } from '../utils/Icons';
 
 function IconCategory({category}) {
   switch (category) {
@@ -76,6 +76,16 @@ function IconCategory({category}) {
       return emailIcon;
     case 'pass':
       return pass;
+    case 'gift':
+      return gift;
+    case 'code':
+      return code;
+    case 'key':
+      return key;
+    case 'briefcase':
+      return briefcase;
+    case 'cat':
+      return cat;
   }
   
 }

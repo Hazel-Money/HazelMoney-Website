@@ -6,11 +6,10 @@ import * as Icons from '../../utils/Icons';
 
 
 function CategoryForm() {
-
-  
-  const {error, setError, user, addCategory } = useGlobalContext();
+  const {error, setError, getUserFromCookies, addCategory } = useGlobalContext();
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [selectedIconName, setSelectedIconName] = useState(null);
+  const user = getUserFromCookies();
   const [inputState, setInputState] = useState({
     user_id: user.id,
     name: '',
@@ -71,16 +70,6 @@ function CategoryForm() {
               <option value="0">Expense</option>
             </select>
           </div>
-          <div className="input-control">
-            <input
-              required
-              readOnly
-              value={selectedIconName}
-              name="icon"
-              placeholder="Icon"
-              onChange={handleInput("icon")}
-            />
-          </div>
           <div className="color-picker">
             <label>Color picker</label>
             <input
@@ -103,6 +92,16 @@ function CategoryForm() {
             />
           </div>
         </div>
+        <div className="preview-section">
+            {selectedIcon && (
+              <div
+                className="selected-icon"
+                style={{ color: color }}
+              >
+                {selectedIcon}
+              </div>
+            )}
+          </div>
         <div className="icon-selection">
           <label>Select Icon:</label>
           <div className="icon-container">
@@ -147,9 +146,20 @@ const CategoryFormStyled = styled.form`
       }
     }
 
+    .preview-section{
+      margin-right: 8vh;
+      margin-top: 30vh;
+      font-size: 10vh;
+      .selected-icon{
+        padding: 5px 15px 0px;
+        background-color: rgb(240, 234, 234);
+        border-radius: 15%;
+      }
+    }
+
     .form-content {
       display: flex;
-      gap: 6rem;
+      gap: 3rem;
     }
     .form-inputs {
       flex: 1;
