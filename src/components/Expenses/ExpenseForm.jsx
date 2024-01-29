@@ -21,7 +21,7 @@ function ExpenseForm() {
       payment_date: '',
       description: ''
     });
-  
+    
     const { account_id, amount, payment_date, category_id, description, is_income, useCurrentTime } = inputState;
   
     const handleInput = (name) => (e) => {

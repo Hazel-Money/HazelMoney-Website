@@ -17,6 +17,7 @@ export const GlobalProvider = ({children}) => {
     const[transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([]);
     const [Expensescategories, setExpenseCategories] = useState([]);
+    const [frequencies, setFrequencies] = useState([])
     const[error, setError] = useState(null)
     const[historyError, setHistoryError] = useState(null)
     const[loginError, setLoginError] = useState(null)
@@ -200,7 +201,6 @@ export const GlobalProvider = ({children}) => {
             }
         } catch (err) {
             setHistoryError(err.response?.data?.message || "An error occurred5");
-            console.log(err.response?.data?.message || "An error occurred5");
         }
     }
 
@@ -265,6 +265,8 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+ 
+
     const registerUser = async (credentials) => {
         try {
             const response = await axios.post(`${BASE_URL}/register.php`, credentials);
@@ -299,6 +301,9 @@ export const GlobalProvider = ({children}) => {
                 showConfirmButton: false,
                 timer: 1500
               });
+
+              window.location.reload(false);
+
         } catch (err) {
             setLoginError(err.response?.data?.message || "An error occurred");
         }
@@ -324,11 +329,51 @@ export const GlobalProvider = ({children}) => {
           }).then((result) => {
             if (result.isConfirmed) {
                 cookies.remove('jwt');
+                window.location.reload(false);
             } else if (result.isDenied) {
               Swal.fire("Changes are not saved", "", "info");
             }
           });
     };
+
+    const getFrequencies = async () => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/frequencies.php`);
+
+            if (response && response.data) {
+                setFrequencies(response.data);
+            } else {
+                console.error("Response data is undefined or null");
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred12");
+        }
+    };
+
+    const addRegularPayment = async (payment) => {
+        const { account_id } = payment;  
+        console.log(account_id)
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.post(`${BASE_URL}/regular_payments.php`, {
+                ...payment,  
+                account_id,  
+            });
+            console.log(response)
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Regular payment added successfully",
+                showConfirmButton: false,
+                timer: 1500
+                });
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred13");
+        }
+    }
 
     useEffect(() => {
         getAllTransactions();
@@ -359,6 +404,10 @@ export const GlobalProvider = ({children}) => {
             setLoginError,
             getUserFromCookies,
             setHistoryError,
+            getFrequencies,
+            setFrequencies,
+            addRegularPayment,
+            frequencies,
             loginError,
             error,
             historyError,

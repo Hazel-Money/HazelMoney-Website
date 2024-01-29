@@ -3,9 +3,6 @@ import styled from 'styled-components'
 import {user, emailIcon, pass} from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
-import { plus } from '../../utils/Icons';
-import Swal from 'sweetalert2'
-
 
 const LoginSignup = () => {
   const {registerUser, loginUser, loginError, setLoginError} = useGlobalContext();
