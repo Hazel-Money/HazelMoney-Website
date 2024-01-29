@@ -18,6 +18,7 @@ export const GlobalProvider = ({children}) => {
     const [Incomescategories, setIncomeCategories] = useState([]);
     const [Expensescategories, setExpenseCategories] = useState([]);
     const [frequencies, setFrequencies] = useState([])
+    const [regularPayments , setRegularPayments] = useState([])
     const[error, setError] = useState(null)
     const[historyError, setHistoryError] = useState(null)
     const[loginError, setLoginError] = useState(null)
@@ -220,7 +221,6 @@ export const GlobalProvider = ({children}) => {
             const response = await axios.post(`${BASE_URL}/categories.php`, {
                 ...category,
                 user_id});
-            console.log(response);
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -354,7 +354,6 @@ export const GlobalProvider = ({children}) => {
 
     const addRegularPayment = async (payment) => {
         const { account_id } = payment;  
-        console.log(account_id)
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
@@ -362,7 +361,6 @@ export const GlobalProvider = ({children}) => {
                 ...payment,  
                 account_id,  
             });
-            console.log(response)
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -374,6 +372,38 @@ export const GlobalProvider = ({children}) => {
             setError(err.response?.data?.message || "An error occurred13");
         }
     }
+
+    const getRegularPayments = async () => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/regular_payments.php?account_id=12`);
+            const paymentsData = response.data;
+
+            const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
+            const categoriesData = categoriesResponse.data;
+            const categoryMap = {};
+            categoriesData.forEach(category => {
+                categoryMap[category.id] = category;
+            });
+            
+            const paymentsWithCategories = paymentsData.length > 0
+             ? paymentsData.map(payment => ({
+                ...payment,
+                categoryName: categoryMap[payment.category_id]?.name,
+                categoryColor: categoryMap[payment.category_id]?.color,
+                icon: categoryMap[payment.category_id]?.icon
+            }))
+            : [];
+            console.log(paymentsWithCategories)
+            if (paymentsWithCategories.length > 0) {
+                setRegularPayments(paymentsWithCategories);
+            }
+
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred17");
+        }
+    };
 
     useEffect(() => {
         getAllTransactions();
@@ -407,6 +437,8 @@ export const GlobalProvider = ({children}) => {
             getFrequencies,
             setFrequencies,
             addRegularPayment,
+            getRegularPayments,
+            regularPayments,
             frequencies,
             loginError,
             error,

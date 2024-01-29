@@ -30,7 +30,6 @@ function RegularPaymentForm() {
 
   const handleInput = (name) => (e) => {
     setInputState({ ...inputState, [name]: e.target.value });
-    console.log(e.target.value);
     setError('');
   };
 
