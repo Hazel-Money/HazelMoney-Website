@@ -20,6 +20,9 @@ function Dashboard() {
     getExpenses()
   }, [])
 
+  const balanceColorClass = totalBalance() >= 0 ? 'green-text' : 'red-text';
+
+
   return (
     <DashBoardStyled>
       <InnerLayout>
@@ -42,7 +45,7 @@ function Dashboard() {
               </div>
               <div className="balance">
                 <h2>Total Balance</h2>
-                <p>
+                <p className={balanceColorClass}>
                   {dollar} {currencyFormat(totalBalance())}
                 </p>
               </div>
@@ -59,29 +62,37 @@ function Dashboard() {
 }
 
 const DashBoardStyled = styled.div`
-
- .stats-con{
+  .stats-con {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     column-gap: 2rem;
-    .chart-con{
+
+    .chart-con {
       grid-column: 1 / 4;
       height: 40vh;
+
       .amount-con {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
         margin-top: 2rem;
-        .income p{
+
+        .income p {
           color: var(--color-green) !important;
         }
-        .expense p{
+
+        .expense p {
           color: red !important;
         }
-        .income, .expense{
+
+        .income,
+        .expense {
           grid-column: span 2;
         }
-        .income, .expense, .balance {
+
+        .income,
+        .expense,
+        .balance {
           justify-content: center;
           align-items: center;
           display: flex;
@@ -91,21 +102,26 @@ const DashBoardStyled = styled.div`
           box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
           border-radius: 20px;
           padding: 0.8rem;
+
           p {
             font-size: 1.5rem;
             font-weight: 700;
           }
+
           h2 {
             font-size: 1.5rem;
           }
-          p, h2 {
+
+          p,
+          h2 {
             text-align: center;
           }
         }
 
         .balance {
           grid-column: 2 / 4;
-          p{
+
+          p {
             color: var(--color-green);
             opacity: 0.6;
             font-size: 1.7rem;
@@ -117,7 +133,7 @@ const DashBoardStyled = styled.div`
     h1 {
       grid-column: 1 / 4;
     }
-    
+
     h2 {
       grid-column: 4 / -1;
       margin: 1rem 0;
@@ -126,17 +142,28 @@ const DashBoardStyled = styled.div`
       justify-content: space-between;
     }
 
-    .history-con{
-      grid-column: 4 /  -1;
-      .salary-title{
+    .history-con {
+      grid-column: 4 / -1;
+
+      .salary-title {
         font-size: 1.2rem;
-        span{
+
+        span {
           font-size: 1.8rem;
         }
       }
     }
   }
-`;
 
+  .balance p {
+    // Style for the default text color
+    color: var(--color-green);
+  }
+
+  .balance p.red-text {
+    // Style for the text color when totalBalance is less than 0
+    color: red !important;
+  }
+`;
 
 export default Dashboard;
