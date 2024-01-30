@@ -6,7 +6,7 @@ import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
 
 function RegularPayments() {
-  const { getExpensesCategories, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+  const { getExpensesCategories, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
 
   useEffect(() => {
     getRegularPayments();
@@ -37,6 +37,8 @@ function RegularPayments() {
                   description={description}
                   icon={icon}
                   color={categoryColor}
+                  indicatorColor="red"
+                  deleteItem={deleteRegularPayments}
               />
             })}
             </div>

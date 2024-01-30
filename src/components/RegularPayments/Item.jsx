@@ -14,14 +14,13 @@ function RegularPaymentsItem({
     category,
     amount,
     is_income,
-    payment_date,
+    next_payment_date,
     description,
     icon,
     color,
     deleteItem,
     indicatorColor
 }){
-
   return (
     <RegularPaymentsItemStyled indicator={indicatorColor}>
         <div className="icon" style={{color: color}}>
@@ -32,11 +31,23 @@ function RegularPaymentsItem({
             <div className="inner-content">
                 <div className="text">
                     <p>{dollar} {currencyFormat(amount)}</p>
-                    <p>{calender} {payment_date}</p>
+                    <p>{calender} {next_payment_date}</p>
                     <p>
                         {comment}
                         {description}
                     </p>
+                </div>
+                <div className="btn-con">
+                    <Button 
+                        icon = {trash}
+                        bPad = {'1rem'}
+                        bRad = {'50%'}
+                        bg = {'var(--primary-color)'}
+                        color = {'#fff'}
+                        iColor = {'#fff'}
+                        hColor = {'var(--color-green)'}
+                        onClick={() => deleteItem(id)}
+                    />
                 </div>
             </div>
         </div>

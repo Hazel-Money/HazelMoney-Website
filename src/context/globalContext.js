@@ -361,6 +361,7 @@ export const GlobalProvider = ({children}) => {
                 ...payment,  
                 account_id,  
             });
+            getRegularPayments(user.id); 
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -405,6 +406,14 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+    const deleteRegularPayments = async (id) => {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        const res = await axios.delete(`${BASE_URL}/regular_payments`, {
+        data: { id }
+        })
+        getRegularPayments()
+    }
+
     useEffect(() => {
         getAllTransactions();
         getExpensesCategories();
@@ -438,6 +447,7 @@ export const GlobalProvider = ({children}) => {
             setFrequencies,
             addRegularPayment,
             getRegularPayments,
+            deleteRegularPayments,
             regularPayments,
             frequencies,
             loginError,
