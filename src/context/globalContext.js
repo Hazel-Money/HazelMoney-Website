@@ -19,9 +19,11 @@ export const GlobalProvider = ({children}) => {
     const [Expensescategories, setExpenseCategories] = useState([]);
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
+    const [currencies, setCurrencies] = useState([])
     const[error, setError] = useState(null)
     const[historyError, setHistoryError] = useState(null)
     const[loginError, setLoginError] = useState(null)
+    const[currency, setCurrency] = useState('USD')
 
     //calculate incomes
     const addIncome = async (income) => {
@@ -330,8 +332,6 @@ export const GlobalProvider = ({children}) => {
             if (result.isConfirmed) {
                 cookies.remove('jwt');
                 window.location.reload(false);
-            } else if (result.isDenied) {
-              Swal.fire("Changes are not saved", "", "info");
             }
           });
     };
@@ -396,7 +396,6 @@ export const GlobalProvider = ({children}) => {
                 icon: categoryMap[payment.category_id]?.icon
             }))
             : [];
-            console.log(paymentsWithCategories)
             if (paymentsWithCategories.length > 0) {
                 setRegularPayments(paymentsWithCategories);
             }
@@ -414,7 +413,17 @@ export const GlobalProvider = ({children}) => {
         getRegularPayments()
     }
 
+    const getCurrencies = async () => {
+        const response = await axios.get(`${BASE_URL}/currencies.php`);
+        if (response && response.data) {
+            setCurrencies(response.data);
+        } else {
+            console.error("Response data is undefined or null");
+        }
+    }
+
     useEffect(() => {
+        getCurrencies();
         getAllTransactions();
         getExpensesCategories();
         getIncomesCategories();
@@ -448,6 +457,10 @@ export const GlobalProvider = ({children}) => {
             addRegularPayment,
             getRegularPayments,
             deleteRegularPayments,
+            getCurrencies,
+            setCurrency,
+            currency,
+            currencies,
             regularPayments,
             frequencies,
             loginError,

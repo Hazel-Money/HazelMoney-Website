@@ -106,7 +106,7 @@ const LoginSignup = () => {
 
 const LoginSignupStyled = styled.form`
   height: 100vh;
-  background: linear-gradient(135deg, #cb6e00,#9f4c00);
+  background: linear-gradient(135deg, #a997de,#0c3cb4);
   display:flex;
   flex-direction: column;
 

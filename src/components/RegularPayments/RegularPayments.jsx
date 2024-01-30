@@ -37,7 +37,7 @@ function RegularPayments() {
                   description={description}
                   icon={icon}
                   color={categoryColor}
-                  indicatorColor="red"
+                  indicatorColor={is_income == '1' ? "var(--color-green)" : "red"}
                   deleteItem={deleteRegularPayments}
               />
             })}

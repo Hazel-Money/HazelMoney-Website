@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
-import { signout } from '../../utils/Icons'
+import { signout, settings } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
 import { dollar } from '../../utils/Icons';
@@ -11,7 +11,7 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const { logout, getUserFromCookies, totalBalance} = useGlobalContext();
+    const { logout, getUserFromCookies, totalBalance, currency} = useGlobalContext();
     const user = getUserFromCookies();
     const handleSignOut = () => {
         logout();
@@ -23,7 +23,7 @@ function Navigation({active, setActive}) {
                 <img src={avatar} alt="" />
                 <div className="text">
                     <h2>{user.username}</h2>
-                    <p>{dollar} {currencyFormat(totalBalance())}</p>
+                    <p>{currency} {currencyFormat(totalBalance())}</p>
                 </div>
             </div>
             <ul className="menu-items">
@@ -124,6 +124,9 @@ const NavStyled = styled.nav`
     
     .bottom-nav{
         cursor: pointer;
+        li{
+            margin:  10px 10px ;
+        }
     }
 `;
 

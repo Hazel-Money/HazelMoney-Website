@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
@@ -7,6 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Box } from "@mui/material";
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -14,6 +15,11 @@ function currencyFormat(num) {
 
 function Chart() {
     const dateFormat = 'M/d';
+
+    useEffect(() => {
+      getAllTransactions(user.id)
+      }, [])
+
     function getDatesBetweenNowAndXDaysAgo(x) {
         var currentDate = new Date();
         var xDaysAgo = new Date();
@@ -29,7 +35,7 @@ function Chart() {
         return datesArray;
     }
 
-    const {transactions, getAllTransactions, getUserFromCookies} = useGlobalContext()
+    const {transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories} = useGlobalContext()
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
@@ -54,20 +60,30 @@ function Chart() {
         };
     });
 
-    const chartDataForPie = datesBetweenNowAndXDaysAgo.map((date) => {
-        const dateString = format(date, dateFormat);
-        const expenseAmount = expenses
-          .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
-          .reduce((sum, transaction) => sum + transaction.amount, 0);
-        const incomeAmount = incomes
-          .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
-          .reduce((sum, transaction) => sum + transaction.amount, 0);
-      
-        return {
-          name: dateString,
-          value: expenseAmount + incomeAmount,
-        };
-      });
+   
+    const incomeChartData = Incomescategories.map((category) => {
+      const categoryAmount = incomes
+        .filter((income) => income.category_id === category.id)
+        .reduce((sum, income) => sum + parseInt(income.amount), 0);
+  
+      return {
+        name: category.name,
+        value: categoryAmount,
+        fill: category.color,
+      };
+    });
+    
+    const expenseChartData = Expensescategories.map((category) => {
+      const categoryAmount = expenses
+        .filter((expense) => expense.category_id === category.id)
+        .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
+  
+      return {
+        name: category.name,
+        value: categoryAmount,
+        fill: category.color,
+      };
+    });
 
     const [chart, setChart] = useState('bar');
 
@@ -75,16 +91,30 @@ function Chart() {
         setChart(event.target.value);
     };
     const user = getUserFromCookies();
-    useEffect(() => {
-    getAllTransactions(user.id)
-    }, [])
+
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+          return (
+            <div
+              className="custom-tooltip"
+              style={{
+                backgroundColor: '#ffff',
+                padding: '5px',
+                border: '1px solid #cccc',
+              }}
+            >
+              <label>{`${payload[0].name}: ${currencyFormat(payload[0].value)}`}</label>
+            </div>
+          );
+        }
+        return null;
+      };
 
     return (
         <Section>
         <div className="chart-con">
-           
             <div className="sales">
-                <div className="sales__details">
+                <div className="sales_details">
                 <FormControl>
                 <InputLabel id="demo-simple-select-label">Chart</InputLabel>
                 <Select
@@ -94,8 +124,8 @@ function Chart() {
                     label="Chart"
                     onChange={handleChange}
                 >
-                    <MenuItem value={"bar"}>Bar chart</MenuItem>
-                    <MenuItem value={"pie"}>Pie chart</MenuItem>
+                    <MenuItem value={"bar"}>Bar</MenuItem>
+                    <MenuItem value={"pie"}>Pie</MenuItem>
                 </Select>
                 </FormControl>
                     <div>
@@ -103,9 +133,8 @@ function Chart() {
                     </div>
                 </div>
                 {chart === "bar" ? 
-                <div className="sales__graph">
+                <div className="sales_graph">
                     <ResponsiveContainer width="100%" height="350%">
-
                     <BarChart
                         width={500}
                         height={200}
@@ -127,26 +156,82 @@ function Chart() {
                      </BarChart>
                     </ResponsiveContainer>
                 </div>
-                : 
-                <div>
-                <ResponsiveContainer width="100%" height="350%">
-                  <PieChart>
-                    <Pie
-                      dataKey="value"
-                      isAnimationActive={false}
-                      data={chartDataForPie}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      label
-                    >
-                    <Legend/>
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-                </div>
-                }   
+                : (
+                    <div className="sales_pies">
+                      <div className="income_pie  text-center">
+                        <h1>Incomes</h1>
+                        <Box
+                          sx={{
+                            float: 'left', 
+                            width: '50%',  
+                            height: '60vh',
+                          }}
+                        >
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart style={{ cursor: 'pointer' }}>
+                              <Pie
+                                dataKey="value"
+                                data={incomeChartData}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={'70%'}
+                                nameKey="name"
+                              >
+                                {incomeChartData.map((entry, index) => (
+                                  <Cell key={`cell-income-${index}`} fill={entry.fill} />
+                                ))}
+                              </Pie>
+        
+                              <Tooltip content={<CustomTooltip />} />
+                              <Legend
+                                iconType="circle"
+                                formatter={(value, entry, index) => (
+                                    <span style={{ color: 'var(--primary-color)' }}>{value}</span>
+                                )}
+                                />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </Box>
+                      </div>        
+                      {/* Expenses Pie */}
+                      <div className="expense_pie text-center">
+                        <h1>Expenses</h1>
+                        <Box
+                          sx={{
+                            float: 'left', 
+                            width: '50%',  
+                            height: '60vh',
+                          }}
+                        >
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart style={{ cursor: 'pointer' }}>
+                              <Pie
+                                dataKey="value"
+                                data={expenseChartData}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={'70%'}
+                                nameKey="name"
+                              >
+                                {expenseChartData.map((entry, index) => (
+                                  <Cell key={`cell-expense-${index}`} fill={entry.fill} />
+                                ))}
+                              </Pie>
+        
+                              <Tooltip content={<CustomTooltip />} />
+                              <Legend 
+                                iconType="circle"
+                                formatter={(value, entry, index) => (
+                                    <span style={{ color: 'var(--primary-color)' }}>{value}</span>
+                                )}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </Box>
+                      </div>
+                      <div style={{ clear: 'both' }}></div>
+                    </div>
+                  )}
             </div>
         </div>
         </Section>
@@ -155,31 +240,49 @@ function Chart() {
 
 export default Chart
 const Section = styled.section`
-.sales{
-    color: black;
-    width: 100%;
-    .sales__details {
-        display: flex;
-        justify-content: space-between;
-        margin: 1rem 0;
-        div{
+    .sales{
+        color: black;
+        width: 100%;
+        .sales_details {
             display: flex;
-            gap: 1rem;
-            h5{
-                color: gray;
+            justify-content: space-between;
+            margin: 1rem 0;
+            div{
+                display: flex;
+                gap: 1rem;
+                h5{
+                    color: gray;
+                    margin-right: 1rem;
+                }
             }
         }
-    }
-    .sales__graph{
-        height: 8rem;
-        width: 100%;
-        .recharts-default-tooltip {
-            background-color: black !important;
-            border-color: black !important;
-            color: white !important;
+        .sales_graph{
+            height: 8rem;
+            width: 100%;
+            .recharts-default-tooltip {
+                background-color: black !important;
+                border-color: black !important;
+                color: white !important;
+            }
         }
+        .text-center {
+            text-align: center;
+        }  
+        .sales_pies {
+        display: flex;
+        justify-content: space-between; 
+        .income_pie,
+        .expense_pie {
+          width: 50%; 
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center; 
+          h1 {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
     }
-}
-
-
 `;

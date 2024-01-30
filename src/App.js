@@ -12,6 +12,7 @@ import LoginSignup from "./components/Login/login";
 import Chart from "./components/Chart/Chart"
 import Categories from './components/Categories/Categories';
 import RegularPayments from './components/RegularPayments/RegularPayments'
+import Settings from "./components/Settings/Settings"
 
 function App() {
   const [active, setActive] = useState(1);
@@ -34,6 +35,8 @@ function App() {
         return <Categories />;
       case 6:
         return <RegularPayments />;
+      case 7:
+        return <Settings />;
       default:
         return <Dashboard />;
     }
