@@ -20,10 +20,13 @@ export const GlobalProvider = ({children}) => {
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
     const [currencies, setCurrencies] = useState([])
+    const [accounts, setAccounts] = useState([])
     const[error, setError] = useState(null)
     const[historyError, setHistoryError] = useState(null)
     const[loginError, setLoginError] = useState(null)
     const[currency, setCurrency] = useState('USD')
+    const[balance, setBalance] = useState(null)
+
 
     //calculate incomes
     const addIncome = async (income) => {
@@ -320,6 +323,17 @@ export const GlobalProvider = ({children}) => {
         
         }
     };
+
+    const getAccounts = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const userAccounts = await axios.get(`${BASE_URL}/accounts.php?user_id=${user.id}`);
+            setAccounts(userAccounts.data)
+        } catch{
+
+        }
+    }
     
 
     const logout = () => {
@@ -422,7 +436,54 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const changeCurrency = async (newCurrencyCode) => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const currencyJSON = JSON.stringify({'code': newCurrencyCode});
+            const response = await axios.put(`${BASE_URL}/change_currency/user`, currencyJSON);
+            //setCurrency(newCurrencyCode)
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Currency changed successfully",
+                showConfirmButton: false,
+                timer: 1500
+                });
+            getCurrency()
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred13");
+        }
+    }
+
+    const getCurrency = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/currencies?user_id=${user.id}`);
+            const currency = response.data; 
+            setCurrency(currency);
+        } catch{
+            console.log("cheiras mal")
+        }
+    }
+
+    const getBalance = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/users?id=${user.id}`);
+            const responseUser = response.data;
+            const balance = responseUser.balance;
+            setBalance(balance);
+        } catch{
+            console.log("cheiras mal")
+        }
+    }
+
     useEffect(() => {
+        getBalance();
+        getAccounts();
         getCurrencies();
         getAllTransactions();
         getExpensesCategories();
@@ -459,6 +520,12 @@ export const GlobalProvider = ({children}) => {
             deleteRegularPayments,
             getCurrencies,
             setCurrency,
+            getCurrency,
+            changeCurrency,
+            getAccounts,
+            getBalance,
+            balance,
+            accounts,
             currency,
             currencies,
             regularPayments,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout, settings } from '../../utils/Icons'
@@ -11,19 +11,29 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const { logout, getUserFromCookies, totalBalance, currency} = useGlobalContext();
+    const { logout, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    
+    useEffect(() => {
+        getCurrency();
+        getBalance();
+    }, [])
+    
     const user = getUserFromCookies();
     const handleSignOut = () => {
         logout();
     };
-    
+
+    const handleChange = (event) => {
+        const selectedAccountId = event.target.value;
+        console.log('Selected account:', selectedAccountId);
+    };
     return (
         <NavStyled>
             <div className="user-con">
                 <img src={avatar} alt="" />
                 <div className="text">
                     <h2>{user.username}</h2>
-                    <p>{currency} {currencyFormat(totalBalance())}</p>
+                    <p>{currency} {balance}</p>
                 </div>
             </div>
             <ul className="menu-items">
@@ -39,12 +49,31 @@ function Navigation({active, setActive}) {
                 })}
             </ul>
             <div className="bottom-nav">
-                <li onClick={handleSignOut}>
-                    {signout} Sign Out
-                </li>
+                <div className="bottom-nav-left">
+                    <li onClick={handleSignOut}>
+                        {signout} Sign Out
+                    </li>
+                </div>
+                <div className="bottom-nav-right">
+                    <div className="account-select">
+                        <select
+                        required
+                        name="account_id"
+                        id="account_id"
+                        onChange={handleChange}
+                    >
+                    <option value="All">All accounts</option>
+                    {accounts.map((account) => (
+                        <option key={account.id} value={account.id}>
+                        {account.name}
+                        </option>
+                    ))}
+                    </select>
+                </div>
             </div>
-        </NavStyled>
-    )
+        </div>
+    </NavStyled>
+  );
 }
 
 const NavStyled = styled.nav`
@@ -122,10 +151,36 @@ const NavStyled = styled.nav`
         }
     }
     
-    .bottom-nav{
-        cursor: pointer;
-        li{
-            margin:  10px 10px ;
+    .bottom-nav {
+        display: flex;
+        justify-content: space-between;
+        .bottom-nav-left {
+            cursor: pointer;
+            li {
+                margin: 10px 10px;
+            }
+        }
+        .bottom-nav-right {
+            display: grid;
+            place-items: center;
+            select{
+                float: right;
+                width: 80%;
+                font-family: inherit;
+                font-size: 1.1rem;
+                outline: none;
+                border: none;
+                padding: .5rem 1rem;
+                border-radius: 5px;
+                border: 2px solid #fff;
+                background: transparent;
+                resize: none;
+                box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+                color: rgba(34, 34, 96, 0.9);
+                &::placeholder{
+                    color: rgba(34, 34, 96, 0.4);
+                }
+            }
         }
     }
 `;
