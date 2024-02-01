@@ -11,7 +11,7 @@ function currencyFormat(num) {
 }
 
 function Dashboard() {
-  const {totalExpenses, totalIncome, totalBalance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
+  const {totalExpenses, totalIncome, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
   //Render data when running website
   useEffect(() => {
@@ -20,7 +20,7 @@ function Dashboard() {
     getExpenses()
   }, [])
 
-  const balanceColorClass = totalBalance() >= 0 ? 'green-text' : 'red-text';
+  const balanceColorClass = balance >= 0 ? 'green-text' : 'red-text';
 
 
   return (
@@ -46,7 +46,7 @@ function Dashboard() {
               <div className="balance">
                 <h2>Total Balance</h2>
                 <p className={balanceColorClass}>
-                  {dollar} {currencyFormat(totalBalance())}
+                  {dollar} {currencyFormat(balance)}
                 </p>
               </div>
             </div>

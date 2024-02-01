@@ -12,7 +12,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const { currencies, setCurrency, currency, changeCurrency, getCurrency } = useGlobalContext();
+    const { currencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
 
     useEffect(() => {
         getCurrency();
@@ -27,9 +27,8 @@ function Settings() {
         changeCurrency(currencyCode);
     };
 
+    const user = getUserFromCookies();
     const [open, setOpen] = useState(false);
-    const [accountName, setAccountName] = useState('');
-    const [balance, setBalance] = useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -39,13 +38,32 @@ function Settings() {
         setOpen(false);
     };
 
-    const handleInputChange = (event) => {
-        
-    };
+    const [inputState, setInputState] = useState({
+        user_id: user.id,
+        name: '',
+        currency_id: '1',
+        balance: '',
+      });
+    
+    const { user_id, name, currency_id, balance } = inputState;  
 
+
+    const handleInputChange = (name) => (e) => {
+        setInputState((prevInputState) => ({
+            ...prevInputState,
+            [name]: e.target.value,
+        }));
+    };
+    console.log(currency)
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        addAccount({...inputState, user_id: user_id});
+        setInputState({
+        user_id: user.id,
+        name: '',
+        currency_id: '1',
+        balance: '',
+        })
         handleClose();
     };
 
@@ -83,12 +101,12 @@ function Settings() {
                                 <TextField
                                     required
                                     margin="dense"
-                                    id="accountName"
-                                    name="accountName"
+                                    id="name"
+                                    name="name"
                                     label="Account Name"
                                     type="text"
                                     fullWidth
-                                    onChange={handleInputChange}
+                                    onChange={handleInputChange('name')}
                                 />
                                 <TextField
                                     required
@@ -98,7 +116,7 @@ function Settings() {
                                     label="Balance"
                                     type="text"
                                     fullWidth
-                                    onChange={handleInputChange}
+                                    onChange={handleInputChange('balance')}
                                 />
                             </DialogContent>
                             <DialogActions>

@@ -33,7 +33,7 @@ function Navigation({active, setActive}) {
                 <img src={avatar} alt="" />
                 <div className="text">
                     <h2>{user.username}</h2>
-                    <p>{currency} {balance}</p>
+                    <p>{currency} {currencyFormat(balance)}</p>
                 </div>
             </div>
             <ul className="menu-items">

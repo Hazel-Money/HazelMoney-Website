@@ -39,7 +39,8 @@ export const GlobalProvider = ({children}) => {
                 account_id,
                 is_income
             });
-            getIncomes(user.id); 
+            getIncomes(user.id);
+            getBalance(); 
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -116,6 +117,7 @@ export const GlobalProvider = ({children}) => {
             });
 
             getExpenses(user.id)
+            getBalance();
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -174,10 +176,6 @@ export const GlobalProvider = ({children}) => {
         })
         
         return totalExpense;
-    }
-
-    const totalBalance = () => {
-        return totalIncome() - totalExpenses()
     }
 
     const getAllTransactions = async () => {
@@ -331,10 +329,33 @@ export const GlobalProvider = ({children}) => {
             const userAccounts = await axios.get(`${BASE_URL}/accounts.php?user_id=${user.id}`);
             setAccounts(userAccounts.data)
         } catch{
-
+            console.log("nao ha contas pa ninguem seus nabos")
         }
     }
     
+    const addAccount = async (credentials) => {
+        const {user_id, currency} = credentials
+        console.log(credentials)
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.post(`${BASE_URL}/accounts.php`, {
+            ...credentials,
+            user_id,
+            currency,
+            });
+            getAccounts()
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Account created successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } catch (err){
+            console.log(err.response?.data?.message || "nao ha contas pa ninguem");
+        }
+    }
 
     const logout = () => {
         Swal.fire({
@@ -463,6 +484,7 @@ export const GlobalProvider = ({children}) => {
             const response = await axios.get(`${BASE_URL}/currencies?user_id=${user.id}`);
             const currency = response.data; 
             setCurrency(currency);
+            getBalance();
         } catch{
             console.log("cheiras mal")
         }
@@ -502,7 +524,6 @@ export const GlobalProvider = ({children}) => {
             getExpensesCategories,
             deleteExpense,
             totalExpenses,
-            totalBalance,
             transactionHistory,
             getAllTransactions,
             registerUser,
@@ -524,6 +545,7 @@ export const GlobalProvider = ({children}) => {
             changeCurrency,
             getAccounts,
             getBalance,
+            addAccount,
             balance,
             accounts,
             currency,
