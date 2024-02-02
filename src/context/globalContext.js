@@ -26,6 +26,8 @@ export const GlobalProvider = ({children}) => {
     const[loginError, setLoginError] = useState(null)
     const[currency, setCurrency] = useState('USD')
     const[balance, setBalance] = useState(null)
+    const[totalIncomeAmount, setTotalIncomeAmount] = useState(null)
+    const[totalExpensesAmount, setTotalExpensesAmount] = useState(null)
 
 
     //calculate incomes
@@ -95,17 +97,16 @@ export const GlobalProvider = ({children}) => {
         getIncomes()
     }
 
-    const totalIncome = () => {
-        let totalIncome = 0;
-        incomes.forEach((income) => {
-            totalIncome = totalIncome + parseInt(income.amount)
-        })
-        
-        return totalIncome;
+    const totalIncome = async () => {
+        const user = getUserFromCookies();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        const response = await axios.get(`${BASE_URL}/user/total_income`);
+        const totalIncome =  response.data.total_income;
+        setTotalIncomeAmount(totalIncome);
     }
 
     //calculate expenses
-    const addExpense = async (expense) => {
+    const addExpense = async (expense) => { 
         const { account_id, is_income } = expense;  
         try {
             const user = getUserFromCookies();
@@ -169,13 +170,16 @@ export const GlobalProvider = ({children}) => {
         getExpenses()
     }
 
-    const totalExpenses = () => {
-        let totalExpense = 0;
-        expenses.forEach((expense) => {
-            totalExpense = totalExpense + parseInt(expense.amount)
-        })
-        
-        return totalExpense;
+    const totalExpenses = async () => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/user/total_expense`);
+            const totalExpenses =  response.data.total_expense;
+            setTotalExpensesAmount(totalExpenses);
+        } catch (err) {
+            console.log(err.response?.data?.message);
+        }
     }
 
     const getAllTransactions = async () => {
@@ -449,6 +453,8 @@ export const GlobalProvider = ({children}) => {
     }
 
     const getCurrencies = async () => {
+        const user = getUserFromCookies();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/currencies.php`);
         if (response && response.data) {
             setCurrencies(response.data);
@@ -504,9 +510,8 @@ export const GlobalProvider = ({children}) => {
     }
 
     useEffect(() => {
-        getBalance();
-        getAccounts();
-        getCurrencies();
+        totalExpenses();
+        totalIncome();
         getAllTransactions();
         getExpensesCategories();
         getIncomesCategories();
@@ -514,6 +519,7 @@ export const GlobalProvider = ({children}) => {
 
     return(
         <GlobalContext.Provider value={{
+            totalExpenses,
             addIncome, 
             getIncomes,
             getIncomesCategories,
@@ -546,6 +552,8 @@ export const GlobalProvider = ({children}) => {
             getAccounts,
             getBalance,
             addAccount,
+            totalIncomeAmount,
+            totalExpensesAmount,
             balance,
             accounts,
             currency,

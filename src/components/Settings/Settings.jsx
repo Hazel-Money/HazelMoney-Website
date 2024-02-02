@@ -12,9 +12,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const { currencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
+    const { currencies,getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
 
     useEffect(() => {
+        getCurrencies();
         getCurrency();
     }, [])
 
@@ -41,11 +42,11 @@ function Settings() {
     const [inputState, setInputState] = useState({
         user_id: user.id,
         name: '',
-        currency_id: '1',
+        currency_code: currency,
         balance: '',
       });
     
-    const { user_id, name, currency_id, balance } = inputState;  
+    const { user_id, name, currency_code, balance } = inputState;  
 
 
     const handleInputChange = (name) => (e) => {
@@ -61,7 +62,7 @@ function Settings() {
         setInputState({
         user_id: user.id,
         name: '',
-        currency_id: '1',
+        currency_code: currency, 
         balance: '',
         })
         handleClose();
