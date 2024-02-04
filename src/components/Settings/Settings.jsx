@@ -55,7 +55,6 @@ function Settings() {
             [name]: e.target.value,
         }));
     };
-    console.log(currency)
     const handleSubmit = (event) => {
         event.preventDefault();
         addAccount({...inputState, user_id: user_id});

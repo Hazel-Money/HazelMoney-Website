@@ -10,9 +10,10 @@ function currencyFormat(num) {
 }
 
 function Expenses() {
-  const {expenses, getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
+  const {expenses,totalExpensesAmount,  getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
 
   useEffect(() => {
+    totalExpenses();
     getExpenses();
     getExpensesCategories();   
   }, []);
@@ -21,7 +22,7 @@ function Expenses() {
     <ExpenseStyled>
       <InnerLayout>
         <h1>Expenses</h1>
-        <h2 className="total-income">Total Expense: <span>$-{currencyFormat(totalExpenses())}</span></h2>
+        <h2 className="total-income">Total Expense: <span>${currencyFormat(totalExpensesAmount)}</span></h2>
         <div className="income-content">
           <div className="form-container">
               <ExpenseForm />

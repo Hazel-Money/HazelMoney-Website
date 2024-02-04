@@ -4,16 +4,16 @@ import avatar from '../../img/avatar.png'
 import { signout, settings } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
-import { dollar } from '../../utils/Icons';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
 function Navigation({active, setActive}) {
-    const { logout, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const { logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
     
     useEffect(() => {
+        getAccounts();
         getCurrency();
         getBalance();
     }, [])
@@ -33,7 +33,7 @@ function Navigation({active, setActive}) {
                 <img src={avatar} alt="" />
                 <div className="text">
                     <h2>{user.username}</h2>
-                    <p>{currency} {currencyFormat(balance)}</p>
+                    <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
                 </div>
             </div>
             <ul className="menu-items">

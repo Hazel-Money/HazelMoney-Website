@@ -13,10 +13,12 @@ const GlobalContext = React.createContext()
 export const GlobalProvider = ({children}) => {
     const cookies = new Cookies();
     const[incomes, setIncomes] = useState([])
+    const[incomesSliced, setIncomesSliced] = useState([])
+    const [currentIncomeIndex, setCurrentIncomeIndex] = useState(0);
     const[expenses, setExpenses] = useState([])
     const[transactions, setTransactions] = useState([])
-    const [Incomescategories, setIncomeCategories] = useState([]);
-    const [Expensescategories, setExpenseCategories] = useState([]);
+    const [Incomescategories, setIncomeCategories] = useState([])
+    const [Expensescategories, setExpenseCategories] = useState([])
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
     const [currencies, setCurrencies] = useState([])
@@ -36,11 +38,12 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.post(`${BASE_URL}/transactions.php`, {
+            const requestData = {
                 ...income,
                 account_id,
                 is_income
-            });
+            };
+            const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
             getIncomes(user.id);
             getBalance(); 
             Swal.fire({
@@ -87,7 +90,24 @@ export const GlobalProvider = ({children}) => {
             console.error("Error in getIncomes:", err);
         }
     };
-    
+
+    const sliceIncomes = () => {
+        const history = [...incomes]
+        history.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt)
+        })
+        setIncomesSliced(history.slice(currentIncomeIndex, currentIncomeIndex + 3));
+    }
+
+    const navigateIncomes = (direction) => {
+        const newIndex =
+          direction === 'next'
+            ? Math.min(currentIncomeIndex + 3, incomes.length - 1)
+            : Math.max(currentIncomeIndex - 3, 0);
+      
+        setCurrentIncomeIndex(newIndex);
+        sliceIncomes();
+      };
     
     const deleteIncomes = async (id) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
@@ -339,7 +359,6 @@ export const GlobalProvider = ({children}) => {
     
     const addAccount = async (credentials) => {
         const {user_id, currency} = credentials
-        console.log(credentials)
         try{
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
@@ -476,10 +495,16 @@ export const GlobalProvider = ({children}) => {
                 title: "Currency changed successfully",
                 showConfirmButton: false,
                 timer: 1500
-                });
+                }); 
             getCurrency()
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred13");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "You must select a currency",
+                showConfirmButton: false,
+                timer: 1500
+            }); 
         }
     }
 
@@ -487,12 +512,12 @@ export const GlobalProvider = ({children}) => {
         try{
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.get(`${BASE_URL}/currencies?user_id=${user.id}`);
-            const currency = response.data; 
+            const response = await axios.get(`${BASE_URL}/user/default_currency`);
+            const currency = response.data.currency; 
             setCurrency(currency);
             getBalance();
         } catch{
-            console.log("cheiras mal")
+            console.log("cheiras a coco")
         }
     }
 
@@ -510,8 +535,6 @@ export const GlobalProvider = ({children}) => {
     }
 
     useEffect(() => {
-        totalExpenses();
-        totalIncome();
         getAllTransactions();
         getExpensesCategories();
         getIncomesCategories();
@@ -552,6 +575,10 @@ export const GlobalProvider = ({children}) => {
             getAccounts,
             getBalance,
             addAccount,
+            sliceIncomes,
+            navigateIncomes,
+            currentIncomeIndex,
+            incomesSliced,
             totalIncomeAmount,
             totalExpensesAmount,
             balance,
@@ -568,7 +595,7 @@ export const GlobalProvider = ({children}) => {
             expenses,
             Incomescategories,
             Expensescategories,
-            
+            incomesSliced,
         }}>
             {children}
         </GlobalContext.Provider>

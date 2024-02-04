@@ -10,24 +10,29 @@ function currencyFormat(num) {
 }
 
 function Income() {
-  const {addIncome, incomes, getIncomes, deleteIncomes, totalIncome, getIncomesCategories} = useGlobalContext()
+  const {addIncome, sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome} = useGlobalContext()
+  
+  useEffect(() => {
+    sliceIncomes();
+  }, [currentIncomeIndex]);
 
   useEffect(() => {
+    totalIncome();
     getIncomes();
     getIncomesCategories();
   }, []);
-  
+
   return (
     <IncomeStyled>
       <InnerLayout>
         <h1>Incomes</h1>
-        <h2 className="total-income">Total Income: <span>${currencyFormat(totalIncome())}</span></h2>
+        <h2 className="total-income">Total Income: <span>${currencyFormat(totalIncomeAmount)}</span></h2>
         <div className="income-content">
           <div className="form-container">
               <Form />
           </div>
           <div className="incomes">
-            {incomes.map((income) => {
+            {incomesSliced.map((income) => {
               const {id, account_id , categoryName, amount, is_income, payment_date, description, icon, categoryColor} = income;
               return <IncomeItem 
                   key={id}
@@ -44,6 +49,11 @@ function Income() {
                   deleteItem={deleteIncomes}
               />
             })}
+            {console.log(currentIncomeIndex)}
+            <div className="arrow-icons">
+              <i className="fa-solid fa-arrow-left" onClick={() => navigateIncomes('prev')}></i>
+              <i className="fa-solid fa-arrow-right" onClick={() => navigateIncomes('next')}></i>
+            </div>
           </div>
         </div>
         
@@ -76,10 +86,24 @@ const IncomeStyled = styled.div`
     .income-content{
       display: flex;
       gap: 2rem;
+      position: relative;
       .incomes{
         flex: 1;
       }
     }
+
+    .arrow-icons {
+      position: relative;
+      display: flex;
+      gap: 50vh;
+      i {
+        font-size: 24px; 
+        cursor: pointer;
+        &:hover {
+          color: var(--primary-color); 
+        }
+      }
+  }
 `;
 
 export default Income

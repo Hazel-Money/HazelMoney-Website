@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
-import Chart from '../Chart/Chart';
 import { dollar } from '../../utils/Icons';
 import History from '../History/History';
 
@@ -11,10 +10,12 @@ function currencyFormat(num) {
 }
 
 function Dashboard() {
-  const {totalExpensesAmount, totalIncomeAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
+  const {totalExpensesAmount, totalExpenses, totalIncome, totalIncomeAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
   //Render data when running website
   useEffect(() => {
+    totalExpenses();
+    totalIncome();
     getAllTransactions()
     getIncomes()
     getExpenses()
