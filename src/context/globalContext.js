@@ -14,7 +14,9 @@ export const GlobalProvider = ({children}) => {
     const cookies = new Cookies();
     const[incomes, setIncomes] = useState([])
     const[incomesSliced, setIncomesSliced] = useState([])
+    const[expensesSliced, setExpensesSliced] = useState([])
     const [currentIncomeIndex, setCurrentIncomeIndex] = useState(0);
+    const [currentExpenseIndex, setCurrentExpenseIndex] = useState(0);
     const[expenses, setExpenses] = useState([])
     const[transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([])
@@ -46,6 +48,7 @@ export const GlobalProvider = ({children}) => {
             const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
             getIncomes(user.id);
             getBalance(); 
+            sliceIncomes();
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -187,6 +190,30 @@ export const GlobalProvider = ({children}) => {
             setError(err.response?.data?.message || "An error occurred4");
         }
     }
+
+    const sliceExpenses = () => {
+        const history = [...expenses];
+        history.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+    
+        const endIndex = Math.min(currentExpenseIndex + 2, expenses.length);
+        setExpensesSliced(history.slice(currentExpenseIndex, endIndex));
+    };
+    
+    const navigateExpenses = (direction) => {
+        const step = 2; 
+        let newIndex;
+    
+        if (direction === 'next') {
+            newIndex = Math.min(currentExpenseIndex + step, expenses.length - 1);
+        } else {
+            newIndex = Math.max(currentExpenseIndex - step, 0);
+        }
+    
+        setCurrentExpenseIndex(newIndex);
+        sliceExpenses();
+    };
         
     const deleteExpense = async (id) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
@@ -583,6 +610,10 @@ export const GlobalProvider = ({children}) => {
             addAccount,
             sliceIncomes,
             navigateIncomes,
+            sliceExpenses,
+            navigateExpenses,
+            currentExpenseIndex,
+            expensesSliced,
             currentIncomeIndex,
             incomesSliced,
             totalIncomeAmount,

@@ -10,7 +10,12 @@ function currencyFormat(num) {
 }
 
 function Expenses() {
-  const {expenses,totalExpensesAmount,  getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
+  const {expenses, sliceExpenses, totalExpensesAmount, expensesSliced, currentExpenseIndex, navigateExpenses, getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
+
+
+  useEffect(() => {
+    sliceExpenses();
+  }, [currentExpenseIndex, expenses]);
 
   useEffect(() => {
     totalExpenses();
@@ -28,7 +33,7 @@ function Expenses() {
               <ExpenseForm />
           </div>
           <div className="incomes">
-            {expenses.map((expense) => {
+            {expensesSliced.map((expense) => {
               const {id, account_id , categoryName, amount, is_income, payment_date, description, icon, categoryColor} = expense;
               return <IncomeItem 
                   key={id}
@@ -45,6 +50,16 @@ function Expenses() {
                   deleteItem={deleteExpense}
               />
             })}
+            <div className="arrow-icons">
+              <i
+              className={currentExpenseIndex > 0 ? "fa-solid fa-arrow-left" : "fa-solid fa-arrow-left disabled"}
+              onClick={() => navigateExpenses('prev')}
+              />
+              <i
+              className={currentExpenseIndex + 2 < expenses.length ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-right disabled"}
+              onClick={() => navigateExpenses('next')}
+              />
+            </div>
           </div>
         </div>
         
@@ -79,6 +94,23 @@ const ExpenseStyled = styled.div`
       gap: 2rem;
       .incomes{
         flex: 1;
+      }
+    }
+
+    .arrow-icons {
+      position: relative;
+      display: flex;
+      gap: 50vh;
+      i {
+        font-size: 24px; 
+        cursor: pointer;
+        &:hover {
+          color: var(--primary-color); 
+        }
+      }
+      .disabled {
+        color: rgba(70, 70, 97, 0.176) !important;
+        cursor: not-allowed; 
       }
     }
 `;

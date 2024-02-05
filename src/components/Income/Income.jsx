@@ -14,12 +14,13 @@ function Income() {
   
   useEffect(() => {
     sliceIncomes();
-  }, [currentIncomeIndex]);
+  }, [currentIncomeIndex, incomes]);
 
   useEffect(() => {
     totalIncome();
     getIncomes();
     getIncomesCategories();
+    sliceIncomes();
   }, []);
 
   return (
@@ -112,7 +113,7 @@ const IncomeStyled = styled.div`
         color: rgba(70, 70, 97, 0.176) !important;
         cursor: not-allowed; 
       }
-  }
+    }
 `;
 
 export default Income
