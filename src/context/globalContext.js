@@ -92,22 +92,28 @@ export const GlobalProvider = ({children}) => {
     };
 
     const sliceIncomes = () => {
-        const history = [...incomes]
+        const history = [...incomes];
         history.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt)
-        })
-        setIncomesSliced(history.slice(currentIncomeIndex, currentIncomeIndex + 3));
-    }
-
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+    
+        const endIndex = Math.min(currentIncomeIndex + 2, incomes.length);
+        setIncomesSliced(history.slice(currentIncomeIndex, endIndex));
+    };
+    
     const navigateIncomes = (direction) => {
-        const newIndex =
-          direction === 'next'
-            ? Math.min(currentIncomeIndex + 3, incomes.length - 1)
-            : Math.max(currentIncomeIndex - 3, 0);
-      
+        const step = 2; 
+        let newIndex;
+    
+        if (direction === 'next') {
+            newIndex = Math.min(currentIncomeIndex + step, incomes.length - 1);
+        } else {
+            newIndex = Math.max(currentIncomeIndex - step, 0);
+        }
+    
         setCurrentIncomeIndex(newIndex);
         sliceIncomes();
-      };
+    };
     
     const deleteIncomes = async (id) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;

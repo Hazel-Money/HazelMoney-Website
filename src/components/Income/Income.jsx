@@ -10,7 +10,7 @@ function currencyFormat(num) {
 }
 
 function Income() {
-  const {addIncome, sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome} = useGlobalContext()
+  const {addIncome, sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
   
   useEffect(() => {
     sliceIncomes();
@@ -49,10 +49,15 @@ function Income() {
                   deleteItem={deleteIncomes}
               />
             })}
-            {console.log(currentIncomeIndex)}
             <div className="arrow-icons">
-              <i className="fa-solid fa-arrow-left" onClick={() => navigateIncomes('prev')}></i>
-              <i className="fa-solid fa-arrow-right" onClick={() => navigateIncomes('next')}></i>
+              <i
+              className={currentIncomeIndex > 0 ? "fa-solid fa-arrow-left" : "fa-solid fa-arrow-left disabled"}
+              onClick={() => navigateIncomes('prev')}
+              />
+              <i
+              className={currentIncomeIndex + 2 < incomes.length ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-right disabled"}
+              onClick={() => navigateIncomes('next')}
+              />
             </div>
           </div>
         </div>
@@ -102,6 +107,10 @@ const IncomeStyled = styled.div`
         &:hover {
           color: var(--primary-color); 
         }
+      }
+      .disabled {
+        color: rgba(70, 70, 97, 0.176) !important;
+        cursor: not-allowed; 
       }
   }
 `;
