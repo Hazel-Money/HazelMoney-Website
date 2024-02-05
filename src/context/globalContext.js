@@ -23,6 +23,8 @@ export const GlobalProvider = ({children}) => {
     const [Expensescategories, setExpenseCategories] = useState([])
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
+    const[paymentsSliced, setPaymentsSliced] = useState([])
+    const [currentPaymentIndex, setCurrentPaymentIndex] = useState(0);
     const [currencies, setCurrencies] = useState([])
     const [accounts, setAccounts] = useState([])
     const[error, setError] = useState(null)
@@ -496,6 +498,30 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
+    const slicePayments = () => {
+        const history = [...regularPayments];
+        history.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+    
+        const endIndex = Math.min(currentPaymentIndex + 3, regularPayments.length);
+        setPaymentsSliced(history.slice(currentPaymentIndex, endIndex));
+    };
+    
+    const navigatePayments = (direction) => {
+        const step = 3; 
+        let newIndex;
+    
+        if (direction === 'next') {
+            newIndex = Math.min(currentPaymentIndex + step, regularPayments.length - 1);
+        } else {
+            newIndex = Math.max(currentPaymentIndex - step, 0);
+        }
+    
+        setCurrentPaymentIndex(newIndex);
+        slicePayments();
+    };
+
     const deleteRegularPayments = async (id) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const res = await axios.delete(`${BASE_URL}/regular_payments`, {
@@ -612,6 +638,10 @@ export const GlobalProvider = ({children}) => {
             navigateIncomes,
             sliceExpenses,
             navigateExpenses,
+            navigatePayments,
+            slicePayments,
+            currentPaymentIndex,
+            paymentsSliced,
             currentExpenseIndex,
             expensesSliced,
             currentIncomeIndex,

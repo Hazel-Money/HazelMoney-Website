@@ -35,7 +35,9 @@ function RegularPaymentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addRegularPayment({...inputState, account_id: account_id});
+    const amountInCents = (parseFloat(inputState.amount) * 100).toString();
+
+    addRegularPayment({...inputState, account_id: account_id, amount: amountInCents });
     setInputState({
         account_id: '12',
         category_id: '',

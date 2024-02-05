@@ -6,7 +6,11 @@ import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
 
 function RegularPayments() {
-  const { getExpensesCategories, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+  const { getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+
+  useEffect(() => {
+    slicePayments();
+  }, [currentPaymentIndex, regularPayments]);
 
   useEffect(() => {
     getRegularPayments();
@@ -24,8 +28,8 @@ function RegularPayments() {
             <RegularPaymentForm />
           </div>
           <div className="payment">
-            {regularPayments.map((payment) => {
-              const {id, account_id , categoryName, amount, is_income, last_payment_date, description, icon, categoryColor} = payment;
+            {paymentsSliced.map((payment) => {
+              const {id, account_id , categoryName, amount, is_income, next_payment_date, description, icon, categoryColor} = payment;
               return <RegularPaymentsItem
                   key={id}
                   id={id}
@@ -33,7 +37,7 @@ function RegularPayments() {
                   category={categoryName}
                   amount={amount}
                   is_income={is_income}
-                  next_payment_date={last_payment_date}
+                  next_payment_date={next_payment_date}
                   description={description}
                   icon={icon}
                   color={categoryColor}
@@ -41,6 +45,16 @@ function RegularPayments() {
                   deleteItem={deleteRegularPayments}
               />
             })}
+            <div className="arrow-icons">
+              <i
+              className={currentPaymentIndex > 0 ? "fa-solid fa-arrow-left" : "fa-solid fa-arrow-left disabled"}
+              onClick={() => navigatePayments('prev')}
+              />
+              <i
+              className={currentPaymentIndex + 2 < regularPayments.length ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-right disabled"}
+              onClick={() => navigatePayments('next')}
+              />
+            </div>
             </div>
         </div>
       </InnerLayout>
@@ -59,6 +73,22 @@ const RegularPaymentsStyled = styled.div`
       gap: 2rem;
       .payment{
         flex: 1;
+      }
+    }
+    .arrow-icons {
+      position: relative;
+      display: flex;
+      gap: 50vh;
+      i {
+        font-size: 24px; 
+        cursor: pointer;
+        &:hover {
+          color: var(--primary-color); 
+        }
+      }
+      .disabled {
+        color: rgba(70, 70, 97, 0.176) !important;
+        cursor: not-allowed; 
       }
     }
 `;
