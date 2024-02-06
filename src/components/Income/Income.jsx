@@ -111,7 +111,8 @@ const IncomeStyled = styled.div`
       }
       .disabled {
         color: rgba(70, 70, 97, 0.176) !important;
-        cursor: not-allowed; 
+        cursor: not-allowed;
+
       }
     }
 `;

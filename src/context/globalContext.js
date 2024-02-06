@@ -101,17 +101,22 @@ export const GlobalProvider = ({children}) => {
         history.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
-    
         const endIndex = Math.min(currentIncomeIndex + 2, incomes.length);
         setIncomesSliced(history.slice(currentIncomeIndex, endIndex));
     };
     
     const navigateIncomes = (direction) => {
-        const step = 2; 
+        const history = [...incomes];
+        const step = 2;
         let newIndex;
-    
+        
+        let endDiff = 1;
+        if (history.length % 2 === 0) {
+            endDiff = 2;
+        }
+
         if (direction === 'next') {
-            newIndex = Math.min(currentIncomeIndex + step, incomes.length - 1);
+            newIndex = Math.min(currentIncomeIndex + step, incomes.length - endDiff);
         } else {
             newIndex = Math.max(currentIncomeIndex - step, 0);
         }
@@ -204,11 +209,17 @@ export const GlobalProvider = ({children}) => {
     };
     
     const navigateExpenses = (direction) => {
+        const history = [...expenses];
         const step = 2; 
         let newIndex;
+
+        let endDiff = 1;
+        if (history.length % 2 === 0) {
+            endDiff = 2;
+        }
     
         if (direction === 'next') {
-            newIndex = Math.min(currentExpenseIndex + step, expenses.length - 1);
+            newIndex = Math.min(currentExpenseIndex + step, expenses.length - endDiff);
         } else {
             newIndex = Math.max(currentExpenseIndex - step, 0);
         }
@@ -509,11 +520,18 @@ export const GlobalProvider = ({children}) => {
     };
     
     const navigatePayments = (direction) => {
+        const history = [...regularPayments];
         const step = 3; 
         let newIndex;
+
+        let endDiff = 1;
+        if (history.length % 3 === 0) {
+            endDiff = 0;
+            //make this one work
+        }
     
         if (direction === 'next') {
-            newIndex = Math.min(currentPaymentIndex + step, regularPayments.length - 1);
+            newIndex = Math.min(currentPaymentIndex + step, regularPayments.length - endDiff);
         } else {
             newIndex = Math.max(currentPaymentIndex - step, 0);
         }

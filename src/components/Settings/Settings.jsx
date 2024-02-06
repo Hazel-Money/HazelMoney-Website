@@ -70,60 +70,71 @@ function Settings() {
     return (
         <SettingsStyled>
             <InnerLayout>
-                <h1>Settings</h1>
-                <div className='currency'>
-                    <Autocomplete
-                        defaultValue={currency}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={currenciesOptions()}
-                        sx={{ width: 300 }}
-                        onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} label="Currency" />}
-                    />
-                </div>
-                <div className='accounts'>
-                    <h2>Accounts</h2>
-                    <div className="form-container">
-                        <Button variant="outlined" onClick={handleClickOpen}> 
-                            Create account 
-                        </Button>
-                        <Dialog
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                                component: 'form',
-                                onSubmit: handleSubmit,
-                            }}
-                        >
-                            <DialogTitle>Create account</DialogTitle>
-                            <DialogContent>
-                                <TextField
-                                    required
-                                    margin="dense"
-                                    id="name"
-                                    name="name"
-                                    label="Account Name"
-                                    type="text"
-                                    fullWidth
-                                    onChange={handleInputChange('name')}
-                                />
-                                <TextField
-                                    required
-                                    margin="dense"
-                                    id="balance"
-                                    name="balance"
-                                    label="Balance"
-                                    type="text"
-                                    fullWidth
-                                    onChange={handleInputChange('balance')}
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleClose}>Cancel</Button>
-                                <Button type="submit">Create</Button>
-                            </DialogActions>
-                        </Dialog>
+                <div className='main'>
+                    <h1>Settings</h1>
+                    <div className='left-side'>
+                        <div className='accounts'>
+                            <h2>Accounts</h2>
+                            <div className="form-container">
+                                <Button variant="outlined" onClick={handleClickOpen}> 
+                                    Create account 
+                                </Button>
+                                <Dialog
+                                    open={open}
+                                    onClose={handleClose}
+                                    PaperProps={{
+                                        component: 'form',
+                                        onSubmit: handleSubmit,
+                                    }}
+                                >
+                                    <DialogTitle>Create account</DialogTitle>
+                                    <DialogContent>
+                                        <TextField
+                                            required
+                                            margin="dense"
+                                            id="name"
+                                            name="name"
+                                            label="Account Name"
+                                            type="text"
+                                            fullWidth
+                                            onChange={handleInputChange('name')}
+                                        />
+                                        <TextField
+                                            required
+                                            margin="dense"
+                                            id="balance"
+                                            name="balance"
+                                            label="Balance"
+                                            type="text"
+                                            fullWidth
+                                            onChange={handleInputChange('balance')}
+                                        />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>Cancel</Button>
+                                        <Button type="submit">Create</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
+                        </div>
+                        <div className='currency'>
+                            <Autocomplete
+                                defaultValue={currency}
+                                disablePortal
+                                id="combo-box-demo"
+                                options={currenciesOptions()}
+                                sx={{ width: 300 }}
+                                onChange={handleChange}
+                                renderInput={(params) => <TextField {...params} label="Currency" />}
+                            />
+                        </div>
+                    </div>
+                    <div className='right-side'>
+                        <div className='users'>
+                            <h2>Users</h2> 
+                            <h3>Change password</h3>
+                            <h3>Upload profile picture</h3>
+                        </div>
                     </div>
                 </div>
             </InnerLayout>
@@ -134,14 +145,29 @@ function Settings() {
 const SettingsStyled = styled.div`
     display: flex;
     overflow: auto;
-    .currency{
-        margin-top: 5vh;
+    height: 100%;
+    .left-side{
+        float: left;
+        width: 50%;
+        height: 100%;
+        .currency{
+            margin-top: 15%;
+            float: left;
+        }
+        .accounts{
+            margin-top: 10%;
+            .form-container{
+                margin-top: 2vh;
+                width: 35%;
+            }
+        }
     }
-    .accounts{
-        margin-top: 8vh;
-        .form-container{
-            margin-top: 2vh;
-            width: 35%;
+    .right-side{
+        float: right;
+        width: 50%;
+        height: 100%;
+        .users{
+            margin-top: 10%;
         }
     }
 `;
