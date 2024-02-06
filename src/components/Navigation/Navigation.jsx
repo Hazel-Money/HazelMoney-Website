@@ -10,13 +10,28 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const {setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const {refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
         getAccounts();
         getCurrency();
         getBalance();
     }, [])
+
+
+    //when accountId value changes, it wil refresh the content for that account
+    useEffect(() => {
+        refreshAccountContent();
+    }, [accountId]);
+
+    useEffect(() => {
+        const storedAccountId = localStorage.getItem('accountId');
+        const storedAccountName = localStorage.getItem('accountName');
+
+        setAccountId(storedAccountId || "All");
+        setAccountName(storedAccountName || "All");
+    }, []);
+
     
     const user = getUserFromCookies();
     const handleSignOut = () => {
@@ -25,12 +40,15 @@ function Navigation({active, setActive}) {
 
     const handleChange = (event) => {
         const credentials = event.target.value.split(",");
-
+        console.log(credentials)
         const selectedAccountName = credentials[0];
         setAccountName(selectedAccountName);
 
         const selectedAccountId = credentials[1]
         setAccountId(selectedAccountId);
+
+        localStorage.setItem('accountId', selectedAccountId);
+        localStorage.setItem('accountName', selectedAccountName);
     };
 
     return (
@@ -67,8 +85,9 @@ function Navigation({active, setActive}) {
                             name="account_id"
                             id="account_id"
                             onChange={handleChange}
+                            value={`${accountName},${accountId}`}
                         >
-                        <option key="All" value="All">All accounts</option>
+                        <option key="All" value={["All","All"]}>All accounts</option>
                         {accounts.map((account) => (
                             <option key={account.id} value={[account.name,account.id]}>
                             {account.name}

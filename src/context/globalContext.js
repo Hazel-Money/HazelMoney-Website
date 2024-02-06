@@ -12,28 +12,28 @@ const GlobalContext = React.createContext()
 
 export const GlobalProvider = ({children}) => {
     const cookies = new Cookies();
-    const[incomes, setIncomes] = useState([])
-    const[incomesSliced, setIncomesSliced] = useState([])
-    const[expensesSliced, setExpensesSliced] = useState([])
-    const [currentIncomeIndex, setCurrentIncomeIndex] = useState(0);
-    const [currentExpenseIndex, setCurrentExpenseIndex] = useState(0);
-    const[expenses, setExpenses] = useState([])
-    const[transactions, setTransactions] = useState([])
+    const [incomes, setIncomes] = useState([])
+    const [incomesSliced, setIncomesSliced] = useState([])
+    const [expensesSliced, setExpensesSliced] = useState([])
+    const [currentIncomeIndex, setCurrentIncomeIndex] = useState(0)
+    const [currentExpenseIndex, setCurrentExpenseIndex] = useState(0)
+    const [expenses, setExpenses] = useState([])
+    const [transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([])
     const [Expensescategories, setExpenseCategories] = useState([])
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
-    const[paymentsSliced, setPaymentsSliced] = useState([])
-    const [currentPaymentIndex, setCurrentPaymentIndex] = useState(0);
+    const [paymentsSliced, setPaymentsSliced] = useState([])
+    const [currentPaymentIndex, setCurrentPaymentIndex] = useState(0)
     const [currencies, setCurrencies] = useState([])
     const [accounts, setAccounts] = useState([])
-    const[error, setError] = useState(null)
-    const[historyError, setHistoryError] = useState(null)
-    const[loginError, setLoginError] = useState(null)
-    const[currency, setCurrency] = useState('USD')
-    const[balance, setBalance] = useState(null)
-    const[totalIncomeAmount, setTotalIncomeAmount] = useState(null)
-    const[totalExpensesAmount, setTotalExpensesAmount] = useState(null)
+    const [error, setError] = useState(null)
+    const [historyError, setHistoryError] = useState(null)
+    const [loginError, setLoginError] = useState(null)
+    const [currency, setCurrency] = useState('USD')
+    const [balance, setBalance] = useState(null)
+    const [totalIncomeAmount, setTotalIncomeAmount] = useState(null)
+    const [totalExpensesAmount, setTotalExpensesAmount] = useState(null)
     const [accountName, setAccountName] = useState("All")
     const [accountId, setAccountId] = useState("All")
 
@@ -49,7 +49,7 @@ export const GlobalProvider = ({children}) => {
                 is_income
             };
             const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
-            getIncomes(user.id);
+            getIncomes();
             getBalance(); 
             sliceIncomes();
             Swal.fire({
@@ -63,7 +63,6 @@ export const GlobalProvider = ({children}) => {
             setError(err.response?.data?.message || "An error occurred1");
         }
     };
-
     
     const getIncomes = async () => {
         try {
@@ -71,9 +70,9 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
-                request = `${BASE_URL}/transactions.php?user_id=${user.id}}&is_income=1`;
+                request = `${BASE_URL}/transactions.php?user_id=${user.id}&is_income=1`;
             } else {
-                request = `${BASE_URL}/transactions.php?account_id=${accountId}}&is_income=1`;
+                request = `${BASE_URL}/transactions.php?account_id=${accountId}&is_income=1`;
             }
             const incomesResponse = await axios.get(request);
             const incomesData = incomesResponse.data;
@@ -95,6 +94,8 @@ export const GlobalProvider = ({children}) => {
     
             if (incomesWithCategories.length > 0) {
                 setIncomes(incomesWithCategories);
+            } else {
+                setIncomes([]);
             }
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred2");
@@ -158,7 +159,7 @@ export const GlobalProvider = ({children}) => {
                 is_income    
             });
 
-            getExpenses(user.id)
+            getExpenses()
             getBalance();
             Swal.fire({
                 position: "center",
@@ -178,9 +179,9 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
-                request = `${BASE_URL}/transactions.php?user_id=${user.id}}&is_income=0`;
+                request = `${BASE_URL}/transactions.php?user_id=${user.id}&is_income=0`;
             } else {
-                request = `${BASE_URL}/transactions.php?account_id=${accountId}}&is_income=0`;
+                request = `${BASE_URL}/transactions.php?account_id=${accountId}&is_income=0`;
             }
             const expensesResponse = await axios.get(request);
             const expensesData = expensesResponse.data;
@@ -203,6 +204,8 @@ export const GlobalProvider = ({children}) => {
 
             if (expensesWithCategories.length > 0) {
                 setExpenses(expensesWithCategories);
+            } else {
+                setExpenses([]);
             }
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred4");
@@ -263,7 +266,13 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const transactionsResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}`);
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/transactions.php?user_id=${user.id}`;
+            } else {
+                request = `${BASE_URL}/transactions.php?account_id=${accountId}}`
+            }
+            const transactionsResponse = await axios.get(request);
             const transactionsData = transactionsResponse.data;
 
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
@@ -618,6 +627,12 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const refreshAccountContent = async () => {
+        getIncomes();
+        getExpenses();
+        getAllTransactions();
+    }
+
     useEffect(() => {
         getAllTransactions();
         getExpensesCategories();
@@ -667,6 +682,7 @@ export const GlobalProvider = ({children}) => {
             slicePayments,
             setAccountId,
             setAccountName,
+            refreshAccountContent,
             accountName,
             accountId,
             currentPaymentIndex,
