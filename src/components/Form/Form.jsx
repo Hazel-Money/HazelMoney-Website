@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -6,18 +6,15 @@ import pt from 'date-fns/locale/pt';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { date, plus } from '../../utils/Icons';
 
 registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function Form() {
-    const { addIncome, Incomescategories, error, setError } = useGlobalContext();
+    const { addIncome, Incomescategories, error, setError, accounts, getAccounts } = useGlobalContext();
     const [inputState, setInputState] = useState({
-      account_id: '12',
+      account_id: '',
       category_id: '',
       amount: '',
       is_income: '1',
@@ -51,7 +48,7 @@ function Form() {
       addIncome({ ...inputState, amount: amountInCents });
 
       setInputState({
-        account_id: '12',
+        account_id: '',
         category_id: '',
         amount: '',
         is_income: '1',
@@ -59,6 +56,10 @@ function Form() {
         description: ''
       })
     };
+
+    useEffect(() => {
+      getAccounts();
+    }, [])
   
     return (
         <FormStyled onSubmit={handleSubmit} autoComplete="off">
@@ -109,6 +110,15 @@ function Form() {
               ))}
             </select>
           </div>
+          <div className="selects input-control">
+                <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
+                {accounts.map((account) => (
+                    <option key={account.id} value={account.id}>
+                    {account.name}
+                    </option>
+                ))}
+                </select>
+            </div>
           <div className="input-control">
             <textarea
               value={description}

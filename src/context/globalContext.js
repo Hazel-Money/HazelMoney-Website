@@ -34,17 +34,18 @@ export const GlobalProvider = ({children}) => {
     const[balance, setBalance] = useState(null)
     const[totalIncomeAmount, setTotalIncomeAmount] = useState(null)
     const[totalExpensesAmount, setTotalExpensesAmount] = useState(null)
+    const [accountName, setAccountName] = useState("All")
+    const [accountId, setAccountId] = useState("All")
 
 
     //calculate incomes
     const addIncome = async (income) => {
-        const { account_id, is_income } = income;
+        const { is_income } = income;
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const requestData = {
                 ...income,
-                account_id,
                 is_income
             };
             const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
@@ -68,9 +69,14 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const incomesResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}&is_income=1`);
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/transactions.php?user_id=${user.id}}&is_income=1`;
+            } else {
+                request = `${BASE_URL}/transactions.php?account_id=${accountId}}&is_income=1`;
+            }
+            const incomesResponse = await axios.get(request);
             const incomesData = incomesResponse.data;
-    
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}&is_income=1`);
             const categoriesData = categoriesResponse.data;
     
@@ -143,13 +149,12 @@ export const GlobalProvider = ({children}) => {
 
     //calculate expenses
     const addExpense = async (expense) => { 
-        const { account_id, is_income } = expense;  
+        const { is_income } = expense;  
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
                 ...expense,  
-                account_id,  
                 is_income    
             });
 
@@ -171,7 +176,13 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const expensesResponse = await axios.get(`${BASE_URL}/transactions.php?user_id=${user.id}&is_income=0`);
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/transactions.php?user_id=${user.id}}&is_income=0`;
+            } else {
+                request = `${BASE_URL}/transactions.php?account_id=${accountId}}&is_income=0`;
+            }
+            const expensesResponse = await axios.get(request);
             const expensesData = expensesResponse.data;
 
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}&is_income=0`);
@@ -457,14 +468,10 @@ export const GlobalProvider = ({children}) => {
     };
 
     const addRegularPayment = async (payment) => {
-        const { account_id } = payment;  
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.post(`${BASE_URL}/regular_payments.php`, {
-                ...payment,  
-                account_id,  
-            });
+            const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
             getRegularPayments(user.id); 
             Swal.fire({
                 position: "center",
@@ -658,6 +665,10 @@ export const GlobalProvider = ({children}) => {
             navigateExpenses,
             navigatePayments,
             slicePayments,
+            setAccountId,
+            setAccountName,
+            accountName,
+            accountId,
             currentPaymentIndex,
             paymentsSliced,
             currentExpenseIndex,

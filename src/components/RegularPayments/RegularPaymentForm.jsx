@@ -12,12 +12,12 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function RegularPaymentForm() {
-  const {error, setError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies } = useGlobalContext();
+  const {error, setError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies, accounts, getAccounts  } = useGlobalContext();
 
   const user = getUserFromCookies();
 
   const [inputState, setInputState] = useState({
-    account_id: '12',
+    account_id: '',
     category_id: '',
     frequency_id: '',
     amount: '',
@@ -39,7 +39,7 @@ function RegularPaymentForm() {
 
     addRegularPayment({...inputState, account_id: account_id, amount: amountInCents });
     setInputState({
-        account_id: '12',
+        account_id: '',
         category_id: '',
         frequency_id: '',
         amount: '',
@@ -61,6 +61,10 @@ function RegularPaymentForm() {
     setInputState({ ...inputState, start_date: date });
     };
 
+    useEffect(() => {
+      getAccounts();
+    }, [])
+  
   
   return (
     <RegularPaymentFormStyled onSubmit={handleSubmit} autoComplete="off">
@@ -113,6 +117,15 @@ function RegularPaymentForm() {
                   {frequency.name}
                 </option>
               ))}
+            </select>
+          </div>
+          <div className="selects input-control">
+            <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
+            {accounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                {account.name}
+                </option>
+            ))}
             </select>
           </div>
           <div className="input-control">

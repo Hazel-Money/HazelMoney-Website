@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -12,9 +12,9 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function ExpenseForm() {
-    const { addExpense, Expensescategories, error, setError } = useGlobalContext();
+    const { addExpense, Expensescategories, error, setError,  accounts, getAccounts } = useGlobalContext();
     const [inputState, setInputState] = useState({
-      account_id: '12',
+      account_id: '',
       category_id: '',
       amount: '',
       is_income: '0',
@@ -48,7 +48,7 @@ function ExpenseForm() {
 
       addExpense({ ...inputState, amount: amountInCents });
       setInputState({
-        account_id: '12',
+        account_id: '',
         category_id: '',
         amount: '',
         is_income: '0',
@@ -56,6 +56,10 @@ function ExpenseForm() {
         description: ''
       })
     };
+
+    useEffect(() => {
+      getAccounts();
+    }, [])
   
     return (
         <ExpenseFormStyled onSubmit={handleSubmit} autoComplete="off">
@@ -106,6 +110,15 @@ function ExpenseForm() {
               ))}
             </select>
           </div>
+          <div className="selects input-control">
+                <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
+                {accounts.map((account) => (
+                    <option key={account.id} value={account.id}>
+                    {account.name}
+                    </option>
+                ))}
+                </select>
+            </div>
           <div className="input-control">
             <textarea
               value={description}

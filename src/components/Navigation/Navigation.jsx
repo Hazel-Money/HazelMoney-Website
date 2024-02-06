@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout, settings } from '../../utils/Icons'
@@ -10,8 +10,8 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const { logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
-    
+    const {setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+
     useEffect(() => {
         getAccounts();
         getCurrency();
@@ -24,9 +24,15 @@ function Navigation({active, setActive}) {
     };
 
     const handleChange = (event) => {
-        const selectedAccountId = event.target.value;
-        console.log('Selected account:', selectedAccountId);
+        const credentials = event.target.value.split(",");
+
+        const selectedAccountName = credentials[0];
+        setAccountName(selectedAccountName);
+
+        const selectedAccountId = credentials[1]
+        setAccountId(selectedAccountId);
     };
+
     return (
         <NavStyled>
             <div className="user-con">
@@ -57,21 +63,21 @@ function Navigation({active, setActive}) {
                 <div className="bottom-nav-right">
                     <div className="account-select">
                         <select
-                        required
-                        name="account_id"
-                        id="account_id"
-                        onChange={handleChange}
-                    >
-                    <option value="All">All accounts</option>
-                    {accounts.map((account) => (
-                        <option key={account.id} value={account.id}>
-                        {account.name}
-                        </option>
-                    ))}
-                    </select>
+                            required
+                            name="account_id"
+                            id="account_id"
+                            onChange={handleChange}
+                        >
+                        <option key="All" value="All">All accounts</option>
+                        {accounts.map((account) => (
+                            <option key={account.id} value={[account.name,account.id]}>
+                            {account.name}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
     </NavStyled>
   );
 }
