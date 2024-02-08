@@ -14,8 +14,8 @@ function Dashboard() {
 
   //Render data when running website
   useEffect(() => {
-    totalExpenses();
-    totalIncome();
+    totalExpenses()
+    totalIncome()
     getAllTransactions()
     getIncomes()
     getExpenses()

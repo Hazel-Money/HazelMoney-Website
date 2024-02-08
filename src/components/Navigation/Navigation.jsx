@@ -40,7 +40,6 @@ function Navigation({active, setActive}) {
 
     const handleChange = (event) => {
         const credentials = event.target.value.split(",");
-        console.log(credentials)
         const selectedAccountName = credentials[0];
         setAccountName(selectedAccountName);
 

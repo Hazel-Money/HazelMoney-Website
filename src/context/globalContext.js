@@ -38,6 +38,21 @@ export const GlobalProvider = ({children}) => {
     const [accountId, setAccountId] = useState("All")
 
 
+    function formatDate(date) {
+        // Get year, month, day, hours, minutes, and seconds from the Date object
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+        // Concatenate the date components into the desired format
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    
+        return formattedDate;
+    }
+
     //calculate incomes
     const addIncome = async (income) => {
         const { is_income } = income;
@@ -48,6 +63,7 @@ export const GlobalProvider = ({children}) => {
                 ...income,
                 is_income
             };
+            requestData.payment_date = formatDate(requestData.payment_date);
             const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
             getIncomes();
             getBalance(); 
@@ -154,6 +170,9 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            expense.payment_date = formatDate(expense.payment_date);
+            console.log(expense);
+            console.log(is_income);
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
                 ...expense,  
                 is_income    
@@ -274,6 +293,10 @@ export const GlobalProvider = ({children}) => {
             }
             const transactionsResponse = await axios.get(request);
             const transactionsData = transactionsResponse.data;
+
+            if (transactionsData.length === 0) {
+                setTransactions([])
+            }
 
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
             const categoriesData = categoriesResponse.data;
@@ -480,6 +503,7 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            payment.start_date = formatDate(payment.start_date)
             const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
             getRegularPayments(user.id); 
             Swal.fire({

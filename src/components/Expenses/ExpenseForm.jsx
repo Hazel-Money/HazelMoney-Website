@@ -102,7 +102,7 @@ function ExpenseForm() {
           </div>
           <div className="selects input-control">
             <select required value={category_id} name="category_id" id="category_id" onChange={handleInput("category_id")}>
-              <option value="" disabled>Select Option</option>
+              <option value="" disabled>Select category</option>
               {Expensescategories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -112,6 +112,7 @@ function ExpenseForm() {
           </div>
           <div className="selects input-control">
                 <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
+                <option value="" disabled>Select account</option>
                 {accounts.map((account) => (
                     <option key={account.id} value={account.id}>
                     {account.name}
