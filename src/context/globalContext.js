@@ -177,7 +177,6 @@ export const GlobalProvider = ({children}) => {
                 ...expense,  
                 is_income    
             });
-
             getExpenses()
             getBalance();
             Swal.fire({
@@ -505,7 +504,7 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             payment.start_date = formatDate(payment.start_date)
             const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
-            getRegularPayments(user.id); 
+            getRegularPayments(); 
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -520,10 +519,23 @@ export const GlobalProvider = ({children}) => {
 
     const getRegularPayments = async () => {
         try {
+
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.get(`${BASE_URL}/regular_payments.php?account_id=12`);
+            
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/regular_payments.php?user_id=${user.id}`;
+            } else {
+                request = `${BASE_URL}/regular_payments.php?account_id=${accountId}`;
+            }
+
+            const response = await axios.get(request);
             const paymentsData = response.data;
+
+            if (paymentsData.length === 0) {
+                setRegularPayments([])
+            }
 
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
             const categoriesData = categoriesResponse.data;
@@ -655,6 +667,7 @@ export const GlobalProvider = ({children}) => {
         getIncomes();
         getExpenses();
         getAllTransactions();
+        getRegularPayments();
     }
 
     useEffect(() => {
