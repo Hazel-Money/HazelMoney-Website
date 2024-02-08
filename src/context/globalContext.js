@@ -33,6 +33,7 @@ export const GlobalProvider = ({children}) => {
     const [currency, setCurrency] = useState('USD')
     const [balance, setBalance] = useState(null)
     const [totalIncomeAmount, setTotalIncomeAmount] = useState(null)
+    const [accountIncomeAmount, setAccountIncomeAmount] = useState(null)
     const [totalExpensesAmount, setTotalExpensesAmount] = useState(null)
     const [accountName, setAccountName] = useState("All")
     const [accountId, setAccountId] = useState("All")
@@ -68,6 +69,7 @@ export const GlobalProvider = ({children}) => {
             getIncomes();
             getBalance(); 
             sliceIncomes();
+            totalIncome();
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -154,14 +156,33 @@ export const GlobalProvider = ({children}) => {
             data: { id }
         })
         getIncomes()
+        totalIncome();
+        getBalance();
     }
 
     const totalIncome = async () => {
         const user = getUserFromCookies();
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/user/total_income`);
+        console.log(response)
         const totalIncome =  response.data.total_income;
-        setTotalIncomeAmount(totalIncome);
+        setAccountIncomeAmount(totalIncome);
+    }
+
+    const accountIncome = async () => {
+        const user = getUserFromCookies();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        let request;
+        console.log(accountId)
+        if (accountId == "All") {
+            totalIncome();
+            return;
+        } else {
+            request = `${BASE_URL}/account/${accountId}/total_income`;
+        }
+        const response = await axios.get(request);
+        const total_income =  response.data.total_income;
+        setAccountIncomeAmount(total_income);
     }
 
     //calculate expenses
@@ -178,7 +199,8 @@ export const GlobalProvider = ({children}) => {
                 is_income    
             });
             getExpenses()
-            getBalance();
+            getBalance()
+            totalExpenses()
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -265,7 +287,9 @@ export const GlobalProvider = ({children}) => {
             const res = await axios.delete(`${BASE_URL}/transactions.php`, {
             data: { id }
         })
-        getExpenses()
+        getExpenses();
+        totalExpenses();
+        getBalance();
     }
 
     const totalExpenses = async () => {
@@ -557,7 +581,7 @@ export const GlobalProvider = ({children}) => {
             }
 
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred17");
+            console.log(err.response?.data?.message || "An error occurred17");
         }
     };
 
@@ -575,7 +599,6 @@ export const GlobalProvider = ({children}) => {
         const history = [...regularPayments];
         const step = 3; 
         let newIndex;
-
         let endDiff = 1;
         if (history.length % 3 === 0) {
             endDiff = 0;
@@ -654,7 +677,7 @@ export const GlobalProvider = ({children}) => {
         try{
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.get(`${BASE_URL}/users?id=${user.id}`);
+            const response = await axios.get(`${BASE_URL}/user/balance`);
             const responseUser = response.data;
             const balance = responseUser.balance;
             setBalance(balance);
@@ -668,6 +691,7 @@ export const GlobalProvider = ({children}) => {
         getExpenses();
         getAllTransactions();
         getRegularPayments();
+        accountIncome();
     }
 
     useEffect(() => {
@@ -678,6 +702,7 @@ export const GlobalProvider = ({children}) => {
 
     return(
         <GlobalContext.Provider value={{
+            accountIncome,
             totalExpenses,
             addIncome, 
             getIncomes,
@@ -721,6 +746,7 @@ export const GlobalProvider = ({children}) => {
             setAccountName,
             refreshAccountContent,
             accountName,
+            accountIncomeAmount,
             accountId,
             currentPaymentIndex,
             paymentsSliced,
