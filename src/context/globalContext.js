@@ -34,6 +34,7 @@ export const GlobalProvider = ({children}) => {
     const [balance, setBalance] = useState(null)
     const [totalIncomeAmount, setTotalIncomeAmount] = useState(null)
     const [accountIncomeAmount, setAccountIncomeAmount] = useState(null)
+    const [accountExpenseAmount, setAccountExpenseAmount] = useState(null)
     const [totalExpensesAmount, setTotalExpensesAmount] = useState(null)
     const [accountName, setAccountName] = useState("All")
     const [accountId, setAccountId] = useState("All")
@@ -173,7 +174,6 @@ export const GlobalProvider = ({children}) => {
         const user = getUserFromCookies();
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         let request;
-        console.log(accountId)
         if (accountId == "All") {
             totalIncome();
             return;
@@ -298,10 +298,25 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/total_expense`);
             const totalExpenses =  response.data.total_expense;
-            setTotalExpensesAmount(totalExpenses);
+            setAccountExpenseAmount(totalExpenses);
         } catch (err) {
             console.log(err.response?.data?.message);
         }
+    }
+    
+    const accountExpense = async () => {
+        const user = getUserFromCookies();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        let request;
+        if (accountId == "All") {
+            totalExpenses();
+            return;
+        } else {
+            request = `${BASE_URL}/account/${accountId}/total_expense`;
+        }
+        const response = await axios.get(request);
+        const total_expense =  response.data.total_expense;
+        setAccountExpenseAmount(total_expense);
     }
 
     const getAllTransactions = async () => {
@@ -432,6 +447,10 @@ export const GlobalProvider = ({children}) => {
             cookies.set('jwt', response.data.jwt, {
                 expires: new Date(token.exp * 1000),
             });
+
+            const selectedAccountId = "All"
+            setAccountId(selectedAccountId);
+            localStorage.setItem('accountId', selectedAccountId);
 
             Swal.fire({
                 position: "center",
@@ -692,6 +711,7 @@ export const GlobalProvider = ({children}) => {
         getAllTransactions();
         getRegularPayments();
         accountIncome();
+        accountExpense();
     }
 
     useEffect(() => {
@@ -703,6 +723,7 @@ export const GlobalProvider = ({children}) => {
     return(
         <GlobalContext.Provider value={{
             accountIncome,
+            accountExpense,
             totalExpenses,
             addIncome, 
             getIncomes,
@@ -747,6 +768,7 @@ export const GlobalProvider = ({children}) => {
             refreshAccountContent,
             accountName,
             accountIncomeAmount,
+            accountExpenseAmount,
             accountId,
             currentPaymentIndex,
             paymentsSliced,
