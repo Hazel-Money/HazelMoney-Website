@@ -32,12 +32,15 @@ export const GlobalProvider = ({children}) => {
     const [loginError, setLoginError] = useState(null)
     const [currency, setCurrency] = useState('USD')
     const [balance, setBalance] = useState(null)
+    const [accountBalance, setAccountBalance] = useState(null)
     const [totalIncomeAmount, setTotalIncomeAmount] = useState(null)
     const [accountIncomeAmount, setAccountIncomeAmount] = useState(null)
     const [accountExpenseAmount, setAccountExpenseAmount] = useState(null)
     const [totalExpensesAmount, setTotalExpensesAmount] = useState(null)
     const [accountName, setAccountName] = useState("All")
     const [accountId, setAccountId] = useState("All")
+    const [accountCurrency, setAccountCurrency] = useState(null)
+
 
 
     function formatDate(date) {
@@ -692,6 +695,18 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const getAccountCurrency = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/account/${accountId}/currency`);
+            const currency = response.data.currency; 
+            setAccountCurrency(currency);
+        } catch{
+            console.log("cheiras a coco 3")
+        }
+    }
+
     const getBalance = async () => {
         try{
             const user = getUserFromCookies();
@@ -705,6 +720,25 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const getAccountBalance = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/user/balance`;
+            } else {
+                request = `${BASE_URL}/account/${accountId}/balance`;
+            }
+            const response = await axios.get(request);
+            const responseUser = response.data;
+            const balance = responseUser.balance;
+            setAccountBalance(balance);
+        } catch{
+            console.log("cheiras mal")
+        }
+    }
+
     const refreshAccountContent = async () => {
         getIncomes();
         getExpenses();
@@ -712,6 +746,8 @@ export const GlobalProvider = ({children}) => {
         getRegularPayments();
         accountIncome();
         accountExpense();
+        getAccountCurrency();
+        getAccountBalance();
     }
 
     useEffect(() => {
@@ -766,6 +802,9 @@ export const GlobalProvider = ({children}) => {
             setAccountId,
             setAccountName,
             refreshAccountContent,
+            getAccountCurrency,
+            accountBalance,
+            accountCurrency,
             accountName,
             accountIncomeAmount,
             accountExpenseAmount,
