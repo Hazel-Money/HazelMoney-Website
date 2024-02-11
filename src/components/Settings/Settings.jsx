@@ -12,7 +12,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const { currencies,getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
+    const {setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
 
     useEffect(() => {
         getCurrencies();
@@ -67,6 +67,19 @@ function Settings() {
         handleClose();
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const imageDataUrl = reader.result;
+                setProfilePicture(imageDataUrl);
+                localStorage.setItem('profilePicture', imageDataUrl);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <SettingsStyled>
             <InnerLayout>
@@ -117,23 +130,28 @@ function Settings() {
                                 </Dialog>
                             </div>
                         </div>
-                        <div className='currency'>
-                            <Autocomplete
-                                defaultValue={currency}
-                                disablePortal
-                                id="combo-box-demo"
-                                options={currenciesOptions()}
-                                sx={{ width: 300 }}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField {...params} label="Currency" />}
-                            />
-                        </div>
                     </div>
                     <div className='right-side'>
                         <div className='users'>
                             <h2>Users</h2> 
                             <h3>Change password</h3>
                             <h3>Upload profile picture</h3>
+                            
+                            <input type="file" onChange={handleFileChange} />
+                            <div className='currency'>
+
+                                <h3 className='change-currency'>Change currency</h3>
+
+                                <Autocomplete
+                                    defaultValue={currency}
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={currenciesOptions()}
+                                    sx={{ width: 300 }}
+                                    onChange={handleChange}
+                                    renderInput={(params) => <TextField {...params} label="Currency" />}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,6 +186,12 @@ const SettingsStyled = styled.div`
         height: 100%;
         .users{
             margin-top: 10%;
+            h3{
+                margin-top: 10%;
+            }
+            .currency h3{
+                margin-bottom: 3%;
+            }
         }
     }
 `;

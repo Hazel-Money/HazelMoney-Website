@@ -47,8 +47,6 @@ const LoginSignup = () => {
         password: '',
       })
     }
-
-    
   };
 
   return (
@@ -64,20 +62,20 @@ const LoginSignup = () => {
               <span>
                 {user}
               </span>
-              <input type="text" placeholder='Username' onChange={handleInput("username")}/>
+              <input type="text" placeholder='Username' value={action === 'Sign Up' ? username : loginEmail} onChange={handleInput("username")} required/>
             </div>
           }
           <div className="input">
             <span>
               {emailIcon}
             </span>
-            <input type="email" placeholder='Email' onChange={handleInput("email")}/>
+            <input type="email" placeholder='Email' value={action === 'Sign Up' ? email : loginEmail} onChange={handleInput("email")} required/>
           </div>
           <div className="input">
             <span>
               {pass}
             </span>
-            <input type="password" placeholder='Password' onChange={handleInput("password")}/>
+            <input type="password" placeholder='Password' value={action === 'Sign Up' ? password : loginPassword} onChange={handleInput("password")} required/>
           </div>
         </div>
         <div className='submit-container'>
@@ -87,7 +85,7 @@ const LoginSignup = () => {
           </p>
         </div>
         {loginError && <p className='error'>{loginError}</p>}
-        <div className="submit-btn">
+        <div className={action ==='Login' ? 'submit-btn login' : 'submit-btn signup'}>
             <Button
               name={action==='Login' ? 'Login' : 'Sign Up'}
               bPad={".8rem 1.6rem"}
@@ -193,10 +191,12 @@ const LoginSignupStyled = styled.form`
     cursor: pointer;
   }
   .submit-btn{
-    margin-top: 3vh;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .login{
+   margin-top: 7%;
   }
   .go{
     color: #3c009d;

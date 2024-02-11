@@ -40,9 +40,8 @@ export const GlobalProvider = ({children}) => {
     const [accountName, setAccountName] = useState("All")
     const [accountId, setAccountId] = useState("All")
     const [accountCurrency, setAccountCurrency] = useState(null)
-
-
-
+    const [profilePicture, setProfilePicture] = useState("")
+ 
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
         const year = date.getFullYear();
@@ -168,7 +167,6 @@ export const GlobalProvider = ({children}) => {
         const user = getUserFromCookies();
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/user/total_income`);
-        console.log(response)
         const totalIncome =  response.data.total_income;
         setAccountIncomeAmount(totalIncome);
     }
@@ -195,8 +193,6 @@ export const GlobalProvider = ({children}) => {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             expense.payment_date = formatDate(expense.payment_date);
-            console.log(expense);
-            console.log(is_income);
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
                 ...expense,  
                 is_income    
@@ -699,7 +695,13 @@ export const GlobalProvider = ({children}) => {
         try{
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.get(`${BASE_URL}/account/${accountId}/currency`);
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/user/default_currency`;
+            } else {
+                request = `${BASE_URL}/account/${accountId}/currency`;
+            }
+            const response = await axios.get(request);
             const currency = response.data.currency; 
             setAccountCurrency(currency);
         } catch{
@@ -726,7 +728,7 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
-                request = `${BASE_URL}/user/balance`;
+                request = `${BASE_URL}/user/balance`;   
             } else {
                 request = `${BASE_URL}/account/${accountId}/balance`;
             }
@@ -803,6 +805,7 @@ export const GlobalProvider = ({children}) => {
             setAccountName,
             refreshAccountContent,
             getAccountCurrency,
+            setProfilePicture,
             accountBalance,
             accountCurrency,
             accountName,
@@ -832,6 +835,7 @@ export const GlobalProvider = ({children}) => {
             Incomescategories,
             Expensescategories,
             incomesSliced,
+            profilePicture, 
         }}>
             {children}
         </GlobalContext.Provider>

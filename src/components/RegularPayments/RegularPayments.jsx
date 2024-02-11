@@ -78,7 +78,7 @@ const RegularPaymentsStyled = styled.div`
     .arrow-icons {
       position: relative;
       display: flex;
-      gap: 50vh;
+      gap: 92%;
       i {
         font-size: 24px; 
         cursor: pointer;
