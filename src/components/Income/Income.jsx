@@ -10,14 +10,14 @@ function currencyFormat(num) {
 }
 
 function Income() {
-  const {accountIncome, addIncome,accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
+  const {accountCurrency, getAccountCurrency,accountIncome, addIncome,accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
   
   useEffect(() => {
     sliceIncomes();
   }, [currentIncomeIndex, incomes]);
 
   useEffect(() => {
-    totalIncome();
+    getAccountCurrency();
     getIncomes();
     getIncomesCategories();
     sliceIncomes();
@@ -28,7 +28,7 @@ function Income() {
     <IncomeStyled>
       <InnerLayout>
         <h1>Incomes</h1>
-        <h2 className="total-income">Total Income: <span>${currencyFormat(accountIncomeAmount)}</span></h2>
+        <h2 className="total-income">Total Income: <span>{accountCurrency}{currencyFormat(accountIncomeAmount)}</span></h2>
         <div className="income-content">
           <div className="form-container">
               <Form />
@@ -49,6 +49,7 @@ function Income() {
                   color={categoryColor}
                   indicatorColor="var(--color-green)"
                   deleteItem={deleteIncomes}
+                  accountCurrency={accountCurrency}
               />
             })}
             <div className="arrow-icons">

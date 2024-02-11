@@ -72,7 +72,7 @@ export const GlobalProvider = ({children}) => {
             getIncomes();
             getBalance(); 
             sliceIncomes();
-            totalIncome();
+            accountIncome();
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -159,7 +159,7 @@ export const GlobalProvider = ({children}) => {
             data: { id }
         })
         getIncomes()
-        totalIncome();
+        accountIncome();
         getBalance();
     }
 
@@ -199,7 +199,7 @@ export const GlobalProvider = ({children}) => {
             });
             getExpenses()
             getBalance()
-            totalExpenses()
+            accountExpense()()
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -287,7 +287,7 @@ export const GlobalProvider = ({children}) => {
             data: { id }
         })
         getExpenses();
-        totalExpenses();
+        accountExpense();
         getBalance();
     }
 
@@ -382,7 +382,7 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setLoginError(err.response?.data?.message || "An error occurred6");
+            console.log(err.response?.data?.message || "An error occurred6");
         }
     }
 
@@ -717,6 +717,7 @@ export const GlobalProvider = ({children}) => {
             const responseUser = response.data;
             const balance = responseUser.balance;
             setBalance(balance);
+            console.log(balance)
         } catch{
             console.log("cheiras mal")
         }

@@ -6,13 +6,14 @@ import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
 
 function RegularPayments() {
-  const { getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+  const {accountCurrency, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
 
   useEffect(() => {
     slicePayments();
   }, [currentPaymentIndex, regularPayments]);
 
   useEffect(() => {
+    getAccountCurrency();
     getRegularPayments();
     getIncomesCategories();
     getExpensesCategories();   
@@ -43,6 +44,7 @@ function RegularPayments() {
                   color={categoryColor}
                   indicatorColor={is_income == '1' ? "var(--color-green)" : "red"}
                   deleteItem={deleteRegularPayments}
+                  accountCurrency={accountCurrency}
               />
             })}
             <div className="arrow-icons">

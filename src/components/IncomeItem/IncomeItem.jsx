@@ -18,7 +18,8 @@ function IncomeItem({
     icon,
     color,
     deleteItem,
-    indicatorColor
+    indicatorColor,
+    accountCurrency
 }){
 
   return (
@@ -30,7 +31,7 @@ function IncomeItem({
             <h5>{category}</h5>
             <div className="inner-content">
                 <div className="text">
-                    <p>{dollar} {currencyFormat(amount)}</p>
+                    <p>{accountCurrency} {currencyFormat(amount)}</p>
                     <p>{calender} {payment_date}</p>
                     <p>
                         {comment}
