@@ -168,6 +168,10 @@ export const GlobalProvider = ({children}) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/user/total_income`);
         const totalIncome =  response.data.total_income;
+        if (totalIncome == null){
+            setAccountIncomeAmount("0");
+            return;
+        }
         setAccountIncomeAmount(totalIncome);
     }
 
@@ -297,6 +301,10 @@ export const GlobalProvider = ({children}) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/total_expense`);
             const totalExpenses =  response.data.total_expense;
+            if (totalExpenses == null){
+                setAccountExpenseAmount("0");
+                return;
+            }
             setAccountExpenseAmount(totalExpenses);
         } catch (err) {
             console.log(err.response?.data?.message);
@@ -488,15 +496,17 @@ export const GlobalProvider = ({children}) => {
     }
     
     const addAccount = async (credentials) => {
-        const {user_id, currency} = credentials
+        const {user_id, currency_code} = credentials
         try{
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const currency = JSON.stringify({'code': currency_code});
             const response = await axios.post(`${BASE_URL}/accounts.php`, {
-            ...credentials,
-            user_id,
-            currency,
+                ...credentials,
+                user_id,
+                currency,
             });
+            console.log(response)
             getAccounts()
             Swal.fire({
                 position: "center",
@@ -716,8 +726,11 @@ export const GlobalProvider = ({children}) => {
             const response = await axios.get(`${BASE_URL}/user/balance`);
             const responseUser = response.data;
             const balance = responseUser.balance;
+            if (balance == null){
+                setBalance("0");
+                return;
+            }
             setBalance(balance);
-            console.log(balance)
         } catch{
             console.log("cheiras mal")
         }
@@ -736,6 +749,10 @@ export const GlobalProvider = ({children}) => {
             const response = await axios.get(request);
             const responseUser = response.data;
             const balance = responseUser.balance;
+            if (balance == null){
+                setBalance("0");
+                return;
+            }
             setAccountBalance(balance);
         } catch{
             console.log("cheiras mal")

@@ -42,26 +42,32 @@ function Settings() {
     const [inputState, setInputState] = useState({
         user_id: user.id,
         name: '',
-        currency_code: currency,
+        currency_code: '',
         balance: '',
       });
     
     const { user_id, name, currency_code, balance } = inputState;  
 
 
-    const handleInputChange = (name) => (e) => {
+    const handleInputChange = (name) => (e, newValue) => {
+        let value = e.target ? e.target.value : newValue;
+        if (name === 'currency_code') {
+            value = String(newValue).slice(0, 3);
+        }
         setInputState((prevInputState) => ({
             ...prevInputState,
-            [name]: e.target.value,
+            [name]: value,
         }));
     };
+    
     const handleSubmit = (event) => {
         event.preventDefault();
-        addAccount({...inputState, user_id: user_id});
+        console.log(inputState)
+        addAccount({...inputState, user_id: user_id, currency_code: currency_code});
         setInputState({
         user_id: user.id,
         name: '',
-        currency_code: currency, 
+        currency_code: '', 
         balance: '',
         })
         handleClose();
@@ -98,6 +104,7 @@ function Settings() {
                                     PaperProps={{
                                         component: 'form',
                                         onSubmit: handleSubmit,
+                                        style: { minHeight: '60%', minWidth: '35%' }
                                     }}
                                 >
                                     <DialogTitle>Create account</DialogTitle>
@@ -121,6 +128,15 @@ function Settings() {
                                             type="text"
                                             fullWidth
                                             onChange={handleInputChange('balance')}
+                                        />
+                                        <Autocomplete
+                                            required
+                                            id="currency_code"
+                                            name="currency_code"
+                                            fullWidth
+                                            options={currenciesOptions()}
+                                            onChange={handleInputChange('currency_code')}
+                                            renderInput={(params) => <TextField {...params} label="currency" />}
                                         />
                                     </DialogContent>
                                     <DialogActions>
