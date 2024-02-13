@@ -36,7 +36,7 @@ function Expenses() {
           </div>
           <div className="incomes">
             {expensesSliced.map((expense) => {
-              const {id, account_id , categoryName, amount, is_income, payment_date, description, icon, categoryColor} = expense;
+              const {id, account_id , currency, categoryName, amount, is_income, payment_date, description, icon, categoryColor} = expense;
               return <IncomeItem 
                   key={id}
                   id={id}
@@ -50,7 +50,7 @@ function Expenses() {
                   color={categoryColor}
                   indicatorColor="red"
                   deleteItem={deleteExpense}
-                  accountCurrency={accountCurrency}
+                  currency={currency}
               />
             })}
             <div className="arrow-icons">

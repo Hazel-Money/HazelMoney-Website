@@ -797,7 +797,7 @@ export const GlobalProvider = ({children}) => {
                 position: "center",
                 icon: "error",
                 title: err.response?.data?.message || "és mau",
-                showConfirmButton: true,
+                showConfirmButton: true
             }); 
         }
     }
