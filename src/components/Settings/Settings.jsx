@@ -12,7 +12,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const {setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
+    const {uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
 
     useEffect(() => {
         getCurrencies();
@@ -62,7 +62,6 @@ function Settings() {
     
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputState)
         addAccount({...inputState, user_id: user_id, currency_code: currency_code});
         setInputState({
         user_id: user.id,
@@ -75,15 +74,7 @@ function Settings() {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const imageDataUrl = reader.result;
-                setProfilePicture(imageDataUrl);
-                localStorage.setItem('profilePicture', imageDataUrl);
-            };
-            reader.readAsDataURL(file);
-        }
+        uploadProfilePicture(file);
     };
 
     return (
@@ -153,7 +144,7 @@ function Settings() {
                             <h3>Change password</h3>
                             <h3>Upload profile picture</h3>
                             
-                            <input type="file" onChange={handleFileChange} />
+                            <input type="file" name="image" onChange={handleFileChange} />
                             <div className='currency'>
 
                                 <h3 className='change-currency'>Change currency</h3>

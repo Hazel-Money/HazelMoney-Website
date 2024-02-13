@@ -203,7 +203,7 @@ export const GlobalProvider = ({children}) => {
             });
             getExpenses()
             getBalance()
-            accountExpense()()
+            accountExpense()
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -755,7 +755,50 @@ export const GlobalProvider = ({children}) => {
             }
             setAccountBalance(balance);
         } catch{
-            console.log("cheiras mal")
+            console.log("cheiras mal 2")
+        }
+    }
+
+    const getProfilePicture = async () => {
+        try{
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/user/profile_picture`, {
+                responseType: 'blob'
+            });
+
+            const imageUrl = URL.createObjectURL(response.data);
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            setProfilePicture(imageUrl);
+        } catch{
+            console.log("cheiras a coco 4")
+        }
+    }
+
+    const uploadProfilePicture = async (file) => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const formData = new FormData()
+            formData.append("image", file)
+            const response = await axios.post(`${BASE_URL}/user/profile_picture`, formData);
+            getProfilePicture();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Profile picture successfully changed",
+                showConfirmButton: false,
+                timer: 1500
+              });
+        } catch (err) {
+            console.log(err.response?.data?.message || "cheiras a coco 5");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "és mau",
+                showConfirmButton: true,
+            }); 
         }
     }
 
@@ -792,6 +835,7 @@ export const GlobalProvider = ({children}) => {
             deleteExpense,
             totalExpenses,
             transactionHistory,
+            uploadProfilePicture,
             getAllTransactions,
             registerUser,
             loginUser,
@@ -824,6 +868,7 @@ export const GlobalProvider = ({children}) => {
             refreshAccountContent,
             getAccountCurrency,
             setProfilePicture,
+            getProfilePicture,
             accountBalance,
             accountCurrency,
             accountName,

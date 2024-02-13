@@ -22,7 +22,6 @@ function Dashboard() {
     accountExpense()
   }, [])
 
-
   const balanceColorClass = balance >= 0 ? 'green-text' : 'red-text';
 
   return (

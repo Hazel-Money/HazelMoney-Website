@@ -10,12 +10,13 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const {setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const {getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
         getAccounts();
         getCurrency();
         getBalance();
+        getProfilePicture();
     }, [])
 
 
@@ -23,13 +24,6 @@ function Navigation({active, setActive}) {
     useEffect(() => {
         refreshAccountContent();
     }, [accountId]);
-
-    useEffect(() => {
-        const savedProfilePicture = localStorage.getItem('profilePicture');
-        if (savedProfilePicture) {
-            setProfilePicture(savedProfilePicture);
-        }
-    }, []);
 
     useEffect(() => {
         const storedAccountId = localStorage.getItem('accountId');
@@ -57,14 +51,10 @@ function Navigation({active, setActive}) {
         localStorage.setItem('accountName', selectedAccountName);
     };
 
-    if (!profilePicture){
-        setProfilePicture(avatar)
-    }
-
     return (
         <NavStyled>
             <div className="user-con">
-                {profilePicture && <img src={profilePicture} alt="Profile" />}
+                <img src={profilePicture} />
                 <div className="text">
                     <h2>{user.username}</h2>
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>

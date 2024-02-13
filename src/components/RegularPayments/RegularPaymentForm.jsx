@@ -121,6 +121,7 @@ function RegularPaymentForm() {
           </div>
           <div className="selects input-control">
             <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
+            <option value="" disabled>Select account</option>
             {accounts.map((account) => (
                 <option key={account.id} value={account.id}>
                 {account.name}
