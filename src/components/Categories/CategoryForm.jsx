@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import Button from '../Button/Button';
 import { useGlobalContext } from '../../context/globalContext';
 import * as Icons from '../../utils/Icons';
+import { plus } from '../../utils/Icons';
+
 
 
 function CategoryForm() {
-  const {error, setError, getUserFromCookies, addCategory } = useGlobalContext();
+  const {language,error, setError, getUserFromCookies, addCategory } = useGlobalContext();
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [selectedIconName, setSelectedIconName] = useState(null);
   const user = getUserFromCookies();
@@ -53,7 +55,7 @@ function CategoryForm() {
               type="text"
               value={name}
               name="name"
-              placeholder="Category name"
+              placeholder={language === 'Portuguese' ? 'Nome da categoria' : 'Category name'}
               onChange={handleInput("name")}
             />
           </div>
@@ -65,13 +67,13 @@ function CategoryForm() {
               id="is_income"
               onChange={handleInput("is_income")}
             >
-              <option value="" disabled>Select Option</option>
-              <option value="1">Income</option>
-              <option value="0">Expense</option>
+              <option value="" disabled>{language === 'Portuguese' ? 'Selecionar opção' : 'Select option'}</option>
+              <option value="1">{language === 'Portuguese' ? 'Receita' : 'Income'}</option>
+              <option value="0">{language === 'Portuguese' ? 'Despesa' : 'Expense'}</option>
             </select>
           </div>
           <div className="color-picker">
-            <label>Color picker</label>
+            <label>{language === 'Portuguese' ? 'Selecionar cor' : 'Color picker'}</label>
             <input
               required
               type="color"
@@ -83,8 +85,9 @@ function CategoryForm() {
           </div>
           <div className="submit-btn">
             <Button
-              name={"Add Category"}
+              name={language === 'Portuguese' ? 'Adicionar categoria' : 'Add category'}
               bPad={".8rem 1.6rem"}
+              icon={plus}
               bRad={"30px"}
               bg={"var(--color-accent"}
               color={"#fff"}
@@ -103,7 +106,7 @@ function CategoryForm() {
             )}
           </div>
         <div className="icon-selection">
-          <label>Select Icon:</label>
+          <label>{language === 'Portuguese' ? 'Selecionar Icon:' : 'Select Icon:'}</label>
           <div className="icon-container">
             {Object.keys(Icons).map((iconName) => (
               <div

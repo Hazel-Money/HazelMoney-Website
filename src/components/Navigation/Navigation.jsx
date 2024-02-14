@@ -10,7 +10,7 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const {getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const {language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
         getAccounts();
@@ -62,20 +62,22 @@ function Navigation({active, setActive}) {
             </div>
             <ul className="menu-items">
                 {menuItems.map((item) => {
-                    return <li
-                        key={item.id}
-                        onClick={() => setActive(item.id)}
-                        className={active === item.id ? 'active': ''}
-                    >
-                        {item.icon}
-                        <span>{item.title}</span>
-                    </li>
+                    return (
+                        <li
+                            key={item.id}
+                            onClick={() => setActive(item.id)}
+                            className={active === item.id ? 'active' : ''}
+                        >
+                            {item.icon}
+                            <span>{language === 'Portuguese' ? item.title_pt : item.title}</span>
+                        </li>
+                    );
                 })}
             </ul>
             <div className="bottom-nav">
                 <div className="bottom-nav-left">
                     <li onClick={handleSignOut}>
-                        {signout} Sign Out
+                        {signout} {language === 'Portuguese' ? 'Sair' : 'Sign Out'}
                     </li>
                 </div>
                 <div className="bottom-nav-right">

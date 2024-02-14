@@ -12,7 +12,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function Form() {
-    const { addIncome, Incomescategories, error, setError, accounts, getAccounts } = useGlobalContext();
+    const {language, addIncome, Incomescategories, error, setError, accounts, getAccounts } = useGlobalContext();
     const [inputState, setInputState] = useState({
       account_id: '',
       category_id: '',
@@ -70,7 +70,7 @@ function Form() {
               type="text"
               value={amount}
               name={"amount"}
-              placeholder="Income amount"
+              placeholder={language === 'Portuguese' ? 'Valor da receita' : 'Income amount'}
               onChange={handleInput("amount")}
             />
           </div>
@@ -79,7 +79,7 @@ function Form() {
               required
               locale="pt"
               id="payment_date"
-              placeholderText="Enter a date"
+              placeholderText={language === 'Portuguese' ? 'Insira uma data' : 'Enter a date'}
               selected={useCurrentTime ? new Date() : payment_date}
               dateFormat="Pp"
               showTimeSelect
@@ -89,7 +89,7 @@ function Form() {
             />
             <Button
                 onClick={toggleCurrentTime}
-                name={useCurrentTime ? 'Choose' : 'Now'} 
+                name={useCurrentTime ? (language === 'Portuguese' ? 'Seleciona' : 'Choose') : (language === 'Portuguese' ? 'Agora' : 'Now')} 
                 icon={date}
                 bPad={".8rem 1.6rem"}
                 bRad={"30px"}
@@ -102,7 +102,7 @@ function Form() {
           </div>
           <div className="selects input-control">
             <select required value={category_id} name="category_id" id="category_id" onChange={handleInput("category_id")}>
-              <option value="" disabled>Select category</option>
+              <option value="" disabled>{language === 'Portuguese' ? 'Selecionar categoria' : 'Select category'}</option>
               {Incomescategories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -112,7 +112,7 @@ function Form() {
           </div>
           <div className="selects input-control">
                 <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
-                <option value="" disabled>Select account</option>
+                <option value="" disabled>{language === 'Portuguese' ? 'Selecionar conta' : 'Select account'}</option>
                 {accounts.map((account) => (
                     <option key={account.id} value={account.id}>
                     {account.name}
@@ -125,7 +125,7 @@ function Form() {
               value={description}
               name={"description"}
               id="description"
-              placeholder="Enter a description"
+              placeholder={language === 'Portuguese' ? 'Insira uma descrição' : 'Enter a description'}
               cols="30"
               rows="4"
               onChange={handleInput("description")}
@@ -133,7 +133,7 @@ function Form() {
           </div>
           <div className="submit-btn">
             <Button
-              name={"Add income"}
+              name={language === 'Portuguese' ? 'Adicionar receita' : 'Add income'}
               icon={plus}
               bPad={".8rem 1.6rem"}
               bRad={"30px"}

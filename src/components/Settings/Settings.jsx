@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -8,11 +8,12 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const {uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies} = useGlobalContext();
+    const { language, setLanguage, uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
 
     useEffect(() => {
         getCurrencies();
@@ -77,17 +78,21 @@ function Settings() {
         uploadProfilePicture(file);
     };
 
+    const handleLanguageChange = (event) => {
+        setLanguage(event.target.value);
+    };
+
     return (
         <SettingsStyled>
             <InnerLayout>
                 <div className='main'>
-                    <h1>Settings</h1>
+                    <h1>{language === 'Portuguese' ? 'Configurações' : 'Settings'}</h1>
                     <div className='left-side'>
                         <div className='accounts'>
-                            <h2>Accounts</h2>
+                            <h2>{language === 'Portuguese' ? 'Contas' : 'Accounts'}</h2>
                             <div className="form-container">
                                 <Button variant="outlined" onClick={handleClickOpen}> 
-                                    Create account 
+                                    {language === 'Portuguese' ? 'Criar conta' : 'Create account'}
                                 </Button>
                                 <Dialog
                                     open={open}
@@ -98,14 +103,14 @@ function Settings() {
                                         style: { minHeight: '60%', minWidth: '35%' }
                                     }}
                                 >
-                                    <DialogTitle>Create account</DialogTitle>
+                                    <DialogTitle>{language === 'Portuguese' ? 'Criar conta' : 'Create account'}</DialogTitle>
                                     <DialogContent>
                                         <TextField
                                             required
                                             margin="dense"
                                             id="name"
                                             name="name"
-                                            label="Account Name"
+                                            label={language === 'Portuguese' ? 'Nome da Conta' : 'Account Name'}
                                             type="text"
                                             fullWidth
                                             onChange={handleInputChange('name')}
@@ -115,7 +120,7 @@ function Settings() {
                                             margin="dense"
                                             id="balance"
                                             name="balance"
-                                            label="Balance"
+                                            label={language === 'Portuguese' ? 'Saldo' : 'Balance'}
                                             type="text"
                                             fullWidth
                                             onChange={handleInputChange('balance')}
@@ -127,12 +132,12 @@ function Settings() {
                                             fullWidth
                                             options={currenciesOptions()}
                                             onChange={handleInputChange('currency_code')}
-                                            renderInput={(params) => <TextField {...params} label="currency" />}
+                                            renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
                                         />
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button type="submit">Create</Button>
+                                        <Button onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                                        <Button type="submit">{language === 'Portuguese' ? 'Criar' : 'Create'}</Button>
                                     </DialogActions>
                                 </Dialog>
                             </div>
@@ -140,14 +145,25 @@ function Settings() {
                     </div>
                     <div className='right-side'>
                         <div className='users'>
-                            <h2>Users</h2> 
-                            <h3>Change password</h3>
-                            <h3>Upload profile picture</h3>
+                            <h2>{language === 'Portuguese' ? 'Utilizadores' : 'Users'}</h2> 
+                            <div className='language'>
+                                <h3>{language === 'Portuguese' ? 'Idioma' : 'Language'}</h3>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={language}
+                                    onChange={handleLanguageChange}
+                                >
+                                    <MenuItem value={"English"}>English</MenuItem>
+                                    <MenuItem value={"Portuguese"}>Português</MenuItem>
+                                </Select>
+                            </div>
+                            <h3>{language === 'Portuguese' ? 'Carregar foto de perfil' : 'Upload profile picture'}</h3>
                             
                             <input type="file" name="image" onChange={handleFileChange} />
                             <div className='currency'>
 
-                                <h3 className='change-currency'>Change currency</h3>
+                                <h3 className='change-currency'>{language === 'Portuguese' ? 'Alterar moeda' : 'Change currency'}</h3>
 
                                 <Autocomplete
                                     defaultValue={currency}
@@ -156,7 +172,7 @@ function Settings() {
                                     options={currenciesOptions()}
                                     sx={{ width: 300 }}
                                     onChange={handleChange}
-                                    renderInput={(params) => <TextField {...params} label="Currency" />}
+                                    renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
                                 />
                             </div>
                         </div>
@@ -184,6 +200,9 @@ const SettingsStyled = styled.div`
             .form-container{
                 margin-top: 2vh;
                 width: 35%;
+            }
+            .language{
+                margin-top: 4vh;
             }
         }
     }

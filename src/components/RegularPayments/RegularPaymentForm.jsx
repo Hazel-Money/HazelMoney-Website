@@ -12,7 +12,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function RegularPaymentForm() {
-  const {error, setError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies, accounts, getAccounts  } = useGlobalContext();
+  const {language,error, setError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies, accounts, getAccounts  } = useGlobalContext();
 
   const user = getUserFromCookies();
 
@@ -78,9 +78,9 @@ function RegularPaymentForm() {
               id="is_income"
               onChange={handleInput("is_income")}
             >
-              <option value="" disabled>Type</option>
-              <option value="1">Income</option>
-              <option value="0">Expense</option>
+              <option value="" disabled>{language === 'Portuguese' ? 'Tipo' : 'Type'}</option>
+              <option value="1">{language === 'Portuguese' ? 'Receita' : 'Income'}</option>
+              <option value="0">{language === 'Portuguese' ? 'Despesa' : 'Expense'}</option>
             </select>
           </div>
           <div className="selects input-control">
@@ -91,7 +91,7 @@ function RegularPaymentForm() {
             id="category_id" 
             onChange={handleInput("category_id")}
             >
-              <option value="" disabled>Category</option>
+              <option value="" disabled>{language === 'Portuguese' ? 'Categoria' : 'Category'}</option>
               {is_income == '0' ? Expensescategories.map((category) => (
                 <option key={category.id} value={category.id}>
                     {category.name}
@@ -111,7 +111,7 @@ function RegularPaymentForm() {
             id="frequency_id" 
             onChange={handleInput("frequency_id")}
             >
-              <option value="" disabled>How often</option>
+              <option value="" disabled>{language === 'Portuguese' ? 'Frequência' : 'How often'}</option>
               {frequencies.map((frequency) => (
                 <option key={frequency.id} value={frequency.id}>
                   {frequency.name}
@@ -121,7 +121,7 @@ function RegularPaymentForm() {
           </div>
           <div className="selects input-control">
             <select required value={account_id} name="account_id" id="account_id" onChange={handleInput("account_id")} >
-            <option value="" disabled>Select account</option>
+            <option value="" disabled>{language === 'Portuguese' ? 'Selecionar conta' : 'Select account'}</option>
             {accounts.map((account) => (
                 <option key={account.id} value={account.id}>
                 {account.name}
@@ -135,7 +135,7 @@ function RegularPaymentForm() {
               type="text"
               value={amount}
               name={"amount"}
-              placeholder="Payment amount"
+              placeholder={language === 'Portuguese' ? 'Montante' : 'Payment amount'}
               onChange={handleInput("amount")}
             />
           </div>
@@ -144,7 +144,7 @@ function RegularPaymentForm() {
               required
               locale="pt"
               id="start_date"
-              placeholderText="Enter a date"
+              placeholderText={language === 'Portuguese' ? 'Inserir data' : 'Enter a data'}
               selected={useCurrentTime ? new Date() : start_date}
               dateFormat="Pp"
               showTimeSelect
@@ -154,7 +154,7 @@ function RegularPaymentForm() {
             />
             <Button
                 onClick={toggleCurrentTime}
-                name={useCurrentTime ? 'Choose' : 'Now'} 
+                name={useCurrentTime ? (language === 'Portuguese' ? 'Seleciona' : 'Choose') : (language === 'Portuguese' ? 'Agora' : 'Now')} 
                 icon={date}
                 bPad={".8rem 1.6rem"}
                 bRad={"30px"}
@@ -171,14 +171,15 @@ function RegularPaymentForm() {
               type="text"
               value={description}
               name="description"
-              placeholder="Description"
+              placeholder={language === 'Portuguese' ? 'Descrição' : 'Description'}
               onChange={handleInput("description")}
             />
           </div>
           <div className="submit-btn">
             <Button
-              name={"Add Regular Payment"}
+              name={language === 'Portuguese' ? 'Adicionar pagamento regular' : "Add Regular Payment"}
               bPad={".8rem 1.6rem"}
+              icon={plus}
               bRad={"30px"}
               bg={"var(--color-accent"}
               color={"#fff"}

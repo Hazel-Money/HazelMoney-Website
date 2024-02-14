@@ -10,7 +10,7 @@ function currencyFormat(num) {
 }
 
 function Dashboard() {
-  const {accountBalance, accountCurrency, getAccountCurrency, accountIncome, accountExpense, accountIncomeAmount, accountExpenseAmount, totalExpenses, totalIncome, totalIncomeAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
+  const {language, accountBalance, accountCurrency, getAccountCurrency, accountIncome, accountExpense, accountIncomeAmount, accountExpenseAmount, totalExpenses, totalIncome, totalIncomeAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
   //Render data when running website
   useEffect(() => {
@@ -28,24 +28,24 @@ function Dashboard() {
     <DashBoardStyled>
       <InnerLayout>
         <div className="stats-con">
-          <h1 className='h1-transaction'>All Transactions</h1>
-          <h2 className='h2-history'>Recent History</h2>
+          <h1 className='h1-transaction'>{language === 'Portuguese' ? 'Transações' : 'All transactions'}</h1>
+          <h2 className='h2-history'>{language === 'Portuguese' ? 'Histórico' : 'Recent history'}</h2>
           <div className="chart-con">
             <div className="amount-con">
               <div className="income">
-                <h2>Total Income</h2>
+                <h2>{language === 'Portuguese' ? 'Total Receitas' : 'Total Income'}</h2>
                 <p>
                   {accountCurrency} {currencyFormat(accountIncomeAmount)}
                 </p>
               </div>
               <div className="expense">
-                <h2>Total Expense</h2>
+                <h2>{language === 'Portuguese' ? 'Total Despesas' : 'Total Expense'}</h2>
                 <p>
                   {accountCurrency} {currencyFormat(accountExpenseAmount)}
                 </p>
               </div>
               <div className="balance">
-                <h2>Total Balance</h2>
+                <h2>{language === 'Portuguese' ? 'Total Saldo' : 'Total Balance'}</h2>
                 <p className={balanceColorClass}>
                   {accountCurrency} {currencyFormat(accountBalance)}
                 </p>

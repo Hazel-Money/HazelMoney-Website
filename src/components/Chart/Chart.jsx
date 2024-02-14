@@ -35,7 +35,7 @@ function Chart() {
         return datesArray;
     }
 
-    const {transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories} = useGlobalContext()
+    const {language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories} = useGlobalContext()
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
@@ -116,20 +116,20 @@ function Chart() {
             <div className="sales">
                 <div className="sales_details">
                 <FormControl>
-                <InputLabel id="demo-simple-select-label">Chart</InputLabel>
+                <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Gráfico' : 'Chart'}</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={chart}
-                    label="Chart"
+                    label={language === 'Portuguese' ? 'Gráfico' : 'Chart'}
                     onChange={handleChange}
                 >
-                    <MenuItem value={"bar"}>Bar</MenuItem>
-                    <MenuItem value={"pie"}>Pie</MenuItem>
+                    <MenuItem value={"bar"}>{language === 'Portuguese' ? 'Barras' : 'Bar'}</MenuItem>
+                    <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
                 </Select>
                 </FormControl>
                     <div>
-                        <h5>PAST 30 DAY</h5>
+                        <h5>{language === 'Portuguese' ? 'ÚLTIMOS 30 DIAS' : 'PAST 30 DAY'}</h5>
                     </div>
                 </div>
                 {chart === "bar" ? 
@@ -159,7 +159,7 @@ function Chart() {
                 : (
                     <div className="sales_pies">
                       <div className="income_pie  text-center">
-                        <h1>Incomes</h1>
+                        <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
                         <Box
                           sx={{
                             float: 'left', 
@@ -195,7 +195,7 @@ function Chart() {
                       </div>        
                       {/* Expenses Pie */}
                       <div className="expense_pie text-center">
-                        <h1>Expenses</h1>
+                        <h1>{language === 'Portuguese' ? 'Despesas' : 'Expenses'}</h1>
                         <Box
                           sx={{
                             float: 'left', 

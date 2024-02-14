@@ -41,6 +41,7 @@ export const GlobalProvider = ({children}) => {
     const [accountId, setAccountId] = useState("All")
     const [accountCurrency, setAccountCurrency] = useState(null)
     const [profilePicture, setProfilePicture] = useState("")
+    const [language, setLanguage] = useState("English")
  
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
@@ -869,6 +870,8 @@ export const GlobalProvider = ({children}) => {
             getAccountCurrency,
             setProfilePicture,
             getProfilePicture,
+            setLanguage,
+            language, 
             accountBalance,
             accountCurrency,
             accountName,

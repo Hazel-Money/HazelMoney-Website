@@ -6,7 +6,7 @@ import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
 
 function RegularPayments() {
-  const {accountCurrency, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+  const {language,accountCurrency, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
 
   useEffect(() => {
     slicePayments();
@@ -23,7 +23,7 @@ function RegularPayments() {
   return (
     <RegularPaymentsStyled>
       <InnerLayout>
-        <h1>Add regular payment</h1>
+        <h1>{language === 'Portuguese' ? 'Adicionar pagamento regular' : 'Add regular payment'}</h1> 
         <div className='payment-content'>
           <div className="form-container">
             <RegularPaymentForm />
@@ -74,6 +74,7 @@ const RegularPaymentsStyled = styled.div`
       display: flex;
       gap: 2rem;
       .payment{
+        margin-top: 5vh;
         flex: 1;
       }
     }
