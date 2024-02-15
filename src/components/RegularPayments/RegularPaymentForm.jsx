@@ -105,18 +105,28 @@ function RegularPaymentForm() {
           </div>
           <div className="selects input-control">
             <select 
-            required 
-            value={frequency_id} 
-            name="frequency_id" 
-            id="frequency_id" 
-            onChange={handleInput("frequency_id")}
+              required 
+              value={frequency_id} 
+              name="frequency_id" 
+              id="frequency_id" 
+              onChange={handleInput("frequency_id")}
             >
               <option value="" disabled>{language === 'Portuguese' ? 'Frequência' : 'How often'}</option>
-              {frequencies.map((frequency) => (
-                <option key={frequency.id} value={frequency.id}>
-                  {frequency.name}
-                </option>
-              ))}
+              {language === 'Portuguese' ? (
+                <>
+                  <option value="1">Todos os dias</option>
+                  <option value="2">Todas as semanas</option>
+                  <option value="3">Todos os meses</option>
+                  <option value="4">Todos os quartis</option>
+                  <option value="5">Todos os anos</option>
+                </>
+              ) : (
+                frequencies.map((frequency) => (
+                  <option key={frequency.id} value={frequency.id}>
+                    {frequency.name}
+                  </option>
+                ))
+              )}
             </select>
           </div>
           <div className="selects input-control">

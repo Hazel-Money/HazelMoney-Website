@@ -20,7 +20,7 @@ function RegularPaymentsItem({
     color,
     deleteItem,
     indicatorColor,
-    accountCurrency
+    currency
 }){
   return (
     <RegularPaymentsItemStyled indicator={indicatorColor}>
@@ -31,7 +31,7 @@ function RegularPaymentsItem({
             <h5>{category}</h5>
             <div className="inner-content">
                 <div className="text">
-                    <p>{accountCurrency} {currencyFormat(amount)}</p>
+                    <p>{currency} {currencyFormat(amount)}</p>
                     <p>{calender} {next_payment_date}</p>
                     <p>
                         {comment}

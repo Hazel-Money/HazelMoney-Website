@@ -30,7 +30,7 @@ function RegularPayments() {
           </div>
           <div className="payment">
             {paymentsSliced.map((payment) => {
-              const {id, account_id , categoryName, amount, is_income, next_payment_date, description, icon, categoryColor} = payment;
+              const {id, account_id , currency,categoryName, amount, is_income, next_payment_date, description, icon, categoryColor} = payment;
               return <RegularPaymentsItem
                   key={id}
                   id={id}
@@ -44,7 +44,7 @@ function RegularPayments() {
                   color={categoryColor}
                   indicatorColor={is_income == '1' ? "var(--color-green)" : "red"}
                   deleteItem={deleteRegularPayments}
-                  accountCurrency={accountCurrency}
+                  currency={currency}
               />
             })}
             <div className="arrow-icons">

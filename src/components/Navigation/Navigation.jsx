@@ -4,6 +4,15 @@ import avatar from '../../img/avatar.png'
 import { signout, settings } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -51,10 +60,72 @@ function Navigation({active, setActive}) {
         localStorage.setItem('accountName', selectedAccountName);
     };
 
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const [inputState, setInputState] = useState({
+        user_id: user.id,
+        name: '',
+      });
+    
+    const { user_id, name } = inputState;  
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        //addAccount({...inputState, user_id: user_id, currency_code: currency_code});
+        setInputState({
+        user_id: user.id,
+        name: '',
+        })
+        handleClose();
+    };
+
+    const handleInputChange = (name) => (e) => {
+        setInputState({ ...inputState, [name]: e.target.value });
+    };
+
     return (
         <NavStyled>
             <div className="user-con">
-                <img src={profilePicture} />
+                <div className="form-container">
+                    <div className="pfp-container" onClick={handleClickOpen}> 
+                        <img src={profilePicture} />
+                    </div>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            component: 'form',
+                            onSubmit: handleSubmit,
+                            style: { minHeight: '40%', minWidth: '35%' }
+                        }}
+                    >
+                        <DialogTitle>{language === 'Portuguese' ? 'Criar conta' : 'Create account'}</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                required
+                                margin="dense"
+                                id="name"
+                                name="name"
+                                label={language === 'Portuguese' ? 'Nome da Conta' : 'Account Name'}
+                                type="text"
+                                fullWidth
+                                onChange={handleInputChange('name')}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                            <Button type="submit">{language === 'Portuguese' ? 'Criar' : 'Create'}</Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
                 <div className="text">
                     <h2>{user.username}</h2>
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
@@ -120,15 +191,18 @@ const NavStyled = styled.nav`
         display: flex;
         align-items: center;
         gap: 1rem;
-        img{
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #fcf6f9;
-            border: 2px solid #FFFFFF;
-            padding: .2rem;
-            box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
+        .pfp-container {
+            cursor: pointer;
+            img{
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                object-fit: cover;
+                background: #fcf6f9;
+                border: 2px solid #FFFFFF;
+                padding: .2rem;
+                box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
+            }
         }
         h2{
             color: rgba(34, 34, 96, 1);

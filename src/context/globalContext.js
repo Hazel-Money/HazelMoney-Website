@@ -517,7 +517,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
             });
         } catch (err){
-            console.log(err.response?.data?.message || "nao ha contas pa ninguem");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Algo de errado aconteceu",
+                showConfirmButton: true
+            }); 
         }
     }
 
@@ -683,8 +688,7 @@ export const GlobalProvider = ({children}) => {
                 position: "center",
                 icon: "error",
                 title: "You must select a currency",
-                showConfirmButton: false,
-                timer: 1500
+                showConfirmButton: true
             }); 
         }
     }
@@ -812,6 +816,7 @@ export const GlobalProvider = ({children}) => {
         accountExpense();
         getAccountCurrency();
         getAccountBalance();
+        getBalance();
     }
 
     useEffect(() => {

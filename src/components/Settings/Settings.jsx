@@ -13,14 +13,14 @@ import Select from '@mui/material/Select';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const { language, setLanguage, uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
+    const {language, setLanguage, uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
 
     useEffect(() => {
         getCurrencies();
         getCurrency();
     }, [])
 
-    const currenciesOptions = () => {
+    const getCurrenciesOptions = () => {
         return currencies.map((currency) => `${currency.code} - ${currency.name}`);
     }
 
@@ -43,12 +43,12 @@ function Settings() {
     const [inputState, setInputState] = useState({
         user_id: user.id,
         name: '',
-        currency_code: '',
+        currency_code: "USD",
         balance: '',
       });
     
     const { user_id, name, currency_code, balance } = inputState;  
-
+    const currenciesOptions = getCurrenciesOptions();
 
     const handleInputChange = (name) => (e, newValue) => {
         let value = e.target ? e.target.value : newValue;
@@ -63,12 +63,15 @@ function Settings() {
     
     const handleSubmit = (event) => {
         event.preventDefault();
-        addAccount({...inputState, user_id: user_id, currency_code: currency_code});
+
+        const amountInCents = (parseFloat(inputState.balance) * 100).toString();
+
+        addAccount({...inputState, user_id: user_id, currency_code: currency_code, balance: amountInCents });
         setInputState({
-        user_id: user.id,
-        name: '',
-        currency_code: '', 
-        balance: '',
+            user_id: user.id,
+            name: '',
+            currency_code: '', 
+            balance: '',
         })
         handleClose();
     };
@@ -100,7 +103,7 @@ function Settings() {
                                     PaperProps={{
                                         component: 'form',
                                         onSubmit: handleSubmit,
-                                        style: { minHeight: '60%', minWidth: '35%' }
+                                        style: { minHeight: '40%', minWidth: '35%' }
                                     }}
                                 >
                                     <DialogTitle>{language === 'Portuguese' ? 'Criar conta' : 'Create account'}</DialogTitle>
@@ -125,14 +128,16 @@ function Settings() {
                                             fullWidth
                                             onChange={handleInputChange('balance')}
                                         />
+                                        
                                         <Autocomplete
                                             required
+                                            defaultValue={currenciesOptions[0]}
                                             id="currency_code"
                                             name="currency_code"
                                             fullWidth
-                                            options={currenciesOptions()}
+                                            options={currenciesOptions}
                                             onChange={handleInputChange('currency_code')}
-                                            renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
+                                            renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda *' : 'Currency *'} />}
                                         />
                                     </DialogContent>
                                     <DialogActions>
@@ -169,7 +174,7 @@ function Settings() {
                                     defaultValue={currency}
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={currenciesOptions()}
+                                    options={getCurrenciesOptions()}
                                     sx={{ width: 300 }}
                                     onChange={handleChange}
                                     renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
@@ -199,7 +204,6 @@ const SettingsStyled = styled.div`
             margin-top: 10%;
             .form-container{
                 margin-top: 2vh;
-                width: 35%;
             }
             .language{
                 margin-top: 4vh;
