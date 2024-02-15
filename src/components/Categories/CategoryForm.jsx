@@ -17,7 +17,7 @@ function CategoryForm() {
     name: '',
     is_income: '',
     icon: '',
-    color: '',
+    color: '#000000',
   });
 
   const { user_id, name, is_income, icon, color } = inputState;
@@ -35,7 +35,7 @@ function CategoryForm() {
       name: '',
       is_income: '',
       icon: '',
-      color: '',
+      color: '#000000',
     })
   };
 
@@ -91,7 +91,7 @@ function CategoryForm() {
               bRad={"30px"}
               bg={"var(--color-accent"}
               color={"#fff"}
-              hColor={"red"}
+              hColor={"red"}  
             />
           </div>
         </div>

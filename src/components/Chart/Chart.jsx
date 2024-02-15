@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
 import { format } from "date-fns";
@@ -134,7 +134,7 @@ function Chart() {
                 </div>
                 {chart === "bar" ? 
                 <div className="sales_graph">
-                    <ResponsiveContainer width="100%" height="350%">
+                  <ResponsiveContainer width="100%" height="350%">
                     <BarChart
                         width={500}
                         height={200}
@@ -145,16 +145,16 @@ function Chart() {
                             left: 20,
                             bottom: 5,
                         }}
-                        >
+                    >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="Expense" stackId="a" fill="red" />
-                        <Bar dataKey="Income" stackId="a" fill="var(--color-green)" />
-                     </BarChart>
-                    </ResponsiveContainer>
+                        <Bar dataKey="Expense" stackId="a" fill="red" name={language === 'Portuguese' ? 'Despesa' : 'Expense'} />
+                        <Bar dataKey="Income" stackId="a" fill="var(--color-green)" name={language === 'Portuguese' ? 'Receita' : 'Income'} />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
                 : (
                     <div className="sales_pies">
