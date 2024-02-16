@@ -12,7 +12,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function RegularPaymentForm() {
-  const {language,error, setError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies, accounts, getAccounts  } = useGlobalContext();
+  const {language,setPaymentError, paymentError, addRegularPayment, getUserFromCookies, Incomescategories,Expensescategories, frequencies, accounts, getAccounts  } = useGlobalContext();
 
   const user = getUserFromCookies();
 
@@ -30,7 +30,7 @@ function RegularPaymentForm() {
 
   const handleInput = (name) => (e) => {
     setInputState({ ...inputState, [name]: e.target.value });
-    setError('');
+    setPaymentError('');
   };
 
   const handleSubmit = (e) => {
@@ -68,6 +68,7 @@ function RegularPaymentForm() {
   
   return (
     <RegularPaymentFormStyled onSubmit={handleSubmit} autoComplete="off">
+      {paymentError && <p className='error'>{paymentError}</p>}
       <div className="form-content">
         <div className="form-inputs">
           <div className="selects input-control">

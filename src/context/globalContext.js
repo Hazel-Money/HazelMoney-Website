@@ -28,8 +28,9 @@ export const GlobalProvider = ({children}) => {
     const [currencies, setCurrencies] = useState([])
     const [accounts, setAccounts] = useState([])
     const [error, setError] = useState(null)
+    const [expenseError, setExpenseError] = useState(null)
+    const [paymentError, setPaymentError] = useState(null)
     const [historyError, setHistoryError] = useState(null)
-    const [loginError, setLoginError] = useState(null)
     const [currency, setCurrency] = useState('USD')
     const [balance, setBalance] = useState(null)
     const [accountBalance, setAccountBalance] = useState(null)
@@ -82,7 +83,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
             });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred1");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            }); 
         }
     };
     
@@ -120,7 +126,7 @@ export const GlobalProvider = ({children}) => {
                 setIncomes([]);
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred2");
+            setError(err.response?.data?.message || "An error occurred");
             console.error("Error in getIncomes:", err);
         }
     };
@@ -213,7 +219,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred3");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            }); 
         }
     };
     
@@ -252,7 +263,7 @@ export const GlobalProvider = ({children}) => {
                 setExpenses([]);
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred4");
+            setError(err.response?.data?.message || "An error occurred");
         }
     }
 
@@ -363,7 +374,7 @@ export const GlobalProvider = ({children}) => {
                 setTransactions(transactionsWithCategories);
             }
         } catch (err) {
-            setHistoryError(err.response?.data?.message || "An error occurred5");
+            setHistoryError(err.response?.data?.message || "An error occurred");
         }
     }
 
@@ -391,7 +402,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            console.log(err.response?.data?.message || "An error occurred6");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            }); 
         }
     }
 
@@ -407,7 +423,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred7");
+            setError(err.response?.data?.message || "An error occurred");
         }
     };
 
@@ -423,7 +439,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred8");
+            setError(err.response?.data?.message || "An error occurred");
         }
     };
 
@@ -440,7 +456,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
-            setLoginError(err.response?.data?.message || "An error occurred9");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            });         
         }
     }
 
@@ -471,7 +492,12 @@ export const GlobalProvider = ({children}) => {
               window.location.reload(false);
 
         } catch (err) {
-            setLoginError(err.response?.data?.message || "An error occurred");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            }); 
         }
     }
 
@@ -528,7 +554,7 @@ export const GlobalProvider = ({children}) => {
 
     const logout = () => {
         Swal.fire({
-            title: "Do you to sign out ?",
+            title: "Do you want to sign out ?",
             showDenyButton: true,   
             confirmButtonText: "Sign out",
             denyButtonText: `Cancel`
@@ -552,7 +578,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred12");
+            setError(err.response?.data?.message || "An error occurred");
         }
     };
 
@@ -571,7 +597,12 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
                 });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred13");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad has happened",
+                showConfirmButton: true
+            }); 
         }
     }
 
@@ -615,7 +646,7 @@ export const GlobalProvider = ({children}) => {
             }
 
         } catch (err) {
-            console.log(err.response?.data?.message || "An error occurred17");
+            setPaymentError(err.response?.data?.message || "An error occurred");
         }
     };
 
@@ -801,7 +832,30 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "és mau",
+                title: err.response?.data?.message || "Something bad happened",
+                showConfirmButton: true
+            }); 
+        }
+    }
+
+    const changeUserInformation = async (newUserInformation) => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.put(`${BASE_URL}/user`, newUserInformation);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your information has been changed",
+                showConfirmButton: false,
+                timer: 1500
+                }); 
+            getCurrency()
+        } catch (err) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad happened",
                 showConfirmButton: true
             }); 
         }
@@ -848,7 +902,6 @@ export const GlobalProvider = ({children}) => {
             logout,
             addCategory,
             setError,
-            setLoginError,
             getUserFromCookies,
             setHistoryError,
             getFrequencies,
@@ -876,6 +929,10 @@ export const GlobalProvider = ({children}) => {
             setProfilePicture,
             getProfilePicture,
             setLanguage,
+            changeUserInformation,
+            setPaymentError,
+            setExpenseError,
+            expenseError,
             language, 
             accountBalance,
             accountCurrency,
@@ -887,6 +944,7 @@ export const GlobalProvider = ({children}) => {
             paymentsSliced,
             currentExpenseIndex,
             expensesSliced,
+            paymentError,
             currentIncomeIndex,
             incomesSliced,
             totalIncomeAmount,
@@ -897,7 +955,6 @@ export const GlobalProvider = ({children}) => {
             currencies,
             regularPayments,
             frequencies,
-            loginError,
             error,
             historyError,
             transactions,

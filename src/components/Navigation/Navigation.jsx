@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import avatar from '../../img/avatar.png'
 import { signout, settings } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import DialogTitle from '@mui/material/DialogTitle';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
 function Navigation({active, setActive}) {
-    const {language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const { uploadProfilePicture,changeUserInformation,language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
         getAccounts();
@@ -72,23 +67,31 @@ function Navigation({active, setActive}) {
 
     const [inputState, setInputState] = useState({
         user_id: user.id,
-        name: '',
+        username: user.username,
+        email: user.email
       });
     
-    const { user_id, name } = inputState;  
+    const { user_id, username, email } = inputState;  
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        //addAccount({...inputState, user_id: user_id, currency_code: currency_code});
+        changeUserInformation({...inputState, user_id: user_id});
         setInputState({
         user_id: user.id,
-        name: '',
+        username: '',
+        email: ''
         })
         handleClose();
     };
 
     const handleInputChange = (name) => (e) => {
         setInputState({ ...inputState, [name]: e.target.value });
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        uploadProfilePicture(file);
+        handleClose();
     };
 
     return (
@@ -104,26 +107,80 @@ function Navigation({active, setActive}) {
                         PaperProps={{
                             component: 'form',
                             onSubmit: handleSubmit,
-                            style: { minHeight: '40%', minWidth: '35%' }
+                            style: { 
+                                minHeight: '40%', 
+                                minWidth: '35%',
+                                borderRadius: '14px',
+                                paddingBottom: '20px',
+                                background: 'white' 
+                            }
                         }}
                     >
-                        <DialogTitle>{language === 'Portuguese' ? 'Criar conta' : 'Create account'}</DialogTitle>
-                        <DialogContent>
-                            <TextField
-                                required
-                                margin="dense"
-                                id="name"
-                                name="name"
-                                label={language === 'Portuguese' ? 'Nome da Conta' : 'Account Name'}
-                                type="text"
-                                fullWidth
-                                onChange={handleInputChange('name')}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
-                            <Button type="submit">{language === 'Portuguese' ? 'Criar' : 'Create'}</Button>
-                        </DialogActions>
+                        <div className='gradient' style={{
+                            backgroundImage: 'linear-gradient(160deg,var(--primary-color), #0000ff7c)',
+                            height: '125px',
+                            borderRadius: '4px 4px 0px 0px',
+                        }}>
+                        </div>
+                        <div className="profile-information" style={{ textAlign: 'center' }}>
+                            <div style={{
+                                position: 'relative',
+                                display: 'inline-block',
+                                marginTop: '-75px',
+                                padding: '5px',
+                                background: 'transparent',
+                            }}>
+                                <img
+                                    src={profilePicture}
+                                    style={{
+                                        height: '150px',
+                                        borderRadius: '100px',
+                                    }}
+                                />
+                                <input
+                                    type="file"
+                                    name="image"
+                                    onChange={handleFileChange}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '0',
+                                        left: '0',
+                                        opacity: '0',
+                                        width: '100%',
+                                        height: '100%',
+                                        borderRadius:'14px',
+                                        cursor: 'pointer'
+                                    }} />
+                            </div>
+                            <DialogContent>
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    fullWidth
+                                    onChange={handleInputChange('username')}
+                                    label='Username'
+                                    defaultValue={user.username}
+                                />
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    fullWidth
+                                    onChange={handleInputChange('email')}
+                                    label='Email'
+                                    defaultValue={user.email}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                                <Button onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                            </DialogActions>
+                        </div>
                     </Dialog>
                 </div>
                 <div className="text">
@@ -191,6 +248,7 @@ const NavStyled = styled.nav`
         display: flex;
         align-items: center;
         gap: 1rem;
+
         .pfp-container {
             cursor: pointer;
             img{
@@ -202,6 +260,11 @@ const NavStyled = styled.nav`
                 border: 2px solid #FFFFFF;
                 padding: .2rem;
                 box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
+                transition: ease-in-out 0.4s;
+                &:hover {
+                    transition: ease-in-out 0.4s;
+                    transform: scale(1.1);
+                }
             }
         }
         h2{

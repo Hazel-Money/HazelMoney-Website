@@ -5,7 +5,7 @@ import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
 
 const LoginSignup = () => {
-  const {registerUser, loginUser, loginError, setLoginError} = useGlobalContext();
+  const {registerUser, loginUser} = useGlobalContext();
 
   const [action, setAction] = useState('Login');
   const [signUpInputState, setSignUpInputState] = useState({
@@ -23,7 +23,6 @@ const LoginSignup = () => {
   const { email: loginEmail, password: loginPassword } = loginInputState;
   
   const handleInput = (name) => (e) => {
-    setLoginError('');
     if (action === 'Sign Up'){
       setSignUpInputState({ ...signUpInputState, [name]: e.target.value });
     } else {
@@ -84,7 +83,6 @@ const LoginSignup = () => {
             {action === 'Login' ? 'Sign Up' : 'Login'}
           </p>
         </div>
-        {loginError && <p className='error'>{loginError}</p>}
         <div className={action ==='Login' ? 'submit-btn login' : 'submit-btn signup'}>
             <Button
               name={action==='Login' ? 'Login' : 'Sign Up'}

@@ -12,7 +12,7 @@ registerLocale('pt', pt);
 setDefaultLocale('pt');
 
 function ExpenseForm() {
-    const {language, addExpense, Expensescategories, error, setError,  accounts, getAccounts } = useGlobalContext();
+    const {language, addExpense, Expensescategories, expenseError, setExpenseError,  accounts, getAccounts } = useGlobalContext();
     const [inputState, setInputState] = useState({
       account_id: '',
       category_id: '',
@@ -26,7 +26,7 @@ function ExpenseForm() {
   
     const handleInput = (name) => (e) => {
       setInputState({ ...inputState, [name]: e.target.value });
-      setError('');
+      setExpenseError('');
     };
   
     const toggleCurrentTime = () => {
@@ -63,7 +63,7 @@ function ExpenseForm() {
   
     return (
         <ExpenseFormStyled onSubmit={handleSubmit} autoComplete="off">
-          {error && <center><p className='error'>{error}</p></center>}
+          {expenseError && <center><p className='error'>{expenseError}</p></center>}
           <div className="input-control">
             <input
               required

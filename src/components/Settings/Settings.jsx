@@ -13,7 +13,7 @@ import Select from '@mui/material/Select';
 import DialogTitle from '@mui/material/DialogTitle';
 
 function Settings() {
-    const {language, setLanguage, uploadProfilePicture , setProfilePicture, currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
+    const {language, setLanguage,  currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
 
     useEffect(() => {
         getCurrencies();
@@ -76,11 +76,6 @@ function Settings() {
         handleClose();
     };
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        uploadProfilePicture(file);
-    };
-
     const handleLanguageChange = (event) => {
         setLanguage(event.target.value);
     };
@@ -103,7 +98,7 @@ function Settings() {
                                     PaperProps={{
                                         component: 'form',
                                         onSubmit: handleSubmit,
-                                        style: { minHeight: '40%', minWidth: '35%' }
+                                        style: { minHeight: '40%', minWidth: '35%', borderRadius: '14px' }
                                     }}
                                 >
                                     <DialogTitle>{language === 'Portuguese' ? 'Criar conta' : 'Create account'}</DialogTitle>
@@ -127,6 +122,7 @@ function Settings() {
                                             type="text"
                                             fullWidth
                                             onChange={handleInputChange('balance')}
+                                            style={{ marginBottom: '1rem' }}
                                         />
                                         
                                         <Autocomplete
@@ -163,9 +159,7 @@ function Settings() {
                                     <MenuItem value={"Portuguese"}>Português</MenuItem>
                                 </Select>
                             </div>
-                            <h3>{language === 'Portuguese' ? 'Carregar foto de perfil' : 'Upload profile picture'}</h3>
                             
-                            <input type="file" name="image" onChange={handleFileChange} />
                             <div className='currency'>
 
                                 <h3 className='change-currency'>{language === 'Portuguese' ? 'Alterar moeda' : 'Change currency'}</h3>
@@ -224,6 +218,7 @@ const SettingsStyled = styled.div`
             }
         }
     }
+
 `;
 
 export default Settings;
