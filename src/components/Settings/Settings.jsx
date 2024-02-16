@@ -11,6 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import DialogTitle from '@mui/material/DialogTitle';
+import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function Settings() {
     const {language, setLanguage,  currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
@@ -46,7 +47,7 @@ function Settings() {
         currency_code: "USD",
         balance: '',
       });
-    
+
     const { user_id, name, currency_code, balance } = inputState;  
     const currenciesOptions = getCurrenciesOptions();
 
@@ -84,7 +85,10 @@ function Settings() {
         <SettingsStyled>
             <InnerLayout>
                 <div className='main'>
-                    <h1>{language === 'Portuguese' ? 'Configurações' : 'Settings'}</h1>
+                    <div className="top">
+                        <h1>{language === 'Portuguese' ? 'Configurações' : 'Settings'}</h1>
+                        <img src={hazelMoneyIcon}/>
+                    </div>
                     <div className='left-side'>
                         <div className='accounts'>
                             <h2>{language === 'Portuguese' ? 'Contas' : 'Accounts'}</h2>
@@ -186,6 +190,21 @@ const SettingsStyled = styled.div`
     display: flex;
     overflow: auto;
     height: 100%;
+    .top{
+        display: flex;
+        width: 100%;
+        height: 4rem;
+        h1{
+            float: left;
+            width: 95%;
+        }
+        img{
+            margin-top: -2%;
+            margin-bottom: 1%;
+            float: right;
+            transform: rotate(30deg);
+        }
+    }
     .left-side{
         float: left;
         width: 50%;

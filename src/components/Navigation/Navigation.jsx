@@ -14,13 +14,14 @@ function currencyFormat(num) {
   }
 
 function Navigation({active, setActive}) {
-    const { uploadProfilePicture,changeUserInformation,language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
+    const {userUsername, userEmail,getUserInformation, uploadProfilePicture,changeUserInformation,language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
         getAccounts();
         getCurrency();
         getBalance();
         getProfilePicture();
+        getUserInformation();
     }, [])
 
 
@@ -67,24 +68,34 @@ function Navigation({active, setActive}) {
 
     const [inputState, setInputState] = useState({
         user_id: user.id,
-        username: user.username,
-        email: user.email
+        username: '',
+        email: ''
       });
-    
+
+    useEffect(() => {
+    setInputState(prevState => ({
+        ...prevState,
+        username: userUsername || '',
+        email: userEmail || ''
+    }));
+}, [userUsername, userEmail]);
+
     const { user_id, username, email } = inputState;  
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(inputState)
         changeUserInformation({...inputState, user_id: user_id});
         setInputState({
-        user_id: user.id,
-        username: '',
-        email: ''
+            user_id: user.id,
+            username: '',
+            email: ''
         })
         handleClose();
     };
 
     const handleInputChange = (name) => (e) => {
+        console.log(inputState)
         setInputState({ ...inputState, [name]: e.target.value });
     };
 
@@ -162,7 +173,7 @@ function Navigation({active, setActive}) {
                                     fullWidth
                                     onChange={handleInputChange('username')}
                                     label='Username'
-                                    defaultValue={user.username}
+                                    defaultValue={userUsername}
                                 />
                                 <TextField
                                     required
@@ -173,7 +184,7 @@ function Navigation({active, setActive}) {
                                     fullWidth
                                     onChange={handleInputChange('email')}
                                     label='Email'
-                                    defaultValue={user.email}
+                                    defaultValue={userEmail}
                                 />
                             </DialogContent>
                             <DialogActions>
@@ -184,7 +195,7 @@ function Navigation({active, setActive}) {
                     </Dialog>
                 </div>
                 <div className="text">
-                    <h2>{user.username}</h2>
+                    <h2>{userUsername}</h2>
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
                 </div>
             </div>

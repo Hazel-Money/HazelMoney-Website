@@ -1,9 +1,11 @@
-import React, { useEffect  }from 'react'
+import React, { useEffect, useState  }from 'react'
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import Form from '../Form/Form'
 import IncomeItem from '../IncomeItem/IncomeItem';
+import DetailedIncomeInfo from '../IncomeItem/IncomeItemInformation'
+import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function currencyFormat(num) {
   return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -12,6 +14,9 @@ function currencyFormat(num) {
 function Income() {
   const {language, accountCurrency, getAccountCurrency,accountIncome, addIncome,accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
   
+  const [selectedIncome, setSelectedIncome] = useState(null);
+
+
   useEffect(() => {
     sliceIncomes();
   }, [currentIncomeIndex, incomes]);
@@ -24,16 +29,23 @@ function Income() {
     accountIncome()
   }, []);
 
+  const handleIncomeItemClick = (income) => {
+    setSelectedIncome(income);
+  };
+
   return (
     <IncomeStyled>
       <InnerLayout>
-        <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
+        <div className="top">
+          <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
+          <img src={hazelMoneyIcon}/>
+        </div>
         <h2 className="total-income">{language === 'Portuguese' ? 'Total ganho: ' : 'Total income: '}<span>{accountCurrency}{currencyFormat(accountIncomeAmount)}</span></h2>
         <div className="income-content">
           <div className="form-container">
               <Form />
           </div>
-          <div className="incomes">
+          <div className="incomes"> 
             {incomesSliced.map((income) => {
               const {id, account_id , categoryName, currency, amount, is_income, payment_date, description, icon, categoryColor} = income;
               return <IncomeItem 
@@ -50,6 +62,7 @@ function Income() {
                   indicatorColor="var(--color-green)"
                   deleteItem={deleteIncomes}
                   currency={currency}
+                  onSelect={handleIncomeItemClick}
               />
             })}
             <div className="arrow-icons">
@@ -66,6 +79,8 @@ function Income() {
         </div>
         
       </InnerLayout>
+      {selectedIncome && <DetailedIncomeInfo income={selectedIncome} setSelectedIncome={setSelectedIncome} />}
+
     </IncomeStyled>
   )
 }
@@ -73,6 +88,21 @@ function Income() {
 const IncomeStyled = styled.div`
     display: flex;
     overflow: auto;
+    .top{
+        display: flex;
+        width: 100%;
+        height: 4rem;
+        h1{
+            float: left;
+            width: 95%;
+        }
+        img{
+            margin-top: -2%;
+            margin-bottom: 1%;
+            float: right;
+            transform: rotate(30deg);
+        }
+    }
     .total-income{
       display: flex;
       justify-content: center;

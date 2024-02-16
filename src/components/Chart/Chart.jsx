@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
+import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -115,22 +116,23 @@ function Chart() {
         <div className="chart-con">
             <div className="sales">
                 <div className="sales_details">
+                <div className="top">
                 <FormControl>
-                <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Gráfico' : 'Chart'}</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={chart}
-                    label={language === 'Portuguese' ? 'Gráfico' : 'Chart'}
-                    onChange={handleChange}
-                >
-                    <MenuItem value={"bar"}>{language === 'Portuguese' ? 'Barras' : 'Bar'}</MenuItem>
-                    <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
-                </Select>
-                </FormControl>
-                    <div>
-                        <h5>{language === 'Portuguese' ? 'ÚLTIMOS 30 DIAS' : 'PAST 30 DAY'}</h5>
-                    </div>
+                  <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Gráfico' : 'Chart'}</InputLabel>
+                  <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={chart}
+                      label={language === 'Portuguese' ? 'Gráfico' : 'Chart'}
+                      onChange={handleChange}
+                  >
+                      <MenuItem value={"bar"}>{language === 'Portuguese' ? 'Barras' : 'Bar'}</MenuItem>
+                      <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
+                  </Select>
+                  </FormControl>
+                  <h5>{language === 'Portuguese' ? 'ÚLTIMOS 30 DIAS' : 'PAST 30 DAY'}</h5>
+                  <img src={hazelMoneyIcon}/>
+                </div>
                 </div>
                 {chart === "bar" ? 
                 <div className="sales_graph">
@@ -243,18 +245,23 @@ const Section = styled.section`
     .sales{
         color: black;
         width: 100%;
-        .sales_details {
-            display: flex;
-            justify-content: space-between;
-            margin: 1rem 0;
-            div{
-                display: flex;
-                gap: 1rem;
-                h5{
-                    color: gray;
-                    margin-right: 1rem;
-                }
-            }
+        .top{
+          justify-content: space-evenly;
+          margin: 1rem 0;
+          display: flex;
+          width: 100%;
+          height: 4rem;
+          h5{
+            float: left;
+            width: 75%;
+            margin-top: 2%;
+          }
+          img{
+            margin-top: -2%;
+            margin-bottom: 1%;
+            float: right;
+            transform: rotate(30deg);
+          }
         }
         .sales_graph{
             height: 8rem;

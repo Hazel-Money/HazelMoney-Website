@@ -43,6 +43,8 @@ export const GlobalProvider = ({children}) => {
     const [accountCurrency, setAccountCurrency] = useState(null)
     const [profilePicture, setProfilePicture] = useState("")
     const [language, setLanguage] = useState("English")
+    const [userUsername, setUsername] = useState("")
+    const [userEmail, setEmail] = useState("")
  
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
@@ -263,7 +265,7 @@ export const GlobalProvider = ({children}) => {
                 setExpenses([]);
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setExpenseError(err.response?.data?.message || "An error occurred");
         }
     }
 
@@ -456,10 +458,11 @@ export const GlobalProvider = ({children}) => {
                 timer: 1500
               });
         } catch (err) {
+
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Something bad has happened",
+                title: err.response?.data?.message   || "Something bad has happened",
                 showConfirmButton: true
             });         
         }
@@ -842,7 +845,8 @@ export const GlobalProvider = ({children}) => {
         try {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const response = await axios.put(`${BASE_URL}/user`, newUserInformation);
+            const response = await axios.put(`${BASE_URL}/user/data`, newUserInformation);
+            getUserInformation();
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -850,7 +854,6 @@ export const GlobalProvider = ({children}) => {
                 showConfirmButton: false,
                 timer: 1500
                 }); 
-            getCurrency()
         } catch (err) {
             Swal.fire({
                 position: "center",
@@ -858,6 +861,20 @@ export const GlobalProvider = ({children}) => {
                 title: err.response?.data?.message || "Something bad happened",
                 showConfirmButton: true
             }); 
+        }
+    }
+
+    const getUserInformation = async () => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/user/data`);
+            const username = response.data.username;
+            setUsername(username);
+            const email = response.data.email;
+            setEmail(email);
+        } catch (err) {
+           console.log(err.response?.data?.message || "Something bad happened")
         }
     }
 
@@ -932,6 +949,9 @@ export const GlobalProvider = ({children}) => {
             changeUserInformation,
             setPaymentError,
             setExpenseError,
+            getUserInformation,
+            userUsername,
+            userEmail,
             expenseError,
             language, 
             accountBalance,

@@ -19,11 +19,25 @@ function IncomeItem({
     color,
     deleteItem,
     indicatorColor,
-    currency
+    currency,
+    onSelect
 }){
 
   return (
-    <IncomeItemStyled indicator={indicatorColor}>
+    <IncomeItemStyled 
+        indicator={indicatorColor} 
+        onClick={() => onSelect(
+        {  
+            id: id,
+            category: category,
+            amount: amount,
+            payment_date: payment_date,
+            description: description, 
+            currency: currency,
+            icon: icon,
+            color: color
+        }
+        )}>
         <div className="icon" style={{color: color}}>
             <IconCategory category={icon} />
         </div>
