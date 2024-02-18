@@ -34,7 +34,8 @@ function IncomeItem({
             payment_date: payment_date,
             description: description, 
             icon: icon,
-            color: color
+            color: color,
+            is_income: is_income,
         }
         )}>
         <div className="icon" style={{color: color}}>

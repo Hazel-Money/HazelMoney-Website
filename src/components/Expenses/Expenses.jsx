@@ -1,10 +1,12 @@
-import React, { useEffect  }from 'react'
+import React, { useEffect, useState  }from 'react'
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import ExpenseForm from '../Expenses/ExpenseForm'
 import IncomeItem from '../IncomeItem/IncomeItem';
 import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
+import DetailedIncomeInfo from '../IncomeItem/ItemInformation'
+
 
 function currencyFormat(num) {
   return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -12,6 +14,8 @@ function currencyFormat(num) {
 
 function Expenses() {
   const {language, accountCurrency, getAccountCurrency,refreshAccountContent, accountExpense, accountExpenseAmount, expenses, sliceExpenses, totalExpensesAmount, expensesSliced, currentExpenseIndex, navigateExpenses, getExpenses, deleteExpense, totalExpenses, getExpensesCategories, user} = useGlobalContext()
+  
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
 
   useEffect(() => {
@@ -25,6 +29,10 @@ function Expenses() {
     getExpensesCategories();   
     accountExpense();
   }, []);
+
+  const handleTransactionItemClick = (transaction) => {
+    setSelectedTransaction(transaction);
+  };
   
   return (
     <ExpenseStyled>
@@ -55,6 +63,7 @@ function Expenses() {
                   indicatorColor="red"
                   deleteItem={deleteExpense}
                   currency={currency}
+                  onSelect= {handleTransactionItemClick}
               />
             })}
             <div className="arrow-icons">
@@ -71,6 +80,8 @@ function Expenses() {
         </div>
         
       </InnerLayout>
+      {selectedTransaction && <DetailedIncomeInfo transaction={selectedTransaction} setSelectedTransaction={setSelectedTransaction} />}
+
     </ExpenseStyled>
   )
 }

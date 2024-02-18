@@ -20,18 +20,23 @@ function currencyFormat(num) {
     return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
-const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
+const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
     
-    const {changeItemInformation, language, Incomescategories } = useGlobalContext();
+    const {changeItemInformation, language, Incomescategories, Expensescategories } = useGlobalContext();
 
-    const defaultCategory = Incomescategories[0].id;
+    let defaultCategory = '';
+    console.log(transaction.is_income)
+    transaction.is_income == '1' ? 
+        defaultCategory = Incomescategories[0].id
+     : 
+        defaultCategory = Expensescategories[0].id
 
     const [inputState, setInputState] = useState({
-        id: income.id,
-        amount: income.amount,
-        description: income.description,
+        id: transaction.id,
+        amount: transaction.amount,
+        description: transaction.description,
         category_id: defaultCategory,
-        payment_date: income.payment_date
+        payment_date: transaction.payment_date
     });
     
     const {id, amount, payment_date, category_id, description } = inputState;
@@ -49,22 +54,22 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
 
         const amountInCents = (parseFloat(inputState.amount) * 100).toString();
 
-        changeItemInformation({...inputState, id: income.id, amount: amountInCents});
+        changeItemInformation({...inputState, id: transaction.id, amount: amountInCents});
         setInputState({
-            id: income.id,
-            amount: income.amount,
-            description: income.description,
-            category_id: income.category,
+            id: transaction.id,
+            amount: transaction.amount,
+            description: transaction.description,
+            category_id: transaction.category,
             payment_date: defaultCategory
         })
-        setSelectedIncome(null)
+        setSelectedTransaction(null)
     };
 
 
     return (
         <Dialog
-            open={Boolean(income)}
-            onClose={() => setSelectedIncome(null)}
+            open={Boolean(transaction)}
+            onClose={() => setSelectedTransaction(null)}
             PaperProps={{
                 component: 'form',
                 onSubmit: handleSubmit,
@@ -85,15 +90,14 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
         >
             <h2 style={{ textAlign: 'center' }}>Alterar dados</h2>
             <IconContentWrapper>
-                <IconWrapper color={income.color}>
-                    <IconCategory category={income.icon} />
+                <IconWrapper color={transaction.color}>
+                    <IconCategory category={transaction.icon} />
                 </IconWrapper>
                 <ContentWrapper>
                     <InnerContent>
                         <DialogContent>
                             <FormControl>
-                                <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Categoria' : 'Category'}</InputLabel>
-                                <Select
+                                <select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
                                     required
@@ -102,14 +106,22 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
                                     onChange={handleInputChange("category_id")}
                                     label={language === 'Portuguese' ? 'Categoria' : 'Category'}
                                 >
-                                    {Incomescategories.map((category) => (
-                                        <MenuItem key={category.id} value={category.id}>
-                                            {category.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                    {transaction.is_income == '1' ? 
+                                        Incomescategories.map((category) => (
+                                            <option key={category.id} value={category.id}>
+                                                {category.name}
+                                            </option>
+                                        ))
+                                     : 
+                                        Expensescategories.map((category) => (
+                                            <option key={category.id} value={category.id}>
+                                                {category.name}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
                             </FormControl>
-                            <TextField
+                            <input
                                 required
                                 margin="dense"
                                 id="amount"
@@ -118,7 +130,7 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
                                 fullWidth
                                 onChange={handleInputChange('amount')}
                                 label='Amount'
-                                defaultValue={currencyFormat(income.amount)}
+                                defaultValue={currencyFormat(transaction.amount)}
                             />
                             <DatePicker
                                 required
@@ -130,7 +142,7 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
                                 onChange={handleDatePickerChange}
                                 value={payment_date}
                             />
-                            <TextField
+                            <textarea
                                 required
                                 margin="dense"
                                 id="description"
@@ -139,14 +151,14 @@ const DetailedIncomeInfo = ({ income, setSelectedIncome }) => {
                                 fullWidth
                                 onChange={handleInputChange('description')}
                                 label='Description'
-                                defaultValue={income.description}
+                                defaultValue={transaction.description}
                             />
                         </DialogContent>
                     </InnerContent>
                     <div className='btn'>
                         <DialogActions>
                             <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
-                            <Button onClick={() => setSelectedIncome(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                            <Button onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                         </DialogActions>
                     </div>
                 </ContentWrapper>
@@ -199,6 +211,24 @@ const InnerContent = styled.div`
         gap: 0.5rem;
         color: var(--primary-color);
         opacity: 0.8;
+    }
+
+    input, textarea, select{
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+        border: none;
+        padding: .5rem 1rem;
+        border-radius: 5px;
+        border: 2px solid #fff;
+        background: transparent;
+        resize: none;
+        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        color: rgba(34, 34, 96, 0.9);
+        &::placeholder{
+            color: rgba(34, 34, 96, 0.4);
+        }
     }
 `
 

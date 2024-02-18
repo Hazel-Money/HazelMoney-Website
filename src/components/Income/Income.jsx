@@ -4,7 +4,7 @@ import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import Form from '../Form/Form'
 import IncomeItem from '../IncomeItem/IncomeItem';
-import DetailedIncomeInfo from '../IncomeItem/IncomeItemInformation'
+import DetailedIncomeInfo from '../IncomeItem/ItemInformation'
 import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function currencyFormat(num) {
@@ -14,7 +14,7 @@ function currencyFormat(num) {
 function Income() {
   const {language, accountCurrency, getAccountCurrency,accountIncome, addIncome,accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
   
-  const [selectedIncome, setSelectedIncome] = useState(null);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
 
   useEffect(() => {
@@ -29,8 +29,8 @@ function Income() {
     accountIncome()
   }, []);
 
-  const handleIncomeItemClick = (income) => {
-    setSelectedIncome(income);
+  const handleTransactionItemClick = (transaction) => {
+    setSelectedTransaction(transaction);
   };
 
   return (
@@ -62,7 +62,7 @@ function Income() {
                   indicatorColor="var(--color-green)"
                   deleteItem={deleteIncomes}
                   currency={currency}
-                  onSelect={handleIncomeItemClick}
+                  onSelect={handleTransactionItemClick}
               />
             })}
             <div className="arrow-icons">
@@ -79,7 +79,7 @@ function Income() {
         </div>
         
       </InnerLayout>
-      {selectedIncome && <DetailedIncomeInfo income={selectedIncome} setSelectedIncome={setSelectedIncome} />}
+      {selectedTransaction && <DetailedIncomeInfo transaction={selectedTransaction} setSelectedTransaction={setSelectedTransaction} />}
 
     </IncomeStyled>
   )
