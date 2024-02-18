@@ -494,6 +494,7 @@ export const GlobalProvider = ({children}) => {
             
             if (localStorage.getItem('environmentLanguage') === null) {
                 const language = navigator.language.startsWith('pt') ? "Portuguese" : "English";
+                setLanguage(language);
                 localStorage.setItem('environmentLanguage', language);
             }
             window.location.reload(false);
@@ -881,6 +882,28 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const changeItemInformation = async (newItemInformation) => {
+        try {
+            const user = getUserFromCookies();
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.put(`${BASE_URL}/transactions.php`, newItemInformation);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your information has been changed",
+                showConfirmButton: false,
+                timer: 1500
+                }); 
+        } catch (err) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || "Something bad happened",
+                showConfirmButton: true
+            }); 
+        }
+    }
+
     const refreshAccountContent = async () => {
         getIncomes();
         getExpenses();
@@ -953,6 +976,7 @@ export const GlobalProvider = ({children}) => {
             setPaymentError,
             setExpenseError,
             getUserInformation,
+            changeItemInformation,
             userUsername,
             userEmail,
             expenseError,

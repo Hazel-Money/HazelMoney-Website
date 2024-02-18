@@ -33,7 +33,6 @@ function IncomeItem({
             amount: amount,
             payment_date: payment_date,
             description: description, 
-            currency: currency,
             icon: icon,
             color: color
         }

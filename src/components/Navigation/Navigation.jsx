@@ -74,17 +74,16 @@ function Navigation({active, setActive}) {
 
     useEffect(() => {
     setInputState(prevState => ({
-        ...prevState,
-        username: userUsername || '',
-        email: userEmail || ''
-    }));
-}, [userUsername, userEmail]);
+            ...prevState,
+            username: userUsername || '',
+            email: userEmail || ''
+        }));
+    }, [userUsername, userEmail]);
 
     const { user_id, username, email } = inputState;  
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputState)
         changeUserInformation({...inputState, user_id: user_id});
         setInputState({
             user_id: user.id,
@@ -95,7 +94,6 @@ function Navigation({active, setActive}) {
     };
 
     const handleInputChange = (name) => (e) => {
-        console.log(inputState)
         setInputState({ ...inputState, [name]: e.target.value });
     };
 
