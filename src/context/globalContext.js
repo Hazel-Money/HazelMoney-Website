@@ -80,7 +80,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Income added successfully",
+                title:(language === 'Portuguese' ? "Receita adicionada com sucesso" : "Income added successfully"),
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -216,7 +216,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Expense added successfully",
+                title:(language === 'Portuguese' ? "Despesa adicionada com sucesso" : "Expense added successfully"),
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -399,7 +399,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Category successfully added",
+                title:(language === 'Portuguese' ? "Categoria adicionada" : "Category successfully added"),
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -453,7 +453,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Successfully registered",
+                title:(language === 'Portuguese' ? "Registado com sucesso" : "Successfully registered"),
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -487,7 +487,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Successfully logged in",
+                title:(language === 'Portuguese' ? "Entrou com sucesso" : "Successfully logged in"),
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -545,7 +545,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Account created successfully",
+                title:(language === 'Portuguese' ? "Conta criada com sucesso!" : "Account created successfully"),
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -553,7 +553,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Algo de errado aconteceu",
+                title: err.response?.data?.message || (language === 'Portuguese' ? "Algo de errado aconteceu" : "Something bad happenned"),
                 showConfirmButton: true
             }); 
         }
@@ -561,9 +561,9 @@ export const GlobalProvider = ({children}) => {
 
     const logout = () => {
         Swal.fire({
-            title: "Do you want to sign out ?",
+            title:(language === 'Portuguese' ? "Quer sair ?" : "Do you want to sign out ?"),
             showDenyButton: true,   
-            confirmButtonText: "Sign out",
+            confirmButtonText: (language === 'Portuguese' ? 'Sair': 'Sign out'),
             denyButtonText: `Cancel`
           }).then((result) => {
             if (result.isConfirmed) {
@@ -599,7 +599,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Regular payment added successfully",
+                title:(language === 'Portuguese' ? "Pagamento regular adicionado" : "Regular payment added successfully"),
                 showConfirmButton: false,
                 timer: 1500
                 });
@@ -607,7 +607,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Something bad has happened",
+                title: err.response?.data?.message ||(language === 'Portuguese' ? "Algo de errado aconteceu" : "Something bad has happened"),
                 showConfirmButton: true
             }); 
         }
@@ -716,7 +716,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Currency changed successfully",
+                title: (language === 'Portuguese' ? "Moeda alterada com sucesso" : "Currency changed successfully"),
                 showConfirmButton: false,
                 timer: 1500
                 }); 
@@ -725,7 +725,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: "You must select a currency",
+                title: (language === 'Portuguese' ? "Tem de escolher uma moeda" : "You must select a currency"),
                 showConfirmButton: true
             }); 
         }
@@ -830,7 +830,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Profile picture successfully changed",
+                title: (language === 'Portuguese' ? 'Foto de perfil atualizada' : "Profile picture successfully changed"),
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -839,7 +839,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Something bad happened",
+                title: err.response?.data?.message || (language === 'Portuguese' ?'Algo de errado aconteceu'  : "Something bad happened"),
                 showConfirmButton: true
             }); 
         }
@@ -854,7 +854,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Your information has been changed",
+                title: (language === 'Portuguese' ? 'Os teus dados foram atualizados' : "Your information has been changed"),
                 showConfirmButton: false,
                 timer: 1500
                 }); 
@@ -862,7 +862,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Something bad happened",
+                title: err.response?.data?.message || (language === 'Portuguese' ?  'Algo de errado aconteceu':  "Something bad happened"),
                 showConfirmButton: true
             }); 
         }
@@ -887,10 +887,11 @@ export const GlobalProvider = ({children}) => {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/transactions.php`, newItemInformation);
+            refreshAccountContent();
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Your information has been changed",
+                title: (language === 'Portuguese' ? 'Dados da transação atualizada' : "Transaction information changed" ),
                 showConfirmButton: false,
                 timer: 1500
                 }); 
@@ -898,7 +899,7 @@ export const GlobalProvider = ({children}) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message || "Something bad happened",
+                title: err.response?.data?.message || (language === 'Portuguese' ? 'Algo de errado aconteceu': "Something bad happened" ),
                 showConfirmButton: true
             }); 
         }

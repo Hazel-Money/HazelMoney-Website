@@ -36,7 +36,7 @@ function Form() {
           payment_date: !useCurrentTime ? new Date() : '',
         });
       };
-  
+      
     const handleDatePickerChange = (date) => {
       setInputState({ ...inputState, payment_date: date });
     };

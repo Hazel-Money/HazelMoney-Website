@@ -14,6 +14,7 @@ import IconCategory from '../../utils/iconCategory';
 import MenuItem from '@mui/material/MenuItem';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
 
 function currencyFormat(num) {
@@ -43,7 +44,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
     
     const handleDatePickerChange = (date) => {
         setInputState({ ...inputState, payment_date: date });
-      };
+    };
 
     const handleInputChange = (name) => (e) => {
         setInputState({ ...inputState, [name]: e.target.value });
@@ -65,7 +66,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
         setSelectedTransaction(null)
     };
 
-
+    console.log(payment_date)
     return (
         <Dialog
             open={Boolean(transaction)}
@@ -134,7 +135,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                             />
                             <DatePicker
                                 required
-                                locale="pt"
                                 id="payment_date"
                                 placeholderText={language === 'Portuguese' ? 'Insira uma data' : 'Enter a date'}
                                 dateFormat="Pp"
@@ -214,6 +214,7 @@ const InnerContent = styled.div`
     }
 
     input, textarea, select{
+        margin-top: 3%;
         width: 100%;
         font-family: inherit;
         font-size: inherit;
