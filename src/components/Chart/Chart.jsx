@@ -15,7 +15,7 @@ function currencyFormat(num) {
 }
 
 function Chart() {
-    const dateFormat = 'M/d';
+    const dateFormat = 'd/MM';
 
     useEffect(() => {
       getAllTransactions(user.id)
@@ -46,7 +46,7 @@ function Chart() {
 
     // Organize data for the BarChart
     const chartData = datesBetweenNowAndXDaysAgo.map((date) => {
-        const dateString = format(date, dateFormat);
+        const dateString = date;
         const expenseAmount = expenses
         .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
         .reduce((sum, transaction) => sum + transaction.amount, 0);
@@ -61,6 +61,8 @@ function Chart() {
         };
     });
 
+    const maxTicks = 10;
+    const chartInterval = Math.ceil(chartData.length / maxTicks);
    
     const incomeChartData = Incomescategories.map((category) => {
       const categoryAmount = incomes
@@ -149,7 +151,7 @@ function Chart() {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="name" interval={chartInterval}/>
                         <YAxis />
                         <Tooltip />
                         <Legend />
