@@ -79,6 +79,7 @@ function Settings() {
 
     const handleLanguageChange = (event) => {
         setLanguage(event.target.value);
+        localStorage.setItem('environmentLanguage', event.target.value);
     };
 
     return (

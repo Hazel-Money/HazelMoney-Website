@@ -42,7 +42,7 @@ export const GlobalProvider = ({children}) => {
     const [accountId, setAccountId] = useState("All")
     const [accountCurrency, setAccountCurrency] = useState(null)
     const [profilePicture, setProfilePicture] = useState("")
-    const [language, setLanguage] = useState("English")
+    const [language, setLanguage] = useState(localStorage.getItem('environmentLanguage'))
     const [userUsername, setUsername] = useState("")
     const [userEmail, setEmail] = useState("")
  
@@ -480,20 +480,23 @@ export const GlobalProvider = ({children}) => {
                 expires: new Date(token.exp * 1000),
             });
 
-            const selectedAccountId = "All"
+            const selectedAccountId = "All";
             setAccountId(selectedAccountId);
             localStorage.setItem('accountId', selectedAccountId);
 
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Successful logged in",
+                title: "Successfully logged in",
                 showConfirmButton: false,
                 timer: 1500
               });
-
-              window.location.reload(false);
-
+            
+            if (localStorage.getItem('environmentLanguage') === null) {
+                const language = navigator.language.startsWith('pt') ? "Portuguese" : "English";
+                localStorage.setItem('environmentLanguage', language);
+            }
+            window.location.reload(false);
         } catch (err) {
             Swal.fire({
                 position: "center",
