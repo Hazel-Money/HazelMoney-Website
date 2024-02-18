@@ -707,7 +707,7 @@ export const GlobalProvider = ({children}) => {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currencyJSON = JSON.stringify({'code': newCurrencyCode});
-            const response = await axios.put(`${BASE_URL}/change_currency/user`, currencyJSON);
+            const response = await axios.put(`${BASE_URL}/user/change_currency`, currencyJSON);
             //setCurrency(newCurrencyCode)
             Swal.fire({
                 position: "center",
