@@ -125,7 +125,8 @@ const LoginSignup = () => {
             name={action === 'Login' ? 'Login' : 'Sign Up'}
             bPad=".8rem 1.6rem"
             bRad="50px"
-            bg="#994700"
+            bg="red"
+            style={{ backgroundImage: 'var(--gradient)' }}
             color="#fff"
             cursor="pointer"
           />
@@ -180,7 +181,7 @@ const LoginSignupStyled = styled.form`
     padding-top: 4vh;
     padding-bottom: 5vh;
     width: 80vw;
-    max-width: 400px; 
+    max-width: 50vh; 
     border-radius: 7%;
     box-shadow: 0 2px 41px rgba(0, 0, 0, 0.2)
   }
@@ -195,7 +196,7 @@ const LoginSignupStyled = styled.form`
   }
 
   .text {
-    color: #994700;
+    color: var(--hazel-color);
     font-size: 6vw;
     font-weight: 700;
   }
@@ -203,7 +204,7 @@ const LoginSignupStyled = styled.form`
   .underline {
     width: 7vw;
     height: 1px;
-    background: #994700;
+    background: var(--hazel-color);
     border-radius: 9px;
   }
 
@@ -219,7 +220,7 @@ const LoginSignupStyled = styled.form`
     display: flex;
     align-items: center;
     width: 100%;
-    height: 10vh;
+    height: 7vh;
     background: #ffffff;
     border-radius: 30px;
     box-shadow: 0 2px 13px rgba(0, 0, 0, 0.1);
@@ -259,6 +260,9 @@ const LoginSignupStyled = styled.form`
     display: flex;
     justify-content: center;
     align-items: center;
+    Button {
+      background-image: var(--default-gradient) !important; 
+    }
   }
 
   .login {

@@ -99,7 +99,7 @@ const LandingStyled = styled.div`
         width: 35%;
         margin-right: 20px;
         h1{
-            color: #cc6633 !important;
+            color: var(--hazel-color) !important;
             font-size: 9vh;
             margin-bottom: 2vh;
         }
@@ -116,7 +116,7 @@ const LandingStyled = styled.div`
             margin-top: 3vh;
             display: flex;
             justify-content: center;
-            background-image: linear-gradient(45deg, #cc6633, #994700) !important; 
+            background-image: var(--default-gradient) !important; 
         }
     }
 

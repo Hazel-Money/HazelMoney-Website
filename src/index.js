@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import { GlobalStyle } from './styles/GlobalStyle';
+import App from './App';
 import { GlobalProvider } from './context/globalContext';
 import Login from "./components/Login/login"
 import { BrowserRouter, Routes, Route } from "react-router-dom";

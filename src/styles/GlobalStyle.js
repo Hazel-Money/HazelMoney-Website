@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
         --primary-color: #222260;
         --primary-color2: 'color: rgba(34, 34, 96, .6)';
         --primary-color3: 'color: rgba(34, 34, 96, .4)';
+        --hazel-color: #A64F0D;
+        --default-gradient: linear-gradient(45deg, #cc6633, #994700);
         --color-green: #42AD00;
         --color-grey: #aaa;
         --color-accent: #f56692;
