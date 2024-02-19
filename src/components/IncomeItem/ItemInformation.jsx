@@ -18,7 +18,7 @@ import { format } from 'date-fns';
 
 
 function currencyFormat(num) {
-    return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
 }
 
 const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
@@ -33,7 +33,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
 
     const [inputState, setInputState] = useState({
         id: transaction.id,
-        amount: transaction.amount,
+        amount: transaction.amount / 100,
         description: transaction.description,
         category_id: defaultCategory,
         payment_date: new Date(transaction.payment_date)
@@ -143,7 +143,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                 selected={payment_date}
                             />
                             <textarea
-                                required
                                 margin="dense"
                                 id="description"
                                 name="description"

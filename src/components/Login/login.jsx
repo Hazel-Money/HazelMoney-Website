@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import hazelMoneyIcon from '../../img/hazelmoneyIcon2.png';
 
 const LoginSignup = () => {
-  const { registerUser, loginUser, language } = useGlobalContext();
+  const { registerUser, LoginUser, language } = useGlobalContext();
 
   const [action, setAction] = useState('Login');
   const [signUpInputState, setSignUpInputState] = useState({
@@ -50,7 +50,7 @@ const LoginSignup = () => {
         password: ''
       });
     } else {
-      loginUser(loginInputState, navigate);
+      LoginUser(loginInputState, navigate);
       setLoginInputState({
         email: '',
         password: ''

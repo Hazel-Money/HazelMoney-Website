@@ -67,7 +67,13 @@ export const GlobalProvider = ({children}) => {
         const { is_income } = income;
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const requestData = {
                 ...income,
                 is_income
@@ -98,7 +104,10 @@ export const GlobalProvider = ({children}) => {
     const getIncomes = async () => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/transactions.php?user_id=${user.id}&is_income=1`;
@@ -164,8 +173,11 @@ export const GlobalProvider = ({children}) => {
     };
     
     const deleteIncomes = async (id) => {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            const res = await axios.delete(`${BASE_URL}/transactions.php`, {
+        if (cookies.get('jwt') === undefined) {
+            return [];
+        }
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        const res = await axios.delete(`${BASE_URL}/transactions.php`, {
             data: { id }
         })
         getIncomes()
@@ -175,6 +187,9 @@ export const GlobalProvider = ({children}) => {
 
     const totalIncome = async () => {
         const user = getUserFromCookies();
+        if (cookies.get('jwt') === undefined) {
+                return [];
+        }
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/user/total_income`);
         const totalIncome =  response.data.total_income;
@@ -187,6 +202,9 @@ export const GlobalProvider = ({children}) => {
 
     const accountIncome = async () => {
         const user = getUserFromCookies();
+        if (cookies.get('jwt') === undefined) {
+                return [];
+        }
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         let request;
         if (accountId == "All") {
@@ -205,6 +223,9 @@ export const GlobalProvider = ({children}) => {
         const { is_income } = expense;  
         try {
             const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             expense.payment_date = formatDate(expense.payment_date);
             const response = await axios.post(`${BASE_URL}/transactions.php`, {
@@ -234,6 +255,9 @@ export const GlobalProvider = ({children}) => {
     const getExpenses = async () => {
         try {
             const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
@@ -301,6 +325,9 @@ export const GlobalProvider = ({children}) => {
     };
         
     const deleteExpense = async (id) => {
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const res = await axios.delete(`${BASE_URL}/transactions.php`, {
             data: { id }
@@ -313,6 +340,9 @@ export const GlobalProvider = ({children}) => {
     const totalExpenses = async () => {
         try {
             const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/total_expense`);
             const totalExpenses =  response.data.total_expense;
@@ -328,6 +358,9 @@ export const GlobalProvider = ({children}) => {
     
     const accountExpense = async () => {
         const user = getUserFromCookies();
+        if (cookies.get('jwt') === undefined) {
+                return [];
+            }
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         let request;
         if (accountId == "All") {
@@ -344,6 +377,9 @@ export const GlobalProvider = ({children}) => {
     const getAllTransactions = async () => {
         try {
             const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
@@ -365,6 +401,7 @@ export const GlobalProvider = ({children}) => {
                 categoryMap[category.id] = category;
             });
 
+            console.log(transactionsData);
             const transactionsWithCategories = transactionsData.length > 0
              ? transactionsData.map(transaction => ({
                 ...transaction,
@@ -393,6 +430,9 @@ export const GlobalProvider = ({children}) => {
     const addCategory = async (category) => {
         const { user_id } = category;  
         try {
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.post(`${BASE_URL}/categories.php`, {
                 ...category,
@@ -417,7 +457,13 @@ export const GlobalProvider = ({children}) => {
     const getIncomesCategories = async () => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return []
+            }
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=${user.id}`);
             console.log(response)
             if (response && response.data) {
@@ -433,7 +479,13 @@ export const GlobalProvider = ({children}) => {
     const getExpensesCategories = async () => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return []
+            }
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=${user.id}`);
 
             if (response && response.data) {
@@ -475,7 +527,6 @@ export const GlobalProvider = ({children}) => {
         
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
             const token = jwtDecode(response.data.jwt);
-            const userData = token.data;
 
             cookies.set('jwt', response.data.jwt, {
                 expires: new Date(token.exp * 1000),
@@ -516,14 +567,17 @@ export const GlobalProvider = ({children}) => {
             const userData = jwtDecode(cookie).data;
             return userData;
         } catch (err) {
-        
+            console.log(err.message || "Error getting user from cookies");
         }
     };
 
     const getAccounts = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const userAccounts = await axios.get(`${BASE_URL}/accounts.php?user_id=${user.id}`);
             setAccounts(userAccounts.data)
         } catch{
@@ -535,7 +589,10 @@ export const GlobalProvider = ({children}) => {
         const {user_id, currency_code} = credentials
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currency = JSON.stringify({'code': currency_code});
             const response = await axios.post(`${BASE_URL}/accounts.php`, {
                 ...credentials,
@@ -578,7 +635,10 @@ export const GlobalProvider = ({children}) => {
     const getFrequencies = async () => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/frequencies.php`);
 
             if (response && response.data) {
@@ -594,7 +654,10 @@ export const GlobalProvider = ({children}) => {
     const addRegularPayment = async (payment) => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             payment.start_date = formatDate(payment.start_date)
             const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
             getRegularPayments(); 
@@ -619,7 +682,10 @@ export const GlobalProvider = ({children}) => {
         try {
 
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             
             let request;
             if (accountId == "All") {
@@ -689,7 +755,10 @@ export const GlobalProvider = ({children}) => {
     };
 
     const deleteRegularPayments = async (id) => {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const res = await axios.delete(`${BASE_URL}/regular_payments`, {
         data: { id }
         })
@@ -698,7 +767,10 @@ export const GlobalProvider = ({children}) => {
 
     const getCurrencies = async () => {
         const user = getUserFromCookies();
-        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/currencies.php`);
         if (response && response.data) {
             setCurrencies(response.data);
@@ -710,7 +782,10 @@ export const GlobalProvider = ({children}) => {
     const changeCurrency = async (newCurrencyCode) => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currencyJSON = JSON.stringify({'code': newCurrencyCode});
             const response = await axios.put(`${BASE_URL}/user/change_currency`, currencyJSON);
             //setCurrency(newCurrencyCode)
@@ -735,7 +810,10 @@ export const GlobalProvider = ({children}) => {
     const getCurrency = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/default_currency`);
             const currency = response.data.currency; 
             setCurrency(currency);
@@ -748,7 +826,10 @@ export const GlobalProvider = ({children}) => {
     const getAccountCurrency = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/user/default_currency`;
@@ -766,7 +847,10 @@ export const GlobalProvider = ({children}) => {
     const getBalance = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/balance`);
             const responseUser = response.data;
             const balance = responseUser.balance;
@@ -783,7 +867,10 @@ export const GlobalProvider = ({children}) => {
     const getAccountBalance = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/user/balance`;   
@@ -806,7 +893,10 @@ export const GlobalProvider = ({children}) => {
     const getProfilePicture = async () => {
         try{
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/profile_picture`, {
                 responseType: 'blob'
             });
@@ -823,7 +913,10 @@ export const GlobalProvider = ({children}) => {
     const uploadProfilePicture = async (file) => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const formData = new FormData()
             formData.append("image", file)
             const response = await axios.post(`${BASE_URL}/user/profile_picture`, formData);
@@ -849,7 +942,10 @@ export const GlobalProvider = ({children}) => {
     const changeUserInformation = async (newUserInformation) => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/user/data`, newUserInformation);
             getUserInformation();
             Swal.fire({
@@ -872,7 +968,10 @@ export const GlobalProvider = ({children}) => {
     const getUserInformation = async () => {
         try {
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/data`);
             const username = response.data.username;
             setUsername(username);
@@ -887,7 +986,10 @@ export const GlobalProvider = ({children}) => {
         try {
             newItemInformation.payment_date = formatDate(newItemInformation.payment_date);
             const user = getUserFromCookies();
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/transactions.php`, newItemInformation);
             refreshAccountContent();
             Swal.fire({
@@ -944,7 +1046,7 @@ export const GlobalProvider = ({children}) => {
             uploadProfilePicture,
             getAllTransactions,
             registerUser,
-            loginUser: LoginUser,
+            LoginUser,
             logout,
             addCategory,
             setError,
