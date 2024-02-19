@@ -13,14 +13,23 @@ import Chart from "./components/Chart/Chart"
 import Categories from './components/Categories/Categories';
 import RegularPayments from './components/RegularPayments/RegularPayments'
 import Settings from "./components/Settings/Settings"
+import Landing from "./components/Landing/Landing"
 
 function App() {
+  
+  const { showLogin} = useGlobalContext();
+
   const [active, setActive] = useState(1);
   
   const cookies = new Cookies();
   if (!cookies.get('jwt')) {
-    return <LoginSignup/>
+    return <Landing/>
   }
+
+  if(showLogin){
+    return <LoginSignup />
+  }
+  
   const displayData = () => {
     switch (active) {
       case 1:

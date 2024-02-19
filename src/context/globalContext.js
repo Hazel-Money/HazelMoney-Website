@@ -45,7 +45,8 @@ export const GlobalProvider = ({children}) => {
     const [language, setLanguage] = useState(localStorage.getItem('environmentLanguage'))
     const [userUsername, setUsername] = useState("")
     const [userEmail, setEmail] = useState("")
- 
+    const [showLogin, setShowLogin] = useState(false);
+
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
         const year = date.getFullYear();
@@ -978,6 +979,8 @@ export const GlobalProvider = ({children}) => {
             setExpenseError,
             getUserInformation,
             changeItemInformation,
+            setShowLogin,
+            showLogin,
             userUsername,
             userEmail,
             expenseError,
