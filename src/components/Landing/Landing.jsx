@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import hazelMoneyIcon from '../../img/hazelmoneyIcon2.png';
-import graphImage from '../../img/imagemloca.jpg';
+import graphImage from '../../img/woman_money.svg';
 import waveSVG from '../../img/onda.svg';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icons';
@@ -27,7 +27,7 @@ function Landing() {
                 </div>
                 <div className="middle-content">
                     <div className="content">
-                            <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2><h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
+                        <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2><h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
                         <p>{language === 'Portuguese' ? 'O orçamento pessoal é o segredo para a liberdade financeira. Comece hoje a sua viagem.' : 'Personal budgeting is the secret to financial freedom. Start your journey today.'}</p>
                         <Button
                             name={language === 'Portuguese' ? 'Registro' : 'Sign up'}
@@ -51,7 +51,7 @@ function Landing() {
 }
 
 const LandingStyled = styled.div`
-    overflow:none;
+    overflow: none;
 
     .nav {
         display: flex;
@@ -99,21 +99,24 @@ const LandingStyled = styled.div`
         width: 35%;
         margin-right: 20px;
         h1{
-            color: #994700 !important;
+            color: #cc6633 !important;
             font-size: 9vh;
             margin-bottom: 2vh;
         }
         h2{
-            color: #1d1a1799 !important;
+            color: #2f2e41 !important;
             font-size: 6vh;
             margin-top: 0;
         }
-
+        p{
+            color: #484761 mportant;
+        }
         Button {
             width: 30vh;
             margin-top: 3vh;
             display: flex;
             justify-content: center;
+            background-image: linear-gradient(45deg, #cc6633, #994700) !important; 
         }
     }
 
