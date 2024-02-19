@@ -6,18 +6,18 @@ import waveSVG from '../../img/onda.svg';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icons';
 import { useGlobalContext } from '../../context/globalContext';
-import LoginSignup from "../Login/login";
+import { useNavigate } from "react-router-dom";
 
 function Landing() {
-    const { language, showLogin, setShowLogin } = useGlobalContext();
+    const { language } = useGlobalContext();
+    const navigate = useNavigate();
 
     const handleSignupClick = () => {
-        setShowLogin(true);
+        navigate('/login');
     };
 
     return (
         <LandingStyled>
-            {showLogin && <LoginSignup />}
             <div className="landing">
                 <div className="nav">
                     <div className="icon">
@@ -32,13 +32,12 @@ function Landing() {
                             bRad={"30px"}
                             bg={"#994700"}
                             color={"#fff"}
-                            onClick={handleSignupClick}
                         />
                     </div>
                 </div>
                 <div className="middle-content">
                     <div className="content">
-                        <h2>Take control</h2><h1>of your money</h1>
+                            <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2><h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
                         <p>Personal budgeting is the secret to financial freedom. Start your journey today.</p>
                         <Button
                             name={language === 'Portuguese' ? 'Sign up' : 'Registro'}
@@ -84,7 +83,7 @@ const LandingStyled = styled.div`
             span {
                 font-size: 24px; 
                 font-weight: bold; 
-                color: 	#994700;
+                color:  #994700;
             }
         }
 
@@ -143,7 +142,6 @@ const LandingStyled = styled.div`
         width: 100%;
         z-index: -1;
     }
-
 `;
 
 export default Landing;

@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { user, emailIcon, pass } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import Button from '../Button/Button'
+import { useNavigate } from "react-router-dom";
+
 
 const LoginSignup = () => {
   const { registerUser, loginUser } = useGlobalContext()
@@ -29,6 +31,8 @@ const LoginSignup = () => {
       setLoginInputState({ ...loginInputState, [name]: e.target.value })
     }
   }
+  
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -40,7 +44,7 @@ const LoginSignup = () => {
         password: ''
       })
     } else {
-      loginUser(loginInputState)
+      loginUser(loginInputState, navigate)
       setLoginInputState({
         email: '',
         password: ''
@@ -126,7 +130,7 @@ const LoginSignupStyled = styled.form`
     padding-top: 4vh;
     padding-bottom: 5vh;
     width: 80vw;
-    max-width: 400px; /* Adjust max-width to your preference */
+    max-width: 400px; 
     border-radius: 7%;
   }
 
@@ -157,7 +161,7 @@ const LoginSignupStyled = styled.form`
     display: flex;
     flex-direction: column;
     gap: 4vh;
-    padding: 0 5vw;
+    padding: 0 2vw;
   }
 
   .input {

@@ -18,9 +18,7 @@ import Landing from "./components/Landing/Landing"
 function App() {
   
   const { showLogin} = useGlobalContext();
-
   const [active, setActive] = useState(1);
-  
   const cookies = new Cookies();
   if (!cookies.get('jwt')) {
     return <Landing/>

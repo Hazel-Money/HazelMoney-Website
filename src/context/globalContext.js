@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect  } from "react";
 import Cookies from "universal-cookie"
 import {jwtDecode} from "jwt-decode"
 import Swal from 'sweetalert2'
+import { useNavigate } from "react-router-dom";
 
 
 const BASE_URL = "http://localhost:80/api";
@@ -45,7 +46,6 @@ export const GlobalProvider = ({children}) => {
     const [language, setLanguage] = useState(localStorage.getItem('environmentLanguage'))
     const [userUsername, setUsername] = useState("")
     const [userEmail, setEmail] = useState("")
-    const [showLogin, setShowLogin] = useState(false);
 
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
@@ -469,7 +469,7 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
-    const loginUser = async (credentials) => {
+    const LoginUser = async (credentials, navigate) => {
         try {
             const response = await axios.post(`${BASE_URL}/login.php`, credentials);
         
@@ -498,7 +498,8 @@ export const GlobalProvider = ({children}) => {
                 setLanguage(language);
                 localStorage.setItem('environmentLanguage', language);
             }
-            window.location.reload(false);
+            navigate('/');
+            //window.location.reload(false);
         } catch (err) {
             Swal.fire({
                 position: "center",
@@ -943,7 +944,7 @@ export const GlobalProvider = ({children}) => {
             uploadProfilePicture,
             getAllTransactions,
             registerUser,
-            loginUser,
+            loginUser: LoginUser,
             logout,
             addCategory,
             setError,
@@ -979,8 +980,6 @@ export const GlobalProvider = ({children}) => {
             setExpenseError,
             getUserInformation,
             changeItemInformation,
-            setShowLogin,
-            showLogin,
             userUsername,
             userEmail,
             expenseError,
