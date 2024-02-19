@@ -129,7 +129,7 @@ export const GlobalProvider = ({children}) => {
                 setIncomes([]);
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "Error getting incomes");
             console.error("Error in getIncomes:", err);
         }
     };
@@ -266,7 +266,7 @@ export const GlobalProvider = ({children}) => {
                 setExpenses([]);
             }
         } catch (err) {
-            setExpenseError(err.response?.data?.message || "An error occurred");
+            setExpenseError(err.response?.data?.message || "Error getting expenses");
         }
     }
 
@@ -377,7 +377,7 @@ export const GlobalProvider = ({children}) => {
                 setTransactions(transactionsWithCategories);
             }
         } catch (err) {
-            setHistoryError(err.response?.data?.message || "An error occurred");
+            setHistoryError(err.response?.data?.message || "Error getting all transactions");
         }
     }
 
@@ -426,7 +426,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "Error getting incomes categories");
         }
     };
 
@@ -442,7 +442,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "Error getting expenses categories");
         }
     };
 
@@ -563,7 +563,7 @@ export const GlobalProvider = ({children}) => {
 
     const logout = () => {
         Swal.fire({
-            title:(language === 'Portuguese' ? "Quer sair ?" : "Do you want to sign out ?"),
+            title:(language === 'Portuguese' ? "Deseja sair ?" : "Do you want to sign out ?"),
             showDenyButton: true,   
             confirmButtonText: (language === 'Portuguese' ? 'Sair': 'Sign out'),
             denyButtonText: `Cancel`
@@ -587,7 +587,7 @@ export const GlobalProvider = ({children}) => {
                 console.error("Response data is undefined or null");
             }
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "Error getting frequences");
         }
     };
 
@@ -655,7 +655,7 @@ export const GlobalProvider = ({children}) => {
             }
 
         } catch (err) {
-            setPaymentError(err.response?.data?.message || "An error occurred");
+            setPaymentError(err.response?.data?.message || "Error getting regular payments");
         }
     };
 

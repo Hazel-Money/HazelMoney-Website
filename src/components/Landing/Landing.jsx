@@ -24,21 +24,11 @@ function Landing() {
                         <img src={hazelMoneyIcon} alt="HazelMoney Icon" />
                         <span>HazelMoney</span>
                     </div>
-                    <div className="login-button">
-                        <Button
-                            name={language === 'Portuguese' ? 'Log in' : 'Entrar'}
-                            bPad={".8rem 1.6rem"}
-                            icon={plus}
-                            bRad={"30px"}
-                            bg={"#994700"}
-                            color={"#fff"}
-                        />
-                    </div>
                 </div>
                 <div className="middle-content">
                     <div className="content">
                             <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2><h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
-                        <p>Personal budgeting is the secret to financial freedom. Start your journey today.</p>
+                        <p>{language === 'Portuguese' ? 'O orçamento pessoal é o segredo para a liberdade financeira. Comece hoje a sua viagem.' : 'Personal budgeting is the secret to financial freedom. Start your journey today.'}</p>
                         <Button
                             name={language === 'Portuguese' ? 'Sign up' : 'Registro'}
                             bPad={".8rem 1.6rem"}
@@ -47,6 +37,7 @@ function Landing() {
                             bg={"#994700"}
                             color={"#fff"}
                             onClick={handleSignupClick}
+                            cursor={"pointer"}
                         />
                     </div>
                     <img src={graphImage} alt="Graph" className="graph" />
@@ -87,10 +78,6 @@ const LandingStyled = styled.div`
             }
         }
 
-        .login-button {
-            margin-left: auto; 
-            margin-right: 3%;
-        }
     }
 
     .middle-content {
@@ -109,7 +96,7 @@ const LandingStyled = styled.div`
         display: flex;
         flex-direction: column;
         text-align: left;
-        width: 30%;
+        width: 35%;
         margin-right: 20px;
         h1{
             color: #994700 !important;
