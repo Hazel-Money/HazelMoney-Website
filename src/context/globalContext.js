@@ -662,23 +662,22 @@ export const GlobalProvider = ({children}) => {
         history.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
-    
-        const endIndex = Math.min(currentPaymentIndex + 3, regularPayments.length);
-        setPaymentsSliced(history.slice(currentPaymentIndex, endIndex));
+        
+        const startIndex = currentPaymentIndex * 3;
+        let slicedPayments = [];
+        if (startIndex < history.length) {
+            slicedPayments = history.slice(startIndex, startIndex + 3);
+        }
+        setPaymentsSliced(slicedPayments);
     };
     
     const navigatePayments = (direction) => {
-        const history = [...regularPayments];
-        const step = 3; 
+        const step = 1; 
         let newIndex;
-        let endDiff = 1;
-        if (history.length % 3 === 0) {
-            endDiff = 0;
-            //make this one work
-        }
     
         if (direction === 'next') {
-            newIndex = Math.min(currentPaymentIndex + step, regularPayments.length - endDiff);
+            const maxIndex = Math.max(Math.floor((regularPayments.length - 1) / 3), 0);
+            newIndex = Math.min(currentPaymentIndex + step, maxIndex);
         } else {
             newIndex = Math.max(currentPaymentIndex - step, 0);
         }

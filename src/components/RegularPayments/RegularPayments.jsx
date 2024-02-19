@@ -57,7 +57,7 @@ function RegularPayments() {
               onClick={() => navigatePayments('prev')}
               />
               <i
-              className={currentPaymentIndex + 2 < regularPayments.length ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-right disabled"}
+              className={currentPaymentIndex * 3 + 3 < regularPayments.length ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-right disabled"}
               onClick={() => navigatePayments('next')}
               />
             </div>
