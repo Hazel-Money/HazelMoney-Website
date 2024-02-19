@@ -884,6 +884,7 @@ export const GlobalProvider = ({children}) => {
 
     const changeItemInformation = async (newItemInformation) => {
         try {
+            newItemInformation.payment_date = formatDate(newItemInformation.payment_date);
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/transactions.php`, newItemInformation);
