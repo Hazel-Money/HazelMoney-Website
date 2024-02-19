@@ -26,7 +26,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
     const {changeItemInformation, language, Incomescategories, Expensescategories } = useGlobalContext();
 
     let defaultCategory = '';
-    console.log(transaction.is_income)
     transaction.is_income == '1' ? 
         defaultCategory = Incomescategories[0].id
      : 
@@ -37,7 +36,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
         amount: transaction.amount,
         description: transaction.description,
         category_id: defaultCategory,
-        payment_date: transaction.payment_date
+        payment_date: new Date(transaction.payment_date)
     });
     
     const {id, amount, payment_date, category_id, description } = inputState;
@@ -60,8 +59,8 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
             id: transaction.id,
             amount: transaction.amount,
             description: transaction.description,
-            category_id: transaction.category,
-            payment_date: defaultCategory
+            category_id: defaultCategory,
+            payment_date: transaction.payment_date
         })
         setSelectedTransaction(null)
     };
@@ -141,6 +140,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                 showTimeSelect
                                 onChange={handleDatePickerChange}
                                 value={payment_date}
+                                selected={payment_date}
                             />
                             <textarea
                                 required
