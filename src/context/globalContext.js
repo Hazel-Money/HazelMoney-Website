@@ -419,7 +419,7 @@ export const GlobalProvider = ({children}) => {
             const user = getUserFromCookies();
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=${user.id}`);
-
+            console.log(response)
             if (response && response.data) {
                 setIncomeCategories(response.data);
             } else {

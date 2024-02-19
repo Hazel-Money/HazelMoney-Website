@@ -182,7 +182,7 @@ const LoginSignupStyled = styled.form`
     width: 80vw;
     max-width: 400px; 
     border-radius: 7%;
-    box-shadow: 0 2px 41px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 2px 41px rgba(0, 0, 0, 0.2)
   }
 
   .header {
@@ -244,7 +244,7 @@ const LoginSignupStyled = styled.form`
     background: transparent !important;
     border: none;
     outline: none;
-    color:#773903; 
+    color:#707070; 
     font-size: 4vw;
   }
 
