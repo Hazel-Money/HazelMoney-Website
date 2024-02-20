@@ -71,10 +71,7 @@ export const GlobalProvider = ({children}) => {
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-if (cookies.get('jwt') === undefined) {
-                return [];
-            }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const requestData = {
                 ...income,
                 is_income
@@ -108,7 +105,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/transactions.php?user_id=${user.id}&is_income=1`;
@@ -377,10 +374,12 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
 
     const getAllTransactions = async () => {
         try {
+            
             const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
+            const jwtToken = cookies.get('jwt');
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
@@ -460,10 +459,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return []
             }
-            if (cookies.get('jwt') === undefined) {
-                return [];
-            }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=${user.id}`);
             if (response && response.data) {
                 setIncomeCategories(response.data);
@@ -481,10 +477,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return []
             }
-            if (cookies.get('jwt') === undefined) {
-                return [];
-            }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=0&user_id=${user.id}`);
 
             if (response && response.data) {
@@ -535,15 +528,12 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
             const token = jwtDecode(response.data.jwt);
-
             cookies.set('jwt', response.data.jwt, {
                 expires: new Date(token.exp * 1000),
             });
-
             const selectedAccountId = "All";
             setAccountId(selectedAccountId);
             localStorage.setItem('accountId', selectedAccountId);
-
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -585,6 +575,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
+            const jwtToken = cookies.get('jwt');
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const userAccounts = await axios.get(`${BASE_URL}/accounts.php?user_id=${user.id}`);
             setAccounts(userAccounts.data)
@@ -645,7 +636,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/frequencies.php`);
 
             if (response && response.data) {
@@ -664,7 +655,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             payment.start_date = formatDate(payment.start_date)
             const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
             getRegularPayments(); 
@@ -692,7 +683,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             
             let request;
             if (accountId == "All") {
@@ -764,8 +755,8 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
     const deleteRegularPayments = async (id) => {
         if (cookies.get('jwt') === undefined) {
                 return [];
-            }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        }
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const res = await axios.delete(`${BASE_URL}/regular_payments`, {
         data: { id }
         })
@@ -777,7 +768,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         const response = await axios.get(`${BASE_URL}/currencies.php`);
         if (response && response.data) {
             setCurrencies(response.data);
@@ -792,7 +783,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currencyJSON = JSON.stringify({'code': newCurrencyCode});
             const response = await axios.put(`${BASE_URL}/user/change_currency`, currencyJSON);
             //setCurrency(newCurrencyCode)
@@ -820,7 +811,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/default_currency`);
             const currency = response.data.currency; 
             setCurrency(currency);
@@ -836,7 +827,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/user/default_currency`;
@@ -857,7 +848,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/balance`);
             const responseUser = response.data;
             const balance = responseUser.balance;
@@ -877,7 +868,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/user/balance`;   
@@ -903,7 +894,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/profile_picture`, {
                 responseType: 'blob'
             });
@@ -923,7 +914,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const formData = new FormData()
             formData.append("image", file)
             const response = await axios.post(`${BASE_URL}/user/profile_picture`, formData);
@@ -952,7 +943,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/user/data`, newUserInformation);
             getUserInformation();
             Swal.fire({
@@ -978,7 +969,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/user/data`);
             const username = response.data.username;
             setUsername(username);
@@ -996,7 +987,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.put(`${BASE_URL}/transactions.php`, newItemInformation);
             refreshAccountContent();
             Swal.fire({

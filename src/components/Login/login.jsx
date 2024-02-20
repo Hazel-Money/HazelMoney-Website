@@ -42,10 +42,6 @@ const LoginSignup = () => {
       registerUser(signUpInputState);
     } else {
       LoginUser(loginInputState, navigate);
-      setLoginInputState({
-        email: '',
-        password: ''
-      });
     }
   };
 
@@ -174,118 +170,128 @@ const LoginSignupStyled = styled.form`
     width: 80vw;
     max-width: 50vh; 
     border-radius: 7%;
-    box-shadow: 0 2px 41px rgba(0, 0, 0, 0.2)
-  }
+    box-shadow: 0 2px 41px rgba(0, 0, 0, 0.2);
 
-  .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 9px;
-    width: 100%;
-    margin-top: 0;
-  }
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      margin-top: 0;
+      
+      .text {
+        color: var(--hazel-color);
+        font-size: 6vw;
+        font-weight: 700;
+      }
 
-  .text {
-    color: var(--hazel-color);
-    font-size: 6vw;
-    font-weight: 700;
-  }
+      .underline {
+        width: 7vw;
+        height: 1px;
+        background: var(--hazel-color);
+        border-radius: 9px;
+      }
 
-  .underline {
-    width: 7vw;
-    height: 1px;
-    background: var(--hazel-color);
-    border-radius: 9px;
-  }
-
-  .inputs {
-    margin-top: 5vh;
-    display: flex;
-    flex-direction: column;
-    gap: 4vh;
-    padding: 0 2vw;
-  }
-
-  .input {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 7vh;
-    background: #ffffff;
-    border-radius: 30px;
-    box-shadow: 0 2px 13px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-
-  .input span {
-    margin: 0 1rem;
-  }
-
-  .eye-icon {
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-
-  .input input {
-    width: 64%;
-    height: 50px;
-    background: transparent !important;
-    border: none;
-    outline: none;
-    color:#707070; 
-    font-size: 4vw;
-  }
-
-  .submit-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 2vh auto;
-  }
-
-  .submit-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    Button {
-      background-image: var(--default-gradient) !important; 
     }
-  }
 
-  .login {
-    margin-top: 7%;
-  }
+    .inputs {
+      margin-top: 5vh;
+      display: flex;
+      flex-direction: column;
+      gap: 4vh;
+      padding: 0 2vw;
 
-  .go {
-    color: #994700;
-    cursor: pointer;
-    margin-left: 0;
+      .input {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 7vh;
+        background: #ffffff;
+        border-radius: 30px;
+        box-shadow: 0 2px 13px rgba(0, 0, 0, 0.1);
+        position: relative;
+
+        .eye-icon {
+          position: absolute;
+          right: 1.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+        }
+
+        input {
+          width: 64%;
+          height: 50px;
+          background: transparent !important;
+          border: none;
+          outline: none;
+          color:#707070; 
+          font-size: 4vw;
+        }
+
+        span {
+        margin: 0 1rem;
+      }
+      }
+    }
+
+    .submit-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 2vh auto;
+
+      .go {
+        color: #994700;
+        cursor: pointer;
+        margin-left: 0;
+      }
+    }
+
+    .submit-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      Button {
+        background-image: var(--default-gradient) !important; 
+      }
+    }
+
+    .login {
+      margin-top: 7%;
+    }
+
   }
 
   @media screen and (min-width: 768px) {
     .text {
-      font-size: 3rem;
+      font-size: 3rem !important;
     }
-
     .underline {
-      width: 3rem;
+      width: 5rem !important;
+      height: 0.2rem !important;
     }
-
     .input input {
-      font-size: 1.2rem;
+      font-size: 1.2rem!important;
     }
   }
 
-  @media screen and (min-width: 1000px){
+  @media only screen and (max-width: 600px){
     .container{
-      max-width: 60vh;
-    }
-    .input{
-      height: 8vh;
+      .header{
+        .text{
+          font-size: 3rem;
+        }
+        .underline{
+          width: 17vw;
+          height: 1vw;
+        }
+      }
+      .inputs{
+        margin-top: 0.8rem;
+        gap: 3vh;
+      }
     }
   }
 `;
