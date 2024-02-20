@@ -15,10 +15,13 @@ function currencyFormat(num) {
 
 function Chart() {
     const dateFormat = 'd/MM';
+    const {refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories} = useGlobalContext()
 
     useEffect(() => {
-      getAllTransactions(user.id)
-      }, [])
+      getAllTransactions(); 
+      getIncomesCategories();
+      getExpensesCategories();
+    }, [])
 
     function getDatesBetweenNowAndXDaysAgo(x) {
         var currentDate = new Date();
@@ -35,7 +38,6 @@ function Chart() {
         return datesArray;
     }
 
-    const {language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories} = useGlobalContext()
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
@@ -63,29 +65,40 @@ function Chart() {
     const maxTicks = 10;
     const chartInterval = Math.ceil(chartData.length / maxTicks);
    
-    const incomeChartData = Incomescategories.map((category) => {
+    const incomeChartData = Incomescategories.filter(category => {
       const categoryAmount = incomes
-        .filter((income) => income.category_id === category.id)
-        .reduce((sum, income) => sum + parseInt(income.amount), 0);
-  
+          .filter(income => income.category_id === category.id)
+          .reduce((sum, income) => sum + parseInt(income.amount), 0);
+      return categoryAmount > 0;
+      }).map(category => {
+      const categoryAmount = incomes
+          .filter(income => income.category_id === category.id)
+          .reduce((sum, income) => sum + parseInt(income.amount), 0);
+
       return {
-        name: category.name,
-        value: categoryAmount,
-        fill: category.color,
+          name: category.name,
+          value: categoryAmount,
+          fill: category.color,
       };
     });
-    
-    const expenseChartData = Expensescategories.map((category) => {
+
+    const expenseChartData = Expensescategories.filter(category => {
       const categoryAmount = expenses
-        .filter((expense) => expense.category_id === category.id)
-        .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
-  
-      return {
-        name: category.name,
-        value: categoryAmount,
-        fill: category.color,
-      };
+          .filter(expense => expense.category_id === category.id)
+          .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
+      return categoryAmount > 0;
+    }).map(category => {
+        const categoryAmount = expenses
+            .filter(expense => expense.category_id === category.id)
+            .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
+
+        return {
+            name: category.name,
+            value: categoryAmount,
+            fill: category.color,
+        };
     });
+
 
     const [chart, setChart] = useState('bar');
 

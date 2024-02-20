@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import Tooltip from '@mui/material/Tooltip';
 
 
 function currencyFormat(num) {
@@ -65,7 +66,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
         setSelectedTransaction(null)
     };
 
-    console.log(payment_date)
     return (
         <Dialog
             open={Boolean(transaction)}
