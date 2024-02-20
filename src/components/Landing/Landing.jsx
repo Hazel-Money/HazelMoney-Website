@@ -27,7 +27,8 @@ function Landing() {
                 </div>
                 <div className="middle-content">
                     <div className="content">
-                        <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2><h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
+                        <h2>{language === 'Portuguese' ? 'Ganha controlo' : 'Take control'}</h2>
+                        <h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
                         <p>{language === 'Portuguese' ? 'O orçamento pessoal é o segredo para a liberdade financeira. Comece hoje a sua viagem.' : 'Personal budgeting is the secret to financial freedom. Start your journey today.'}</p>
                         <Button
                             name={language === 'Portuguese' ? 'Registro' : 'Sign up'}
@@ -42,9 +43,9 @@ function Landing() {
                     </div>
                     <img src={graphImage} alt="Graph" className="graph" />
                 </div>
-                <div className="wave">
-                    <img src={waveSVG} alt="Wave" />
-                </div>
+            </div>
+            <div className="wave">
+                <img src={waveSVG} alt="Wave" />
             </div>
         </LandingStyled>
     );
@@ -88,49 +89,93 @@ const LandingStyled = styled.div`
         padding: 0 20px; 
         margin-top: 10vh;
         margin-right: 4vh;
-    }
 
-    .content {
-        margin-top: 5vh;
-        margin-left: 24vh;
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        width: 35%;
-        margin-right: 20px;
-        h1{
-            color: var(--hazel-color) !important;
-            font-size: 9vh;
-            margin-bottom: 2vh;
-        }
-        h2{
-            color: var(--primary-color) !important;
-            font-size: 6vh;
-            margin-top: 0;
-        }
-        p{
-            color: #484761 !important;
-        }
-        Button {
-            width: 30vh;
-            margin-top: 3vh;
+        .content {
+            margin-top: 5vh;
+            margin-left: 24vh;
             display: flex;
-            justify-content: center;
-            background-image: var(--default-gradient) !important; 
+            flex-direction: column;
+            text-align: left;
+            width: 35%;
+            margin-right: 20px;
+            h1{
+                color: var(--hazel-color) !important;
+                font-size: 9vh;
+                margin-bottom: 2vh;
+            }
+            h2{
+                color: var(--primary-color) !important;
+                font-size: 6vh;
+                margin-top: 0;
+            }
+            p{
+                color: #484761 !important;
+            }
+            Button {
+                width: 30vh;
+                margin-top: 3vh;
+                display: flex;
+                justify-content: center;
+                background-image: var(--default-gradient) !important; 
+            }
+        }
+        .graph {
+            width: 40%; 
+            height: auto;
         }
     }
 
-    .graph {
-        width: 40%; 
-        height: auto;
-    }
-
+    
     .wave {
         position: fixed; 
         bottom: -11%; 
         left: 0;
         width: 100%;
         z-index: -1;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .wave{
+            bottom: -25%;
+        }
+
+        .middle-content{
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 50%;
+            margin:0;
+            .content{
+                width: 100%;
+                margin: 0;
+                text-align: center;
+                align-items: center; 
+                h1{
+                    font-size: 7vh;
+                    width: 100%;
+                    margin-bottom: 1vh;
+                }
+                h2{
+                    width: 100%;
+                    font-size: 5vh;
+                    margin-top: 0;
+                }
+                p{
+                    font-size: 3vh;
+                    width: 100%;
+                }
+                Button {
+                    width: 60%; 
+                    margin-top: 20px; 
+                    background-image: var(--default-gradient) !important; 
+                }
+            }
+            .graph{
+                width: 100%; 
+                margin-top: 50px;
+                height: 150px;
+            }
+        }
     }
 `;
 
