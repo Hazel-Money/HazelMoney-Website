@@ -17,7 +17,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 import Tooltip from '@mui/material/Tooltip';
 
-
 function currencyFormat(num) {
     return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
 }
@@ -66,6 +65,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
         setSelectedTransaction(null)
     };
 
+    console.log(payment_date)
     return (
         <Dialog
             open={Boolean(transaction)}
@@ -97,61 +97,84 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                     <InnerContent>
                         <DialogContent>
                             <FormControl>
-                                <select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    required
-                                    value={category_id}
-                                    name="category_id"
-                                    onChange={handleInputChange("category_id")}
-                                    label={language === 'Portuguese' ? 'Categoria' : 'Category'}
+                                <Tooltip 
+                                    title={language === 'Portuguese' ? 'Categoria' : 'Category'}
+                                    placement='top'
                                 >
-                                    {transaction.is_income == '1' ? 
-                                        Incomescategories.map((category) => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))
-                                     : 
-                                        Expensescategories.map((category) => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
+                                    <select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        required
+                                        value={category_id}
+                                        name="category_id"
+                                        onChange={handleInputChange("category_id")}
+                                        label={language === 'Portuguese' ? 'Categoria' : 'Category'}
+                                    >
+                                        {transaction.is_income == '1' ? 
+                                            Incomescategories.map((category) => (
+                                                <option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </option>
+                                            ))
+                                        : 
+                                            Expensescategories.map((category) => (
+                                                <option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                </Tooltip >
                             </FormControl>
-                            <input
-                                required
-                                margin="dense"
-                                id="amount"
-                                name="amount"
-                                type="text"
-                                fullWidth
-                                onChange={handleInputChange('amount')}
-                                label='Amount'
-                                defaultValue={currencyFormat(transaction.amount)}
-                            />
-                            <DatePicker
-                                required
-                                id="payment_date"
-                                placeholderText={language === 'Portuguese' ? 'Insira uma data' : 'Enter a date'}
-                                dateFormat="Pp"
-                                showTimeSelect
-                                onChange={handleDatePickerChange}
-                                value={payment_date}
-                                selected={payment_date}
-                            />
-                            <textarea
-                                margin="dense"
-                                id="description"
-                                name="description"
-                                type="text"
-                                fullWidth
-                                onChange={handleInputChange('description')}
-                                label='Description'
-                                defaultValue={transaction.description}
-                            />
+                            <Tooltip 
+                                title={language === 'Portuguese' ? 'Valor' : 'Amount'}
+                                placement='top'
+                            >
+                                <input
+                                    required
+                                    margin="dense"
+                                    id="amount"
+                                    name="amount"
+                                    type="text"
+                                    fullWidth
+                                    onChange={handleInputChange('amount')}
+                                    label='Amount'
+                                    defaultValue={currencyFormat(transaction.amount)}
+                                />
+                            </Tooltip>
+                            
+                            <Tooltip 
+                                title={language === 'Portuguese' ? 'Data de Pagamento' : 'Payment Date'}
+                                placement='top'
+                            >
+                                <div>
+                                    <DatePicker
+                                        required
+                                        id="payment_date"
+                                        placeholderText={language === 'Portuguese' ? 'Insira uma data' : 'Enter a date'}
+                                        dateFormat="Pp"
+                                        showTimeSelect
+                                        onChange={handleDatePickerChange}
+                                        value={payment_date}
+                                        selected={payment_date}
+                                    />
+                                </div>
+                            </Tooltip>
+                            <Tooltip 
+                                title={language === 'Portuguese' ? 'Descrição' : 'Description'}
+                                placement='top'
+                            >
+                                <textarea
+                                    margin="dense"
+                                    id="description"
+                                    name="description"
+                                    type="text"
+                                    fullWidth
+                                    onChange={handleInputChange('description')}
+                                    label='Description'
+                                    defaultValue={transaction.description}
+                                />
+                            </Tooltip>
                         </DialogContent>
                     </InnerContent>
                     <div className='btn'>
