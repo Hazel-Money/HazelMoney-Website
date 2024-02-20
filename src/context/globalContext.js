@@ -46,6 +46,7 @@ export const GlobalProvider = ({children}) => {
     const [language, setLanguage] = useState(localStorage.getItem('environmentLanguage'))
     const [userUsername, setUsername] = useState("")
     const [userEmail, setEmail] = useState("")
+    const [action, setAction] = useState('Login');
 
     function formatDate(date) {
         // Get year, month, day, hours, minutes, and seconds from the Date object
@@ -510,6 +511,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
                 showConfirmButton: false,
                 timer: 1500
               });
+            setAction('Login');
         } catch (err) {
 
             Swal.fire({
@@ -523,6 +525,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
 
     const LoginUser = async (credentials, navigate) => {
         try {
+            console.log(credentials)
             const response = await axios.post(`${BASE_URL}/login.php`, credentials);
         
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
@@ -1082,6 +1085,8 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             setExpenseError,
             getUserInformation,
             changeItemInformation,
+            setAction,
+            action,
             userUsername,
             userEmail,
             expenseError,

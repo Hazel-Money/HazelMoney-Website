@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { user, emailIcon, pass, eye, eyeSlash } from '../../utils/Icons'; // Assuming you have eye and eyeSlash icons
+import { emailIcon, pass, eye, eyeSlash } from '../../utils/Icons'; // Assuming you have eye and eyeSlash icons
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
 import { useNavigate } from "react-router-dom";
 import hazelMoneyIcon from '../../img/hazelmoneyIcon2.png';
 
 const LoginSignup = () => {
-  const { registerUser, LoginUser, language } = useGlobalContext();
+  const { registerUser, loginUser, language, action, setAction } = useGlobalContext();
 
-  const [action, setAction] = useState('Login');
   const [signUpInputState, setSignUpInputState] = useState({
     email: '',
     username: '',
@@ -22,9 +21,6 @@ const LoginSignup = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const { email, username, password } = signUpInputState;
-  const { email: loginEmail, password: loginPassword } = loginInputState;
 
   const handleInput = (name) => (e) => {
     if (action === 'Sign Up') {
@@ -44,13 +40,8 @@ const LoginSignup = () => {
     e.preventDefault();
     if (action === 'Sign Up') {
       registerUser(signUpInputState);
-      setSignUpInputState({
-        email: '',
-        username: '',
-        password: ''
-      });
     } else {
-      LoginUser(loginInputState, navigate);
+      loginUser(loginInputState, navigate);
       setLoginInputState({
         email: '',
         password: ''
@@ -80,11 +71,11 @@ const LoginSignup = () => {
             <div></div>
           ) : (
             <div className="input">
-              <span>{user}</span>
+              <span>{emailIcon}</span>
               <input
                 type="text"
                 placeholder="Username"
-                value={action === 'Sign Up' ? username : loginEmail}
+                value={signUpInputState.username}
                 onChange={handleInput('username')}
                 required
               />
@@ -95,7 +86,7 @@ const LoginSignup = () => {
             <input
               type="email"
               placeholder="Email"
-              value={action === 'Sign Up' ? email : loginEmail}
+              value={action === 'Sign Up' ? signUpInputState.email : loginInputState.email}
               onChange={handleInput('email')}
               required
             />
@@ -105,7 +96,7 @@ const LoginSignup = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              value={action === 'Sign Up' ? password : loginPassword}
+              value={action === 'Sign Up' ? signUpInputState.password : loginInputState.password}
               onChange={handleInput('password')}
               required
             />
@@ -286,6 +277,12 @@ const LoginSignupStyled = styled.form`
 
     .input input {
       font-size: 1.2rem;
+    }
+  }
+
+  @media screen and (min-width: 1000px){
+    .container{
+      max-width: 60vh;
     }
   }
 `;
