@@ -104,12 +104,12 @@ const LandingStyled = styled.div`
             margin-bottom: 2vh;
         }
         h2{
-            color: #2f2e41 !important;
+            color: var(--primary-color) !important;
             font-size: 6vh;
             margin-top: 0;
         }
         p{
-            color: #484761 mportant;
+            color: #484761 !important;
         }
         Button {
             width: 30vh;

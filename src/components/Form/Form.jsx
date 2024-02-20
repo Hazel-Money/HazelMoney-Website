@@ -93,7 +93,7 @@ function Form() {
                 icon={date}
                 bPad={".8rem 1.6rem"}
                 bRad={"30px"}
-                bg={"var(--color-accent"}
+                bg={"var(--default-gradient)"}
                 color={"#fff"}
                 hColor={"red"}
                 type="button"
@@ -137,7 +137,6 @@ function Form() {
               icon={plus}
               bPad={".8rem 1.6rem"}
               bRad={"30px"}
-              bg={"var(--color-accent"}
               color={"#fff"}
               hColor={"red"}
             />
@@ -201,8 +200,10 @@ const FormStyled = styled.form`
     .submit-btn{
         button{
             box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+            background: var(--default-gradient);
             &:hover{
-                background: var(--color-green) !important;            
+                cursor: pointer;
+                opacity: 90%;
             }
         }
     }

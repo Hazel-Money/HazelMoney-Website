@@ -402,7 +402,6 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
                 categoryMap[category.id] = category;
             });
 
-            console.log(transactionsData);
             const transactionsWithCategories = transactionsData.length > 0
              ? transactionsData.map(transaction => ({
                 ...transaction,
@@ -466,7 +465,6 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             }
 axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const response = await axios.get(`${BASE_URL}/categories.php?is_income=1&user_id=${user.id}`);
-            console.log(response)
             if (response && response.data) {
                 setIncomeCategories(response.data);
             } else {
@@ -513,11 +511,19 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
               });
             setAction('Login');
         } catch (err) {
-
+            let errorResponse = "";
+            if (err.response?.data?.message) {
+                const errArray = Array(err.response.data.message.slice(','));
+                errArray.forEach((error) => {
+                    errorResponse += error + "\n";
+                });
+            } else {
+                errorResponse = "Something bad has happened";
+            }
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: err.response?.data?.message   || "Something bad has happened",
+                title: errorResponse,
                 showConfirmButton: true
             });         
         }
@@ -525,7 +531,6 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
 
     const LoginUser = async (credentials, navigate) => {
         try {
-            console.log(credentials)
             const response = await axios.post(`${BASE_URL}/login.php`, credentials);
         
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.jwt}`;
@@ -580,7 +585,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const userAccounts = await axios.get(`${BASE_URL}/accounts.php?user_id=${user.id}`);
             setAccounts(userAccounts.data)
         } catch{
@@ -595,14 +600,13 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
-axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currency = JSON.stringify({'code': currency_code});
             const response = await axios.post(`${BASE_URL}/accounts.php`, {
                 ...credentials,
                 user_id,
                 currency,
             });
-            console.log(response)
             getAccounts()
             Swal.fire({
                 position: "center",
@@ -1023,12 +1027,6 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
         getAccountBalance();
         getBalance();
     }
-
-    useEffect(() => {
-        getAllTransactions();
-        getExpensesCategories();
-        getIncomesCategories();
-    }, []);
 
     return(
         <GlobalContext.Provider value={{

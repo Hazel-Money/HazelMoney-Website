@@ -9,15 +9,16 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     :root{
-        --primary-color: #222260;
-        --primary-color2: 'color: rgba(34, 34, 96, .6)';
-        --primary-color3: 'color: rgba(34, 34, 96, .4)';
+        --primary-color: #3b3b3c;
+        --primary-color2: #555555;
+        --primary-color3: #b6b1a7;
         --hazel-color: #A64F0D;
+        --hazel-color-dark: #994700;
+        --hazel-color-light: #cc6633;
         --default-gradient: linear-gradient(45deg, #cc6633, #994700);
+        --reverse-gradient: linear-gradient(45deg, #994700, #cc6633);
         --color-green: #42AD00;
-        --color-grey: #aaa;
-        --color-accent: #f56692;
-        --color-delete: #FF0000;
+        --color-accent: #A64F0D;
     }
 
     body{

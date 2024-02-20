@@ -68,8 +68,8 @@ function Navigation({active, setActive}) {
 
     const [inputState, setInputState] = useState({
         user_id: user.id,
-        username: '',
-        email: ''
+        username: userUsername,
+        email: userEmail
       });
 
     useEffect(() => {
@@ -126,7 +126,7 @@ function Navigation({active, setActive}) {
                         }}
                     >
                         <div className='gradient' style={{
-                            backgroundImage: 'linear-gradient(160deg,var(--primary-color), #0000ff7c)',
+                            backgroundImage: 'linear-gradient(45deg, #cc6633, #994700)',
                             height: '125px',
                             borderRadius: '4px 4px 0px 0px',
                         }}>
@@ -186,8 +186,8 @@ function Navigation({active, setActive}) {
                                 />
                             </DialogContent>
                             <DialogActions>
-                                <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
-                                <Button onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                                <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                                <Button style={{color:'var(--hazel-color)'}} onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                             </DialogActions>
                         </div>
                     </Dialog>
@@ -275,12 +275,13 @@ const NavStyled = styled.nav`
                     transform: scale(1.1);
                 }
             }
+            
         }
         h2{
-            color: rgba(34, 34, 96, 1);
+            color: var(--primary-color);
         }
         p{
-            color: rgba(34, 34, 96, .6);
+            color: var(--primary-color2);
         }
     }
 
@@ -296,7 +297,7 @@ const NavStyled = styled.nav`
             font-weight: 500;
             cursor: pointer;
             transition: all .4s ease-in-out;
-            color: rgba(34, 34, 96, .6);
+            color: var(--primary-color3);
             padding-left: 1rem;
             position: relative;
             i{
@@ -308,9 +309,9 @@ const NavStyled = styled.nav`
     }
 
     .active{
-        color: rgba(34, 34, 96, 1) !important;
+        color: var(--primary-color2) !important;
         i{
-            color: rgba(34, 34, 96, 1) !important;
+            color: var(--primary-color) !important;
         }
         &::before{
             content: "";
@@ -319,7 +320,7 @@ const NavStyled = styled.nav`
             top: 0;
             width: 4px;
             height: 100%;
-            background: #222260;
+            background: var(--primary-color);
             border-radius: 0 10px 10px 0;
         }
     }
@@ -338,7 +339,8 @@ const NavStyled = styled.nav`
             place-items: center;
             select{
                 float: right;
-                width: 80%;
+                width: 100%;
+                max-width: 12vw;
                 font-family: inherit;
                 font-size: 1.1rem;
                 outline: none;
@@ -349,9 +351,9 @@ const NavStyled = styled.nav`
                 background: transparent;
                 resize: none;
                 box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-                color: rgba(34, 34, 96, 0.9);
+                color: var(--primary-color);
                 &::placeholder{
-                    color: rgba(34, 34, 96, 0.4);
+                    color: var(--primary-color);
                 }
             }
         }

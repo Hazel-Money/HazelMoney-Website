@@ -4,7 +4,6 @@ import { InnerLayout } from '../../styles/Layouts';
 import RegularPaymentForm from './RegularPaymentForm';
 import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
-import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function RegularPayments() {
   const {language,accountCurrency, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
@@ -26,7 +25,6 @@ function RegularPayments() {
       <InnerLayout>
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Adicionar pagamento regular' : 'Add regular payment'}</h1> 
-          <img src={hazelMoneyIcon}/>
         </div>
         <div className='payment-content'>
           <div className="form-container">
@@ -78,12 +76,6 @@ const RegularPaymentsStyled = styled.div`
         h1{
             float: left;
             width: 95%;
-        }
-        img{
-            margin-top: -2%;
-            margin-bottom: 1%;
-            float: right;
-            transform: rotate(30deg);
         }
     }
     .form-container{

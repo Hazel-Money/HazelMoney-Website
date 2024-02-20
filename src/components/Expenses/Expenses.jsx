@@ -4,7 +4,6 @@ import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import ExpenseForm from '../Expenses/ExpenseForm'
 import IncomeItem from '../IncomeItem/IncomeItem';
-import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 import DetailedIncomeInfo from '../IncomeItem/ItemInformation'
 
 
@@ -39,7 +38,6 @@ function Expenses() {
       <InnerLayout>
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Despesas' : 'Expenses'}</h1>
-          <img src={hazelMoneyIcon}/>
         </div>
         <h2 className="total-income">{language === 'Portuguese' ? 'Total gasto: ' : 'Total expense: '}<span>{accountCurrency}{currencyFormat(accountExpenseAmount)}</span></h2>
         <div className="income-content">
@@ -96,12 +94,6 @@ const ExpenseStyled = styled.div`
         h1{
             float: left;
             width: 95%;
-        }
-        img{
-            margin-top: -2%;
-            margin-bottom: 1%;
-            float: right;
-            transform: rotate(30deg);
         }
     }
     .total-income{

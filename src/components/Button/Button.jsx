@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from "styled-components";
 
-function Button({name, icon, onClick, bg, bPad, color, bRad, type, cursor}) {
+function Button({name, icon, onClick, bPad, color, bRad, type, cursor}) {
   return (
     <ButtonStyled style={{
-        background: bg,
         padding: bPad,
         borderRadius: bRad,
         color: color,
@@ -26,6 +25,11 @@ const ButtonStyled = styled.button`
     display: flex;
     align-items: center;
     gap: .5rem;
+    background: var(--default-gradient);
+    &:hover{
+        cursor: pointer;
+        opacity: 90%;
+    }
 `;
 
 export default Button

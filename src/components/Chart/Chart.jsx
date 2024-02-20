@@ -8,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
-import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -133,7 +132,6 @@ function Chart() {
                   </Select>
                   </FormControl>
                   <h5>{language === 'Portuguese' ? 'ÚLTIMOS 30 DIAS' : 'PAST 30 DAY'}</h5>
-                  <img src={hazelMoneyIcon}/>
                 </div>
                 </div>
                 {chart === "bar" ? 

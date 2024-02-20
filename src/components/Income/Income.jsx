@@ -38,7 +38,6 @@ function Income() {
       <InnerLayout>
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
-          <img src={hazelMoneyIcon}/>
         </div>
         <h2 className="total-income">{language === 'Portuguese' ? 'Total ganho: ' : 'Total income: '}<span>{accountCurrency}{currencyFormat(accountIncomeAmount)}</span></h2>
         <div className="income-content">
@@ -95,12 +94,6 @@ const IncomeStyled = styled.div`
         h1{
             float: left;
             width: 95%;
-        }
-        img{
-            margin-top: -2%;
-            margin-bottom: 1%;
-            float: right;
-            transform: rotate(30deg);
         }
     }
     .total-income{

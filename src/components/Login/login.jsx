@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { emailIcon, pass, eye, eyeSlash } from '../../utils/Icons'; // Assuming you have eye and eyeSlash icons
+import { emailIcon, pass, eye, eyeSlash, user } from '../../utils/Icons'; 
 import { useGlobalContext } from '../../context/globalContext';
 import Button from '../Button/Button';
 import { useNavigate } from "react-router-dom";
 import hazelMoneyIcon from '../../img/hazelmoneyIcon2.png';
 
 const LoginSignup = () => {
-  const { registerUser, loginUser, language, action, setAction } = useGlobalContext();
+  const { registerUser,LoginUser, language, action, setAction } = useGlobalContext();
 
   const [signUpInputState, setSignUpInputState] = useState({
     email: '',
@@ -41,7 +41,7 @@ const LoginSignup = () => {
     if (action === 'Sign Up') {
       registerUser(signUpInputState);
     } else {
-      loginUser(loginInputState, navigate);
+      LoginUser(loginInputState, navigate);
       setLoginInputState({
         email: '',
         password: ''
@@ -71,7 +71,7 @@ const LoginSignup = () => {
             <div></div>
           ) : (
             <div className="input">
-              <span>{emailIcon}</span>
+              <span>{user}</span>
               <input
                 type="text"
                 placeholder="Username"
@@ -283,6 +283,9 @@ const LoginSignupStyled = styled.form`
   @media screen and (min-width: 1000px){
     .container{
       max-width: 60vh;
+    }
+    .input{
+      height: 8vh;
     }
   }
 `;
