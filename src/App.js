@@ -71,6 +71,7 @@ const AppStyled = styled.div`
       width: 0;
     }
   }
+
 `;
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { signout, settings } from '../../utils/Icons'
+import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
 import TextField from '@mui/material/TextField';
@@ -57,6 +57,7 @@ function Navigation({active, setActive}) {
     };
 
     const [open, setOpen] = useState(false);
+    const [openHamburguer, setOpenHamburguer] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -104,7 +105,7 @@ function Navigation({active, setActive}) {
     };
 
     return (
-        <NavStyled>
+        <NavStyled open={openHamburguer}>
             <div className="user-con">
                 <div className="form-container">
                     <div className="pfp-container" onClick={handleClickOpen}> 
@@ -197,7 +198,12 @@ function Navigation({active, setActive}) {
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
                 </div>
             </div>
-            <ul className="menu-items">
+            <div className="menu-toggle" onClick={() => setOpenHamburguer(!openHamburguer)}>
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
+            </div>
+            <ul className={`menu-items ${openHamburguer ? 'open' : ''}`}>
                 {menuItems.map((item) => {
                     return (
                         <li
@@ -236,8 +242,8 @@ function Navigation({active, setActive}) {
                     </div>
                 </div>
             </div>
-    </NavStyled>
-  );
+        </NavStyled>
+    );
 }
 
 const NavStyled = styled.nav`
@@ -358,6 +364,110 @@ const NavStyled = styled.nav`
             }
         }
     }
+
+    @media only screen and (max-width: 600px) {
+    padding: 3%;
+    width: 25%;
+    .user-con {
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0rem;
+        .pfp-container{
+            img{
+                width: 55px;
+                height: 55px;
+            }
+        }
+        .text{
+            h2{
+                font-size: 1rem;
+            }
+            p{
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .menu-items {
+        align-items: center;
+        display: none;
+        margin-top: 100px;
+        li{
+            i{
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .menu-items.open li span {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        position: fixed;
+        top: 180px; 
+        right: 20px; 
+        z-index: 1000; 
+        padding: 1rem;
+        background-color: transparent; 
+        border: none; 
+        .bar {
+            width: 25px;
+            height: 2px;
+            background-color: black;
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+        .bar:first-child {
+            transform: ${({ open }) => (open ? 'rotate(-45deg) translate(-5px, 5px)' : '')};
+        }
+        .bar:nth-child(2) {
+            opacity: ${({ open }) => (open ? '0' : '1')};
+        }
+        .bar:last-child {
+            transform: ${({ open }) => (open ? 'rotate(45deg) translate(-5px, -5px)' : '')};
+        }
+    }
+
+    .open {
+        display: flex;
+    }
+
+    .bottom-nav {
+        flex-direction: column-reverse;
+        align-items: center;
+        padding: 0;
+        .bottom-nav-left{
+            width: 100%;
+            margin: 0;
+            li{
+                margin-right: 0 !important;
+                font-size: 0.7rem;
+            }
+        }
+        .bottom-nav-left,
+        .bottom-nav-right {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            li {
+                margin: 0 0.5rem;
+            }
+        }
+        .bottom-nav-right {
+            select {
+                max-width: 100%;
+                padding: 0;
+                font-size: 1rem;
+            }
+        }
+    }
+
+}
 `;
 
 export default Navigation

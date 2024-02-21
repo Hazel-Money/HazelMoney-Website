@@ -53,4 +53,5 @@ export const GlobalStyle = createGlobalStyle`
             }
         }
     }
+
 `;
