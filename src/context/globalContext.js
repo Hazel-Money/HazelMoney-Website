@@ -22,6 +22,7 @@ export const GlobalProvider = ({children}) => {
     const [transactions, setTransactions] = useState([])
     const [Incomescategories, setIncomeCategories] = useState([])
     const [Expensescategories, setExpenseCategories] = useState([])
+    const [allCategories, setAllCategories] = useState([])
     const [frequencies, setFrequencies] = useState([])
     const [regularPayments , setRegularPayments] = useState([])
     const [paymentsSliced, setPaymentsSliced] = useState([])
@@ -490,7 +491,23 @@ export const GlobalProvider = ({children}) => {
         }
     };
 
- 
+    const getAllCategories = async () => {
+        try {
+            const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return []
+            }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
+            if (response && response.data) {
+                setAllCategories(response.data);
+            } else {
+                console.error("Response data is undefined or null");
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || "Error getting all categories");
+        }
+    };
 
     const registerUser = async (credentials) => {
         try {
@@ -1007,6 +1024,33 @@ export const GlobalProvider = ({children}) => {
         }
     }
 
+    const changeRPItemInformation = async (newItemInformation) => {
+        try {
+            newItemInformation.payment_date = formatDate(newItemInformation.payment_date);
+            const user = getUserFromCookies();
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            const response = await axios.put(`${BASE_URL}/regular_payments.php`, newItemInformation);
+            refreshAccountContent();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: (language === 'Portuguese' ? 'Dados do pagamento regular atualizado' : "Regular payments information changed" ),
+                showConfirmButton: false,
+                timer: 1500
+                }); 
+        } catch (err) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: err.response?.data?.message || (language === 'Portuguese' ? 'Algo de errado aconteceu': "Something bad happened" ),
+                showConfirmButton: true
+            }); 
+        }
+    }
+
     const refreshAccountContent = async () => {
         getIncomes();
         getExpenses();
@@ -1075,6 +1119,10 @@ export const GlobalProvider = ({children}) => {
             getUserInformation,
             changeItemInformation,
             setAction,
+            changeRPItemInformation,
+            getAllCategories,
+            setAllCategories,
+            allCategories,
             action,
             userUsername,
             userEmail,

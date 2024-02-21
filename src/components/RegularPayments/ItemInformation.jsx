@@ -15,41 +15,39 @@ function currencyFormat(num) {
     return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
 }
 
-const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
-    
-    const {changeItemInformation, language, Incomescategories, Expensescategories } = useGlobalContext();
+const ItemInformation = ({ transaction, setSelectedTransaction }) => {
+    const {frequencies, changeRPItemInformation, language, allCategories, getAllCategories } = useGlobalContext();
 
-    function getCategoryID(categoryName, categoriesArray) {
-        for (let i = 0; i < categoriesArray.length; i++) {
-            if (categoriesArray[i].name === categoryName) {
-                return categoriesArray[i].id;
+    useEffect(() => {
+        getAllCategories();
+      }, []);
+
+
+    function getCategoryID(categoryName) {
+        for (let i = 0; i < allCategories.length; i++) {
+            if (allCategories[i].name === categoryName) {
+                return allCategories[i].id;
             }
         }
         return null; 
     }
     
-    let defaultCategory;
     const categoryName = transaction.category; 
-    
-    if (transaction.is_income === '1') {
-        defaultCategory = getCategoryID(categoryName, Incomescategories);
-    } else {
-        defaultCategory = getCategoryID(categoryName, Expensescategories);
-    }
-    
+    let defaultCategory = getCategoryID(categoryName);
 
     const [inputState, setInputState] = useState({
         id: transaction.id,
         amount: transaction.amount / 100,
         description: transaction.description,
         category_id: defaultCategory,
-        payment_date: new Date(transaction.payment_date)
+        next_payment_date: new Date(transaction.payment_date),
+        frequency_id: transaction.frequency_id
     });
     
-    const {id, amount, payment_date, category_id, description } = inputState;
+    const {id, amount, next_payment_date, category_id, description, frequency_id } = inputState;
     
     const handleDatePickerChange = (date) => {
-        setInputState({ ...inputState, payment_date: date });
+        setInputState({ ...inputState, next_payment_date: date });
     };
 
     const handleInputChange = (name) => (e) => {
@@ -61,13 +59,14 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
 
         const amountInCents = (parseFloat(inputState.amount) * 100).toString();
 
-        changeItemInformation({...inputState, id: transaction.id, amount: amountInCents});
+        changeRPItemInformation({...inputState, id: transaction.id, amount: amountInCents});
         setInputState({
             id: transaction.id,
             amount: transaction.amount,
             description: transaction.description,
             category_id: defaultCategory,
-            payment_date: transaction.payment_date
+            next_payment_date: transaction.payment_date,
+            frequency_id: transaction.frequency_id
         })
         setSelectedTransaction(null)
     };
@@ -116,19 +115,11 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                         onChange={handleInputChange("category_id")}
                                         label={language === 'Portuguese' ? 'Categoria' : 'Category'}
                                     >
-                                        {transaction.is_income == '1' ? 
-                                            Incomescategories.map((category) => (
-                                                <option key={category.id} value={category.id}>
-                                                    {category.name}
-                                                </option>
-                                            ))
-                                        : 
-                                            Expensescategories.map((category) => (
-                                                <option key={category.id} value={category.id}>
-                                                    {category.name}
-                                                </option>
-                                            ))
-                                        }
+                                    {allCategories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                        {category.name}
+                                        </option>
+                                    ))}
                                     </select>
                                 </Tooltip >
                             </FormControl>
@@ -156,15 +147,44 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                 <div>
                                     <DatePicker
                                         required
-                                        id="payment_date"
+                                        id="next_payment_date"
                                         placeholderText={language === 'Portuguese' ? 'Insira uma data' : 'Enter a date'}
                                         dateFormat="Pp"
                                         showTimeSelect
                                         onChange={handleDatePickerChange}
-                                        value={payment_date}
-                                        selected={payment_date}
+                                        value={next_payment_date}
+                                        selected={next_payment_date}
                                     />
                                 </div>
+                            </Tooltip>
+                            <Tooltip 
+                                title={language === 'Portuguese' ? 'Frequência' : 'Frequency'}
+                                placement='top'
+                            >
+                                <select 
+                                required 
+                                value={frequency_id} 
+                                name="frequency_id" 
+                                id="frequency_id" 
+                                onChange={handleInputChange("frequency_id")}
+                                >
+                                <option value="" disabled>{language === 'Portuguese' ? 'Frequência' : 'How often'}</option>
+                                {language === 'Portuguese' ? (
+                                    <>
+                                    <option value="1">Todos os dias</option>
+                                    <option value="2">Todas as semanas</option>
+                                    <option value="3">Todos os meses</option>
+                                    <option value="4">Todos os quartis</option>
+                                    <option value="5">Todos os anos</option>
+                                    </>
+                                ) : (
+                                    frequencies.map((frequency) => (
+                                    <option key={frequency.id} value={frequency.id}>
+                                        {frequency.name}
+                                    </option>
+                                    ))
+                                )}
+                                </select>
                             </Tooltip>
                             <Tooltip 
                                 title={language === 'Portuguese' ? 'Descrição' : 'Description'}
@@ -185,8 +205,8 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                     </InnerContent>
                     <div className='btn'>
                         <DialogActions>
-                            <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
-                            <Button onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                            <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                            <Button style={{color:'var(--hazel-color)'}} onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                         </DialogActions>
                     </div>
                 </ContentWrapper>
@@ -261,4 +281,4 @@ const InnerContent = styled.div`
     }
 `
 
-export default DetailedIncomeInfo;
+export default ItemInformation;

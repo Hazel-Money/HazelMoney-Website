@@ -1,12 +1,15 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import RegularPaymentForm from './RegularPaymentForm';
 import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
+import DetailedIncomeInfo from './ItemInformation'
 
 function RegularPayments() {
-  const {language,accountCurrency, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+  const {language,getAllCategories, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
+
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   useEffect(() => {
     slicePayments();
@@ -18,7 +21,12 @@ function RegularPayments() {
     getIncomesCategories();
     getExpensesCategories();   
     getFrequencies();
+    getAllCategories();
   }, []);
+
+  const handleTransactionItemClick = (transaction) => {
+    setSelectedTransaction(transaction);
+  };
 
   return (
     <RegularPaymentsStyled>
@@ -32,7 +40,7 @@ function RegularPayments() {
           </div>
           <div className="payment">
             {paymentsSliced.map((payment) => {
-              const {id, account_id , currency,categoryName, amount, is_income, next_payment_date, description, icon, categoryColor} = payment;
+              const {id, account_id ,frequency_id ,currency,categoryName, amount, is_income, next_payment_date, description, icon, categoryColor} = payment;
               return <RegularPaymentsItem
                   key={id}
                   id={id}
@@ -47,6 +55,8 @@ function RegularPayments() {
                   indicatorColor={is_income == '1' ? "var(--color-green)" : "red"}
                   deleteItem={deleteRegularPayments}
                   currency={currency}
+                  onSelect={handleTransactionItemClick}
+                  frequency_id={frequency_id}
               />
             })}
             <div className="arrow-icons">
@@ -62,6 +72,7 @@ function RegularPayments() {
             </div>
         </div>
       </InnerLayout>
+      {selectedTransaction && <DetailedIncomeInfo transaction={selectedTransaction} setSelectedTransaction={setSelectedTransaction} />}
     </RegularPaymentsStyled>
   )
 }

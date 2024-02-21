@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {onSelect} from 'react'
 import styled from 'styled-components'
-import { trash, comment, calender, dollar, food, medical, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, tv, takeaway, clothing, circle, transport, dining} from '../../utils/Icons'
+import { trash, comment, calender, pen} from '../../utils/Icons'
 import Button from '../Button/Button'
 import IconCategory from '../../utils/iconCategory';
 
@@ -20,8 +20,11 @@ function RegularPaymentsItem({
     color,
     deleteItem,
     indicatorColor,
-    currency
+    currency,
+    onSelect,
+    frequency_id
 }){
+
   return (
     <RegularPaymentsItemStyled indicator={indicatorColor}>
         <div className="icon" style={{color: color}}>
@@ -38,18 +41,44 @@ function RegularPaymentsItem({
                         {description}
                     </p>
                 </div>
-                <div className="btn-con">
-                    <Button 
-                        icon = {trash}
-                        bPad = {'1rem'}
-                        bRad = {'50%'}
-                        bg = {'var(--primary-color)'}
-                        color = {'#fff'}
-                        iColor = {'#fff'}
-                        hColor = {'var(--color-green)'}
-                        onClick={() => deleteItem(id)}
-                    />
-                </div>
+            </div>
+        </div>
+        <div className="actions">
+            <div className="btn-con">
+                <Button 
+                    icon = {pen}
+                    bPad = {'0.7rem'}
+                    bRad = {'50%'}
+                    bg = {'var(--primary-color)'}
+                    color = {'#fff'}
+                    iColor = {'#fff'}
+                    onClick={() => onSelect(
+                        {  
+                            id: id,
+                            category: category,
+                            amount: amount,
+                            payment_date: next_payment_date,
+                            description: description, 
+                            icon: icon,
+                            color: color,
+                            is_income: is_income,
+                            frequency_id : frequency_id
+                        }
+                    )}
+                />
+            </div>
+            <div className="btn-con">
+                <Button 
+                    icon = {trash}
+                    bPad = {'0.7rem'}
+                    bRad = {'50%'}
+                    bg = {'var(--primary-color)'}
+                    color = {'#fff'}
+                    iColor = {'#fff'}
+                    onClick={() => {
+                        deleteItem(id);
+                    }}
+                />
             </div>
         </div>
     </RegularPaymentsItemStyled>
@@ -116,6 +145,11 @@ const RegularPaymentsItemStyled = styled.div`
                 opacity: 0.8;
             }
         }
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 `;
 

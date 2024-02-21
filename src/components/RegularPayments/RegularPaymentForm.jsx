@@ -155,7 +155,7 @@ function RegularPaymentForm() {
               required
               locale="pt"
               id="start_date"
-              placeholderText={language === 'Portuguese' ? 'Inserir data' : 'Enter a data'}
+              placeholderText={language === 'Portuguese' ? 'Inserir data' : 'Enter a date'}
               selected={useCurrentTime ? new Date() : start_date}
               dateFormat="Pp"
               showTimeSelect
