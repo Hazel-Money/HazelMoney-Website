@@ -157,13 +157,64 @@ const DashBoardStyled = styled.div`
   }
 
   .balance p {
-    // Style for the default text color
     color: var(--color-green);
   }
 
   .balance p.red-text {
-    // Style for the text color when totalBalance is less than 0
     color: red !important;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .stats-con {
+      display: flex;
+      flex-direction: column;
+      h1{
+        font-size: 1.4rem;
+      }
+      h2{
+        font-size: 1.4rem;
+        order: 2; 
+      }
+
+      .chart-con {
+        order: 1;
+        .amount-con {
+          margin-top: 1rem;
+          .income,
+          .expense,
+          .balance {
+            height: 6rem;
+            p {
+              font-size: 1rem;
+              font-weight: 700;
+            }
+
+            h2 {
+              margin: 0.3rem;
+              font-size: 1rem;
+            }
+          }
+
+          .balance {
+            width: 8rem;
+            p {
+              font-size: 1.2rem;
+            }
+          }
+        }
+      }
+
+      .history-con {
+        order: 2;
+        .salary-title {
+          font-size: 0.5rem;
+
+          span {
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
   }
 `;
 
