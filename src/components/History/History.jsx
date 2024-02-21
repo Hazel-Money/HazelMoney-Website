@@ -2,36 +2,43 @@ import React from 'react'
 import styled from 'styled-components'
 import { useGlobalContext } from '../../context/globalContext';
 import IconCategory from '../../utils/iconCategory';
+import Tooltip from '@mui/material/Tooltip';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 function History() {
-    const {transactionHistory, historyError} = useGlobalContext()
+    const {transactionHistory, historyError, language} = useGlobalContext()
 
     const [...history] = transactionHistory()
     return (
         <HistoryStyled>
             {historyError && <p className='error'>{historyError}</p>}
             {history.map((item) => {
-                const{id, categoryName, amount, is_income, icon} = item
+                const{id, categoryName, amount, is_income, icon, currency, payment_date} = item
                 return (
-                    <div key={id} className="history-item">
-                        <IconCategory category={icon} />
-                        <p style={{
-                            color: is_income == '0' ? 'red' : 'var(--color-green)'
-                        }}>
-                            {categoryName}
-                        </p>
-                        <p style={{
-                            color: is_income == '0' ? 'red' : 'var(--color-green)'
-                        }}>
-                            {
-                                is_income == '0' ? `-${currencyFormat(amount <= 0 ? 0 : amount )}` : `+${currencyFormat(amount <= 0 ? 0 : amount)}`
-                            }
-                        </p>
-                    </div>
+                    <Tooltip 
+                        title={language === 'Portuguese' ? "Data: " : "Date: " + payment_date}
+                        placement='top'
+                    >
+                        <div key={id} className="history-item">
+                            <IconCategory category={icon} />
+                            <p style={{
+                                color: is_income == '0' ? 'red' : 'var(--color-green)'
+                            }}>
+                                {categoryName}
+                            </p>
+                            <p style={{
+                                color: is_income == '0' ? 'red' : 'var(--color-green)'
+                            }}>
+                                {
+                                    is_income == '0' ? `-${currencyFormat(amount <= 0 ? 0 : amount )}` : `+${currencyFormat(amount <= 0 ? 0 : amount)}`
+                                }
+                                { " " + currency }
+                            </p>
+                        </div>
+                    </Tooltip>
                 )
             })}
         </HistoryStyled>
