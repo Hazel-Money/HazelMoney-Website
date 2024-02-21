@@ -17,7 +17,12 @@ function currencyFormat(num) {
 
 const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
     
-    const {changeItemInformation, language, Incomescategories, Expensescategories } = useGlobalContext();
+    const {changeItemInformation, language, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories } = useGlobalContext();
+
+    useEffect(() => {
+        getExpensesCategories();
+        getIncomesCategories();
+      }, []);
 
     function getCategoryID(categoryName, categoriesArray) {
         for (let i = 0; i < categoriesArray.length; i++) {
@@ -27,11 +32,11 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
         }
         return null; 
     }
-    
+
     let defaultCategory;
     const categoryName = transaction.category; 
-    
-    if (transaction.is_income === '1') {
+    console.log(transaction.is_income);
+    if (transaction.is_income == '1') {
         defaultCategory = getCategoryID(categoryName, Incomescategories);
     } else {
         defaultCategory = getCategoryID(categoryName, Expensescategories);
@@ -108,7 +113,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                     placement='top'
                                 >
                                     <select
-                                        labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         required
                                         value={category_id}
@@ -142,7 +146,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                     id="amount"
                                     name="amount"
                                     type="text"
-                                    fullWidth
                                     onChange={handleInputChange('amount')}
                                     label='Amount'
                                     defaultValue={currencyFormat(transaction.amount)}
@@ -175,7 +178,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                                     id="description"
                                     name="description"
                                     type="text"
-                                    fullWidth
                                     onChange={handleInputChange('description')}
                                     label='Description'
                                     defaultValue={transaction.description}

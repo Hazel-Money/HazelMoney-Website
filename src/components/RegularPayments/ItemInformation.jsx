@@ -58,7 +58,6 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
         event.preventDefault();
 
         const amountInCents = (parseFloat(inputState.amount) * 100).toString();
-        console.log({...inputState});
         changeRPItemInformation({...inputState, id: transaction.id, amount: amountInCents});
         setInputState({
             id: transaction.id,
@@ -133,7 +132,6 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                                     id="amount"
                                     name="amount"
                                     type="text"
-                                    fullWidth
                                     onChange={handleInputChange('amount')}
                                     label='Amount'
                                     defaultValue={currencyFormat(transaction.amount)}
@@ -195,7 +193,6 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                                     id="description"
                                     name="description"
                                     type="text"
-                                    fullWidth
                                     onChange={handleInputChange('description')}
                                     label='Description'
                                     defaultValue={transaction.description}

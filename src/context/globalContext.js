@@ -1032,7 +1032,6 @@ export const GlobalProvider = ({children}) => {
                 return [];
             }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            console.log(newItemInformation);
             const response = await axios.put(`${BASE_URL}/regular_payments.php`, newItemInformation);
             refreshAccountContent();
             Swal.fire({
