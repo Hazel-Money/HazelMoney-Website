@@ -58,7 +58,7 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
         event.preventDefault();
 
         const amountInCents = (parseFloat(inputState.amount) * 100).toString();
-
+        console.log({...inputState});
         changeRPItemInformation({...inputState, id: transaction.id, amount: amountInCents});
         setInputState({
             id: transaction.id,
@@ -141,7 +141,7 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                             </Tooltip>
                             
                             <Tooltip 
-                                title={language === 'Portuguese' ? 'Data de Pagamento' : 'Payment Date'}
+                                title={language === 'Portuguese' ? 'Data do próximo pagamento' : 'Next Payment Date'}
                                 placement='top'
                             >
                                 <div>

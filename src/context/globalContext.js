@@ -1026,12 +1026,13 @@ export const GlobalProvider = ({children}) => {
 
     const changeRPItemInformation = async (newItemInformation) => {
         try {
-            newItemInformation.payment_date = formatDate(newItemInformation.payment_date);
+            newItemInformation.next_payment_date = formatDate(newItemInformation.next_payment_date);
             const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            console.log(newItemInformation);
             const response = await axios.put(`${BASE_URL}/regular_payments.php`, newItemInformation);
             refreshAccountContent();
             Swal.fire({
