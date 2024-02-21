@@ -264,6 +264,12 @@ const LoginSignupStyled = styled.form`
 
   }
 
+  @media screen and (min-width: 1000px) {
+    .container{
+      max-width: 60vh; 
+    }
+  }
+
   @media screen and (min-width: 768px) {
     .text {
       font-size: 3rem !important;
@@ -291,6 +297,7 @@ const LoginSignupStyled = styled.form`
       .inputs{
         margin-top: 0.8rem;
         gap: 3vh;
+        padding: 0 6vw;
       }
     }
   }

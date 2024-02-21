@@ -42,3 +42,4 @@ export const briefcase = <i className="fa-solid fa-briefcase"></i>
 export const cat = <i className="fa-solid fa-cat"></i>
 export const eye = <i className="fa-solid fa-eye"></i>
 export const eyeSlash = <i className="fa-solid fa-eye-slash"></i>
+export const pen = <i className="fa-solid fa-pen-to-square"></i>

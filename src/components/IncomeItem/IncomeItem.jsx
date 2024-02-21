@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { trash, comment, calender, dollar, food, medical, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, tv, takeaway, clothing, circle, transport, dining} from '../../utils/Icons'
+import { trash, comment, calender, pen} from '../../utils/Icons'
 import Button from '../Button/Button'
 import IconCategory from '../../utils/iconCategory';
 
@@ -26,18 +26,7 @@ function IncomeItem({
   return (
     <IncomeItemStyled 
         indicator={indicatorColor} 
-        onClick={() => onSelect(
-        {  
-            id: id,
-            category: category,
-            amount: amount,
-            payment_date: payment_date,
-            description: description, 
-            icon: icon,
-            color: color,
-            is_income: is_income,
-        }
-        )}>
+        >
         <div className="icon" style={{color: color}}>
             <IconCategory category={icon} />
         </div>
@@ -52,21 +41,45 @@ function IncomeItem({
                         {description}
                     </p>
                 </div>
-                <div className="btn-con">
-                    <Button 
-                        icon = {trash}
-                        bPad = {'1rem'}
-                        bRad = {'50%'}
-                        bg = {'var(--primary-color)'}
-                        color = {'#fff'}
-                        iColor = {'#fff'}
-                        hColor = {'var(--color-green)'}
-                        onClick={() => {
-                            deleteItem(id);
-                            onSelect(null); 
-                        }}
-                    />
-                </div>
+            </div>
+        </div>
+        <div className="actions">
+            <div className="btn-con">
+                <Button 
+                    icon = {pen}
+                    bPad = {'0.7rem'}
+                    bRad = {'50%'}
+                    bg = {'var(--primary-color)'}
+                    color = {'#fff'}
+                    iColor = {'#fff'}
+                    hColor = {'var(--color-green)'}
+                    onClick={() => onSelect(
+                        {  
+                            id: id,
+                            category: category,
+                            amount: amount,
+                            payment_date: payment_date,
+                            description: description, 
+                            icon: icon,
+                            color: color,
+                            is_income: is_income,
+                        }
+                    )}
+                />
+            </div>
+            <div className="btn-con">
+                <Button 
+                    icon = {trash}
+                    bPad = {'0.7rem'}
+                    bRad = {'50%'}
+                    bg = {'var(--primary-color)'}
+                    color = {'#fff'}
+                    iColor = {'#fff'}
+                    hColor = {'var(--color-green)'}
+                    onClick={() => {
+                        deleteItem(id);
+                    }}
+                />
             </div>
         </div>
     </IncomeItemStyled>
@@ -133,6 +146,12 @@ const IncomeItemStyled = styled.div`
                 opacity: 0.8;
             }
         }
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 `;
 
