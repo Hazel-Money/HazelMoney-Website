@@ -295,6 +295,7 @@ const NavStyled = styled.nav`
         flex: 1;
         display: flex;
         flex-direction: column;
+        margin-top: -2.3rem;
         li{
             display: grid;
             grid-template-columns: 40px auto;
