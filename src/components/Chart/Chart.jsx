@@ -72,7 +72,6 @@ function Chart() {
     async function fetchDataAndProcess(startDate, endDate) {
       try {
           const barChartData = await getBarChartData(startDate, endDate);
-          console.log(barChartData)
           const chartData = barChartData.map((dayData) => {
               const dateString = format(dayData.date, dateFormat);
               return {
@@ -151,6 +150,28 @@ function Chart() {
         return null;
       };
 
+      const CustomBarTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+          const { name, Expense, Income } = payload[0].payload;
+          return (
+            <div
+              className="custom-tooltip"
+              style={{
+                backgroundColor: '#ffff',
+                padding: '5px',
+                border: '1px solid #cccc',
+              }}
+            >
+              <label>{`${name}:`}</label>
+              <p style={{ color: 'red' }}>{`Expense: ${currency + currencyFormat(Expense)}`}</p>
+              <p style={{ color: 'green' }}>{`Income: ${currency + currencyFormat(Income)}`}</p>
+            </div>
+          );
+        }
+        return null;
+      };
+      
+      
     return (
         <Section>
         <div className="chart-con">
@@ -190,7 +211,7 @@ function Chart() {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" interval={chartInterval}/>
                         <YAxis />
-                        <Tooltip />
+                        <Tooltip content={<CustomBarTooltip />} />
                         <Legend />
                         <Bar dataKey="Expense" stackId="a" fill="red" name={language === 'Portuguese' ? 'Despesa' : 'Expense'} />
                         <Bar dataKey="Income" stackId="a" fill="var(--color-green)" name={language === 'Portuguese' ? 'Receita' : 'Income'} />
