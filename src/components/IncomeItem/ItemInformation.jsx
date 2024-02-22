@@ -35,7 +35,6 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
 
     let defaultCategory;
     const categoryName = transaction.category; 
-    console.log(transaction.is_income);
     if (transaction.is_income == '1') {
         defaultCategory = getCategoryID(categoryName, Incomescategories);
     } else {

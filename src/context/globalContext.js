@@ -74,39 +74,44 @@ export const GlobalProvider = ({children}) => {
     }
 
     //calculate incomes
-    const addIncome = async (income) => {
-        const { is_income } = income;
-        try {
+    const addIncome = (income) => {
+        return new Promise(async (resolve, reject) => {
+          const { is_income } = income;
+          try {
             if (cookies.get('jwt') === undefined) {
-                return [];
+              reject('JWT token not found');
             }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const requestData = {
-                ...income,
-                is_income
+              ...income,
+              is_income
             };
             requestData.payment_date = formatDate(requestData.payment_date);
             const response = await axios.post(`${BASE_URL}/transactions.php`, requestData);
             getIncomes();
-            getBalance(); 
+            getBalance();
             sliceIncomes();
             accountIncome();
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title:(language === 'Portuguese' ? "Receita adicionada com sucesso" : "Income added successfully"),
-                showConfirmButton: false,
-                timer: 1500
+              position: 'center',
+              icon: 'success',
+              title: language === 'Portuguese' ? 'Receita adicionada com sucesso' : 'Income added successfully',
+              showConfirmButton: false,
+              timer: 1500
             });
-        } catch (err) {
+            resolve(response);
+          } catch (err) {
             Swal.fire({
-                position: "center",
-                icon: "error",
-                title: err.response?.data?.message || "Something bad has happened",
-                showConfirmButton: true
-            }); 
-        }
+              position: 'center',
+              icon: 'error',
+              title: err.response?.data?.message || 'Something bad has happened',
+              showConfirmButton: true
+            });
+            reject(err);
+          }
+        });
     };
+      
     
     const getIncomes = async () => {
         try {
@@ -225,35 +230,38 @@ export const GlobalProvider = ({children}) => {
 
     //calculate expenses
     const addExpense = async (expense) => { 
-        const { is_income } = expense;  
-        try {
-            if (cookies.get('jwt') === undefined) {
-                return [];
+        return new Promise(async (resolve, reject) => {
+            const { is_income } = expense;  
+            try {
+                if (cookies.get('jwt') === undefined) {
+                    return [];
+                }
+                axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+                expense.payment_date = formatDate(expense.payment_date);
+                const response = await axios.post(`${BASE_URL}/transactions.php`, {
+                    ...expense,  
+                    is_income    
+                });
+                getExpenses()
+                getBalance()
+                accountExpense()
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title:(language === 'Portuguese' ? "Despesa adicionada com sucesso" : "Expense added successfully"),
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } catch (err) {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: err.response?.data?.message || "Something bad has happened",
+                    showConfirmButton: true
+                }); 
+                reject(err);
             }
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            expense.payment_date = formatDate(expense.payment_date);
-            const response = await axios.post(`${BASE_URL}/transactions.php`, {
-                ...expense,  
-                is_income    
-            });
-            getExpenses()
-            getBalance()
-            accountExpense()
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title:(language === 'Portuguese' ? "Despesa adicionada com sucesso" : "Expense added successfully"),
-                showConfirmButton: false,
-                timer: 1500
-              });
-        } catch (err) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: err.response?.data?.message || "Something bad has happened",
-                showConfirmButton: true
-            }); 
-        }
+        })
     };
     
     const getExpenses = async () => {
@@ -624,6 +632,7 @@ export const GlobalProvider = ({children}) => {
                 currency,
             });
             getAccounts()
+            refreshAccountContent()
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -674,29 +683,32 @@ export const GlobalProvider = ({children}) => {
     };
 
     const addRegularPayment = async (payment) => {
-        try {
-            if (cookies.get('jwt') === undefined) {
-                return [];
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (cookies.get('jwt') === undefined) {
+                    return [];
+                }
+                axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+                payment.start_date = formatDate(payment.start_date)
+                const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
+                getRegularPayments(); 
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title:(language === 'Portuguese' ? "Pagamento regular adicionado" : "Regular payment added successfully"),
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+            } catch (err) {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: err.response?.data?.message ||(language === 'Portuguese' ? "Algo de errado aconteceu" : "Something bad has happened"),
+                    showConfirmButton: true
+                }); 
+                reject(err)
             }
-            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            payment.start_date = formatDate(payment.start_date)
-            const response = await axios.post(`${BASE_URL}/regular_payments.php`, payment );
-            getRegularPayments(); 
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title:(language === 'Portuguese' ? "Pagamento regular adicionado" : "Regular payment added successfully"),
-                showConfirmButton: false,
-                timer: 1500
-                });
-        } catch (err) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: err.response?.data?.message ||(language === 'Portuguese' ? "Algo de errado aconteceu" : "Something bad has happened"),
-                showConfirmButton: true
-            }); 
-        }
+        })
     }
 
     const getRegularPayments = async () => {
@@ -838,7 +850,6 @@ export const GlobalProvider = ({children}) => {
         }
     }
     
-
     const getAccountCurrency = async () => {
         try{
             if (cookies.get('jwt') === undefined) {

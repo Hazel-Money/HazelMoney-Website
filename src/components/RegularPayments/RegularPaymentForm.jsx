@@ -33,20 +33,24 @@ function RegularPaymentForm() {
     setPaymentError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const amountInCents = (parseFloat(inputState.amount) * 100).toString();
 
-    addRegularPayment({...inputState, account_id: account_id, amount: amountInCents });
-    setInputState({
-        account_id: '',
-        category_id: '',
-        frequency_id: '',
-        amount: '',
-        is_income: '',
-        start_date: '',
-        description: '',
-    })
+    try {
+      await addRegularPayment({...inputState, account_id: account_id, amount: amountInCents });
+      setInputState({
+          account_id: '',
+          category_id: '',
+          frequency_id: '',
+          amount: '',
+          is_income: '',
+          start_date: '',
+          description: '',
+      })
+    } catch (error) {
+
+    }
   };
 
     const toggleCurrentTime = () => {

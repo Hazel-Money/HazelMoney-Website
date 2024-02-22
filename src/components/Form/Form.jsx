@@ -41,21 +41,25 @@ function Form() {
       setInputState({ ...inputState, payment_date: date });
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
       const amountInCents = (parseFloat(inputState.amount) * 100).toString();
+    
+    try {
+        await addIncome({ ...inputState, amount: amountInCents });
 
-      addIncome({ ...inputState, amount: amountInCents });
-
-      setInputState({
-        account_id: '',
-        category_id: '',
-        amount: '',
-        is_income: '1',
-        payment_date: '',
-        description: ''
-      })
+        setInputState({
+          account_id: '',
+          category_id: '',
+          amount: '',
+          is_income: '1',
+          payment_date: '',
+          description: ''
+        });
+      } catch (error) {
+      }
     };
+    
 
     useEffect(() => {
       getAccounts();
