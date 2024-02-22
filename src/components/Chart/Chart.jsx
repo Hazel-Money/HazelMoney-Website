@@ -16,14 +16,14 @@ function currencyFormat(num) {
 function Chart() {
 
     const dateFormat = 'd/MM';
-    const {accountId, getBarChartData,refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getCurrency, currency} = useGlobalContext()
+    const {accountId, getBarChartData,refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getAccountCurrency, accountCurrency} = useGlobalContext()
 
     useEffect(() => {
       getAllTransactions(); 
       getIncomesCategories();
       getExpensesCategories();
       fetchDataAndProcess(startDate, endDate);
-      getCurrency();
+      getAccountCurrency();
     }, [])
 
     useEffect(()=>{
@@ -143,7 +143,7 @@ function Chart() {
                 border: '1px solid #cccc',
               }}
             >
-              <label>{`${payload[0].name}: ${currency + currencyFormat(payload[0].value)}`}</label>
+              <label>{`${payload[0].name}: ${accountCurrency + currencyFormat(payload[0].value)}`}</label>
             </div>
           );
         }
@@ -163,8 +163,8 @@ function Chart() {
               }}
             >
               <label>{`${name}:`}</label>
-              <p style={{ color: 'red' }}>{`Expense: ${currency + currencyFormat(Expense)}`}</p>
-              <p style={{ color: 'green' }}>{`Income: ${currency + currencyFormat(Income)}`}</p>
+              <p style={{ color: 'red' }}>{`Expense: ${accountCurrency + currencyFormat(Expense)}`}</p>
+              <p style={{ color: 'green' }}>{`Income: ${accountCurrency + currencyFormat(Income)}`}</p>
             </div>
           );
         }
