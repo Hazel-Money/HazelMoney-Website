@@ -10,7 +10,7 @@ function currencyFormat(num) {
 }
 
 function Dashboard() {
-  const {language, accountBalance, accountCurrency, getAccountCurrency, accountIncome, accountExpense, accountIncomeAmount, accountExpenseAmount, totalExpenses, totalIncome, totalIncomeAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
+  const {language, accountBalance, accountCurrency, getAccountCurrency, accountIncome, accountExpense, accountIncomeAmount, accountExpenseAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
   //Render data when running website
   useEffect(() => {

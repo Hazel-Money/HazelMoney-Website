@@ -1,10 +1,8 @@
 import axios from "axios";
-import React, { useContext, useState, useEffect  } from "react";
+import React, { useContext, useState } from "react";
 import Cookies from "universal-cookie"
 import {jwtDecode} from "jwt-decode"
 import Swal from 'sweetalert2'
-import { useNavigate } from "react-router-dom";
-
 
 const BASE_URL = "http://localhost:80/api";
 
@@ -36,7 +34,6 @@ export const GlobalProvider = ({children}) => {
     const [currency, setCurrency] = useState('USD')
     const [balance, setBalance] = useState(null)
     const [accountBalance, setAccountBalance] = useState(null)
-    const [totalIncomeAmount, setTotalIncomeAmount] = useState(null)
     const [accountIncomeAmount, setAccountIncomeAmount] = useState(null)
     const [accountExpenseAmount, setAccountExpenseAmount] = useState(null)
     const [totalExpensesAmount, setTotalExpensesAmount] = useState(null)
@@ -64,11 +61,22 @@ export const GlobalProvider = ({children}) => {
         return formattedDate;
     }
 
+    function formatDateForGET(date) {
+        // Get year, month, day, hours, minutes, and seconds from the Date object
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+    
+        // Concatenate the date components into the desired format
+        const formattedDate = `${year}-${month}-${day}`;
+    
+        return formattedDate;
+    }
+
     //calculate incomes
     const addIncome = async (income) => {
         const { is_income } = income;
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -185,7 +193,6 @@ export const GlobalProvider = ({children}) => {
     }
 
     const totalIncome = async () => {
-        const user = getUserFromCookies();
         if (cookies.get('jwt') === undefined) {
                 return [];
         }
@@ -200,7 +207,6 @@ export const GlobalProvider = ({children}) => {
     }
 
     const accountIncome = async () => {
-        const user = getUserFromCookies();
         if (cookies.get('jwt') === undefined) {
                 return [];
         }
@@ -221,7 +227,6 @@ export const GlobalProvider = ({children}) => {
     const addExpense = async (expense) => { 
         const { is_income } = expense;  
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -338,7 +343,6 @@ export const GlobalProvider = ({children}) => {
 
     const totalExpenses = async () => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -523,10 +527,15 @@ export const GlobalProvider = ({children}) => {
         } catch (err) {
             let errorResponse = "";
             if (err.response?.data?.message) {
-                const errArray = Array(err.response.data.message.slice(','));
-                errArray.forEach((error) => {
-                    errorResponse += error + "\n";
-                });
+                const message = err.response.data.message;
+                console.log(message);
+                if (Array.isArray(message)) {
+                    for (let i = 0; i < message.length; ++i) {
+                        errorResponse += message[i] + "\n";
+                    }
+                } else {
+                    errorResponse = message;
+                }
             } else {
                 errorResponse = "Something bad has happened";
             }
@@ -604,7 +613,6 @@ export const GlobalProvider = ({children}) => {
     const addAccount = async (credentials) => {
         const {user_id, currency_code} = credentials
         try{
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -649,7 +657,6 @@ export const GlobalProvider = ({children}) => {
 
     const getFrequencies = async () => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -668,7 +675,6 @@ export const GlobalProvider = ({children}) => {
 
     const addRegularPayment = async (payment) => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -696,12 +702,11 @@ export const GlobalProvider = ({children}) => {
     const getRegularPayments = async () => {
         try {
 
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
-            
+            const user = getUserFromCookies();
             let request;
             if (accountId == "All") {
                 request = `${BASE_URL}/regular_payments.php?user_id=${user.id}`;
@@ -715,7 +720,6 @@ export const GlobalProvider = ({children}) => {
             if (paymentsData.length === 0) {
                 setRegularPayments([])
             }
-
             const categoriesResponse = await axios.get(`${BASE_URL}/categories.php?user_id=${user.id}`);
             const categoriesData = categoriesResponse.data;
             const categoryMap = {};
@@ -781,7 +785,6 @@ export const GlobalProvider = ({children}) => {
     }
 
     const getCurrencies = async () => {
-        const user = getUserFromCookies();
         if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -793,17 +796,15 @@ export const GlobalProvider = ({children}) => {
             console.error("Response data is undefined or null");
         }
     }
-
+    
     const changeCurrency = async (newCurrencyCode) => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
             axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
             const currencyJSON = JSON.stringify({'code': newCurrencyCode});
-            const response = await axios.put(`${BASE_URL}/user/change_currency`, currencyJSON);
-            //setCurrency(newCurrencyCode)
+            await axios.put(`${BASE_URL}/user/change_currency`, currencyJSON);
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -821,10 +822,9 @@ export const GlobalProvider = ({children}) => {
             }); 
         }
     }
-
+    
     const getCurrency = async () => {
         try{
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -837,10 +837,10 @@ export const GlobalProvider = ({children}) => {
             console.log("cheiras a coco")
         }
     }
+    
 
     const getAccountCurrency = async () => {
         try{
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -907,7 +907,6 @@ export const GlobalProvider = ({children}) => {
 
     const getProfilePicture = async () => {
         try{
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -927,7 +926,6 @@ export const GlobalProvider = ({children}) => {
 
     const uploadProfilePicture = async (file) => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -956,7 +954,6 @@ export const GlobalProvider = ({children}) => {
 
     const changeUserInformation = async (newUserInformation) => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -982,7 +979,6 @@ export const GlobalProvider = ({children}) => {
 
     const getUserInformation = async () => {
         try {
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -1000,7 +996,6 @@ export const GlobalProvider = ({children}) => {
     const changeItemInformation = async (newItemInformation) => {
         try {
             newItemInformation.payment_date = formatDate(newItemInformation.payment_date);
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -1027,7 +1022,6 @@ export const GlobalProvider = ({children}) => {
     const changeRPItemInformation = async (newItemInformation) => {
         try {
             newItemInformation.next_payment_date = formatDate(newItemInformation.next_payment_date);
-            const user = getUserFromCookies();
             if (cookies.get('jwt') === undefined) {
                 return [];
             }
@@ -1048,6 +1042,28 @@ export const GlobalProvider = ({children}) => {
                 title: err.response?.data?.message || (language === 'Portuguese' ? 'Algo de errado aconteceu': "Something bad happened" ),
                 showConfirmButton: true
             }); 
+        }
+    }
+
+    const getBarChartData = async (startDate, endDate) => {
+        try{
+            if (cookies.get('jwt') === undefined) {
+                return [];
+            }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('jwt')}`;
+            startDate = formatDateForGET(startDate)
+            endDate = formatDateForGET(endDate)
+            let request;
+            if (accountId == "All") {
+                request = `${BASE_URL}/user/chart_data?start=${startDate}&end=${endDate}`;   
+            } else {
+                request = `${BASE_URL}/account/${accountId}/chart_data?start=${startDate}&end=${endDate}`;   
+            }
+            const response = await axios.get(request);
+            const data = response.data;
+            return data;
+        } catch{
+            console.log("cheiras mal 2")
         }
     }
 
@@ -1122,6 +1138,7 @@ export const GlobalProvider = ({children}) => {
             changeRPItemInformation,
             getAllCategories,
             setAllCategories,
+            getBarChartData,
             allCategories,
             action,
             userUsername,
@@ -1141,7 +1158,6 @@ export const GlobalProvider = ({children}) => {
             paymentError,
             currentIncomeIndex,
             incomesSliced,
-            totalIncomeAmount,
             totalExpensesAmount,
             balance,
             accounts,

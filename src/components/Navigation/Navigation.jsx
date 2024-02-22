@@ -28,6 +28,7 @@ function Navigation({active, setActive}) {
     //when accountId value changes, it wil refresh the content for that account
     useEffect(() => {
         refreshAccountContent();
+        
     }, [accountId]);
 
     useEffect(() => {

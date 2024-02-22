@@ -20,7 +20,6 @@ function Settings() {
         getCurrencies();
         getCurrency();
     }, [])
-
     const getCurrenciesOptions = () => {
         return currencies.map((currency) => `${currency.code} - ${currency.name}`);
     }

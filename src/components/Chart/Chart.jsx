@@ -14,14 +14,23 @@ function currencyFormat(num) {
 }
 
 function Chart() {
+
     const dateFormat = 'd/MM';
-    const {refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories} = useGlobalContext()
+    const {accountId, getBarChartData,refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getCurrency, currency} = useGlobalContext()
 
     useEffect(() => {
       getAllTransactions(); 
       getIncomesCategories();
       getExpensesCategories();
+      fetchDataAndProcess(startDate, endDate);
+      getCurrency();
     }, [])
+
+    useEffect(()=>{
+      fetchDataAndProcess(startDate, endDate);
+    }, [accountId])
+
+    const [chartData, setChartData] = useState([]);
 
     function getDatesBetweenNowAndXDaysAgo(x) {
         var currentDate = new Date();
@@ -38,30 +47,47 @@ function Chart() {
         return datesArray;
     }
 
+
     
     var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
 
-    // Filter transactions for expenses and incomes
+    function getEndDate () {
+      var endDate = new Date();
+      return endDate;
+    }
+
+    function getStartDate () {
+      var endDate = new Date();
+      var startDate = new Date();
+      startDate.setDate(endDate.getDate() - 30);
+      return startDate;
+    }
+
+    const startDate = getStartDate();
+    const endDate = getEndDate();
+
     const expenses = transactions.filter((transaction) => !transaction.is_income);
     const incomes = transactions.filter((transaction) => transaction.is_income);
 
-    // Organize data for the BarChart
-    const chartData = datesBetweenNowAndXDaysAgo.map((date) => {
-        const dateString = date;
-        const expenseAmount = expenses
-        .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
-        .reduce((sum, transaction) => sum + transaction.amount, 0);
-        const incomeAmount = incomes
-        .filter((transaction) => format(transaction.payment_date.split(' ')[0], dateFormat) === dateString)
-        .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-        return {
-            name: dateString,
-            Expense: currencyFormat(expenseAmount),
-            Income: currencyFormat(incomeAmount),
-        };
-    });
-
+    async function fetchDataAndProcess(startDate, endDate) {
+      try {
+          const barChartData = await getBarChartData(startDate, endDate);
+          console.log(barChartData)
+          const chartData = barChartData.map((dayData) => {
+              const dateString = format(dayData.date, dateFormat);
+              return {
+                  name: dateString,
+                  Expense: dayData.expense,
+                  Income: dayData.income,
+              };
+          });
+          
+          // Now you can use chartData in your code
+          setChartData(chartData);
+      } catch (error) {
+          console.log("Error fetching or processing data:", error);
+      }
+    }
     const maxTicks = 10;
     const chartInterval = Math.ceil(chartData.length / maxTicks);
    
@@ -118,7 +144,7 @@ function Chart() {
                 border: '1px solid #cccc',
               }}
             >
-              <label>{`${payload[0].name}: ${currencyFormat(payload[0].value)}`}</label>
+              <label>{`${payload[0].name}: ${currency + currencyFormat(payload[0].value)}`}</label>
             </div>
           );
         }

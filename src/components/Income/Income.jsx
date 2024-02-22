@@ -12,7 +12,7 @@ function currencyFormat(num) {
 }
 
 function Income() {
-  const {language, accountCurrency, getAccountCurrency,accountIncome, addIncome,accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, totalIncomeAmount, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
+  const {language, accountCurrency, getAccountCurrency,accountIncome, accountIncomeAmount , sliceIncomes, currentIncomeIndex, incomesSliced, navigateIncomes, getIncomes, deleteIncomes, getIncomesCategories, totalIncome, incomes} = useGlobalContext()
   
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
