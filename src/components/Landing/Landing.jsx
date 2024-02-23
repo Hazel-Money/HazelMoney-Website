@@ -9,8 +9,14 @@ import { useGlobalContext } from '../../context/globalContext';
 import { useNavigate } from "react-router-dom";
 
 function Landing() {
-    const { language } = useGlobalContext();
+    const { language, setLanguage } = useGlobalContext();
     const navigate = useNavigate();
+
+    if (localStorage.getItem('environmentLanguage') === null) {
+        const language = navigator.language.startsWith('pt') ? "Portuguese" : "English";
+        setLanguage(language);
+        localStorage.setItem('environmentLanguage', language);
+    }
 
     const handleSignupClick = () => {
         navigate('/login');
