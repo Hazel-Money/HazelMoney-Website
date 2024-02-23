@@ -163,8 +163,8 @@ function Chart() {
               }}
             >
               <label>{`${name}:`}</label>
-              <p style={{ color: 'red' }}>{`Expense: ${accountCurrency + currencyFormat(Expense)}`}</p>
-              <p style={{ color: 'green' }}>{`Income: ${accountCurrency + currencyFormat(Income)}`}</p>
+              <p style={{ color: 'red' }}>{`${language === 'Portuguese' ? 'Despesas' : 'Expense'}: ${accountCurrency + currencyFormat(Expense)}`}</p>
+              <p style={{ color: 'green' }}>{`${language === 'Portuguese' ? 'Receitas' : 'Income'}: ${accountCurrency + currencyFormat(Income)}`}</p>
             </div>
           );
         }
