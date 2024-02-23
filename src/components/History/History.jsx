@@ -19,7 +19,7 @@ function History() {
                 const{id, categoryName, amount, is_income, icon, currency, payment_date} = item
                 return (
                     <Tooltip 
-                        title={language === 'Portuguese' ? "Data: " : "Date: " + payment_date}
+                        title={(language === 'Portuguese' ? "Data: " : "Date: ") + payment_date}
                         placement='top'
                     >
                         <div key={id} className="history-item">
