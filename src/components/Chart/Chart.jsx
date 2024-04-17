@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react'
-import { BarChart, PieChart,Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { BarChart, PieChart, Pie, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 import styled from "styled-components";
 import { useGlobalContext } from '../../context/globalContext';
 import { format } from "date-fns";
@@ -9,110 +9,113 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
 
-
 function currencyFormat(num) {
-    return (num/1).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    return (num / 1).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 function Chart() {
 
     const dateFormat = 'd/MM';
-    const {accountId, getBarChartData,refreshAccountContent, language , transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getAccountCurrency, accountCurrency} = useGlobalContext()
+    const { accountId, getBarChartData, refreshAccountContent, language, transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getAccountCurrency, accountCurrency } = useGlobalContext();
 
     useEffect(() => {
-      getAllTransactions(); 
-      getIncomesCategories();
-      getExpensesCategories();
-      fetchDataAndProcess(startDate, endDate);
-      getAccountCurrency();
-    }, [])
+        getAllTransactions();
+        getIncomesCategories();
+        getExpensesCategories();
+        fetchDataAndProcess(startDate, endDate);
+        getAccountCurrency();
+    }, []);
 
-    useEffect(()=>{
-      fetchDataAndProcess(startDate, endDate);
-    }, [accountId])
+    useEffect(() => {
+        fetchDataAndProcess(startDate, endDate);
+    }, [accountId]);
 
     const [chartData, setChartData] = useState([]);
+    const [days, setDays] = useState(30);
 
-    function getDatesBetweenNowAndXDaysAgo(x) {
-        var currentDate = new Date();
-        var xDaysAgo = new Date();
-        xDaysAgo.setDate(currentDate.getDate() - x);
-      
-        var datesArray = [];
-      
-        while (xDaysAgo <= currentDate) {
-          datesArray.push(format(new Date(xDaysAgo), dateFormat));
-          xDaysAgo.setDate(xDaysAgo.getDate() + 1);
-        }
-      
-        return datesArray;
+    const handleInput = (event) => {
+      const inputValue = event.target.value;
+
+      // Check if inputValue is a valid number
+      if (inputValue == 0 ){
+        setDays(0);
+
+        const startDate = getStartDate(0);
+        const endDate = getEndDate();
+        fetchDataAndProcess(startDate, endDate);
+      } else {
+        const newDays = parseInt(inputValue);
+        setDays(newDays);
+
+        const startDate = getStartDate(newDays);
+        const endDate = getEndDate();
+        fetchDataAndProcess(startDate, endDate);
+      }
+  };
+  
+
+    function getEndDate() {
+        var endDate = new Date();
+        return endDate;
     }
 
-
-    
-    var datesBetweenNowAndXDaysAgo = getDatesBetweenNowAndXDaysAgo(30);
-
-    function getEndDate () {
-      var endDate = new Date();
-      return endDate;
+    function getStartDate(days) {
+        var endDate = new Date();
+        var startDate = new Date();
+        startDate.setDate(endDate.getDate() - parseInt(days));
+        return startDate;
     }
 
-    function getStartDate () {
-      var endDate = new Date();
-      var startDate = new Date();
-      startDate.setDate(endDate.getDate() - 30);
-      return startDate;
-    }
-
-    const startDate = getStartDate();
+    const startDate = getStartDate(days);
     const endDate = getEndDate();
 
     const expenses = transactions.filter((transaction) => !transaction.is_income);
     const incomes = transactions.filter((transaction) => transaction.is_income);
 
     async function fetchDataAndProcess(startDate, endDate) {
-      try {
-          const barChartData = await getBarChartData(startDate, endDate);
-          const chartData = barChartData.map((dayData) => {
-              const dateString = format(dayData.date, dateFormat);
-              return {
-                  name: dateString,
-                  Expense: dayData.expense/100,
-                  Income: dayData.income/100,
-              };
-          });
-          
-          // Now you can use chartData in your code
-          setChartData(chartData);
-      } catch (error) {
-          console.log("Error fetching or processing data:", error);
-      }
+        try {
+            const barChartData = await getBarChartData(startDate, endDate);
+            const chartData = barChartData.map((dayData) => {
+                const dateString = format(dayData.date, dateFormat);
+                return {
+                    name: dateString,
+                    Expense: dayData.expense / 100,
+                    Income: dayData.income / 100,
+                };
+            });
+
+            // Now you can use chartData in your code
+            setChartData(chartData);
+        } catch (error) {
+            console.log("Error fetching or processing data:", error);
+        }
     }
+
     const maxTicks = 10;
     const chartInterval = Math.ceil(chartData.length / maxTicks);
-   
-    const incomeChartData = Incomescategories.filter(category => {
-      const categoryAmount = incomes
-          .filter(income => income.category_id === category.id)
-          .reduce((sum, income) => sum + parseInt(income.amount), 0);
-      return categoryAmount > 0;
-      }).map(category => {
-      const categoryAmount = incomes
-          .filter(income => income.category_id === category.id)
-          .reduce((sum, income) => sum + parseInt(income.amount), 0);
 
-      return {
-          name: category.name,
-          value: categoryAmount,
-          fill: category.color,
-      };
+    const incomeChartData = Incomescategories.filter(category => {
+        const categoryAmount = incomes
+            .filter(income => income.category_id === category.id)
+            .reduce((sum, income) => sum + parseInt(income.amount), 0);
+        return categoryAmount > 0;
+    }).map(category => {
+        const categoryAmount = incomes
+            .filter(income => income.category_id === category.id)
+            .reduce((sum, income) => sum + parseInt(income.amount), 0);
+
+        return {
+            name: category.name,
+            value: categoryAmount,
+            fill: category.color,
+        };
     });
 
     const expenseChartData = Expensescategories.filter(category => {
-      const categoryAmount = expenses
-          .filter(expense => expense.category_id === category.id)
-          .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
-      return categoryAmount > 0;
+        const categoryAmount = expenses
+            .filter(expense => expense.category_id === category.id)
+            .reduce((sum, expense) => sum + parseInt(expense.amount), 0);
+        return categoryAmount > 0;
     }).map(category => {
         const categoryAmount = expenses
             .filter(expense => expense.category_id === category.id)
@@ -125,53 +128,52 @@ function Chart() {
         };
     });
 
-
     const [chart, setChart] = useState('bar');
 
     const handleChange = (event) => {
         setChart(event.target.value);
     };
+
     const user = getUserFromCookies();
 
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
-          return (
-            <div
-              className="custom-tooltip"
-              style={{
-                backgroundColor: '#ffff',
-                padding: '5px',
-                border: '1px solid #cccc',
-              }}
-            >
-              <label>{`${payload[0].name}: ${accountCurrency + currencyFormat(payload[0].value)}`}</label>
-            </div>
-          );
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        backgroundColor: '#ffff',
+                        padding: '5px',
+                        border: '1px solid #cccc',
+                    }}
+                >
+                    <label>{`${payload[0].name}: ${accountCurrency + currencyFormat(payload[0].value)}`}</label>
+                </div>
+            );
         }
         return null;
-      };
+    };
 
-      const CustomBarTooltip = ({ active, payload }) => {
+    const CustomBarTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
-          const { name, Expense, Income } = payload[0].payload;
-          return (
-            <div
-              className="custom-tooltip"
-              style={{
-                backgroundColor: '#ffff',
-                padding: '5px',
-                border: '1px solid #cccc',
-              }}
-            >
-              <label>{`${name}:`}</label>
-              <p style={{ color: 'red' }}>{`${language === 'Portuguese' ? 'Despesas' : 'Expense'}: ${accountCurrency + currencyFormat(Expense)}`}</p>
-              <p style={{ color: 'green' }}>{`${language === 'Portuguese' ? 'Receitas' : 'Income'}: ${accountCurrency + currencyFormat(Income)}`}</p>
-            </div>
-          );
+            const { name, Expense, Income } = payload[0].payload;
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        backgroundColor: '#ffff',
+                        padding: '5px',
+                        border: '1px solid #cccc',
+                    }}
+                >
+                    <label>{`${name}:`}</label>
+                    <p style={{ color: 'red' }}>{`${language === 'Portuguese' ? 'Despesas' : 'Expense'}: ${accountCurrency + currencyFormat(Expense)}`}</p>
+                    <p style={{ color: 'green' }}>{`${language === 'Portuguese' ? 'Receitas' : 'Income'}: ${accountCurrency + currencyFormat(Income)}`}</p>
+                </div>
+            );
         }
         return null;
-      };
-      
+    };
       
     return (
         <Section>
@@ -192,7 +194,19 @@ function Chart() {
                       <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
                   </Select>
                   </FormControl>
-                  <h5>{language === 'Portuguese' ? 'ÚLTIMOS 30 DIAS' : 'PAST 30 DAY'}</h5>
+                  
+                  <div className="input-control">
+                    <span className="days-text">{language === 'Portuguese' ? 'ÚLTIMOS' : 'PAST'}</span>
+                    <input
+                        type="text"
+                        value={days}
+                        name={"days"}
+                        placeholder={language === 'Portuguese' ? 'Dias' : 'Days'}
+                        onChange={handleInput} 
+                        className="days-input"
+                    />
+                    <span className="days-text">{language === 'Portuguese' ? 'DIAS' : 'DAYS'}</span>
+                  </div>
                 </div>
                 </div>
                 {chart === "bar" ? 
@@ -322,6 +336,32 @@ const Section = styled.section`
             margin-bottom: 1%;
             float: right;
             transform: rotate(30deg);
+          }
+        }
+        .input-control{
+          display: flex;
+          align-items: center;
+          .days-text {
+            margin-left: 25px;
+            margin-right: 25px;
+          }
+          input{
+            text-align: center;
+            width: 15%;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            border: none;
+            padding: .5rem 1rem;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            background: transparent;
+            resize: none;
+            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+            color: rgba(34, 34, 96, 0.9);
+            &::placeholder{
+                color: rgba(34, 34, 96, 0.4);
+            }
           }
         }
         .sales_graph{
