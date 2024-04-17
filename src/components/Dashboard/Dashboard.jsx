@@ -4,7 +4,7 @@ import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import { dollar } from '../../utils/Icons';
 import History from '../History/History';
-import GuidedTour from '../GuidedTour/GuidedTour';
+import GuidedTour from '../GuidedTour/DashboardGuidedTour';
 import Button from '@mui/material/Button';
 
 
@@ -95,19 +95,22 @@ const DashBoardStyled = styled.div`
       border-radius: 50%;
       height: 45px;
       width: 45px;
-      background-color: var(--hazel-color);
       border-radius: 50%;
       display: inline-block;
       text-align: center;
       vertical-align: center;
-
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      background: var(--default-gradient);
+      &:hover{
+        cursor: pointer;
+        opacity: 90%;
+      }
       .help-button{
         font-family: inherit;
         color: white;
         right: 8px;
         bottom: 10px;
         font-size: 30px;
-        border-radius: 20%;
       }
     }
 
