@@ -4,6 +4,9 @@ import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import { dollar } from '../../utils/Icons';
 import History from '../History/History';
+import GuidedTour from '../GuidedTour/GuidedTour';
+import Button from '@mui/material/Button';
+
 
 function currencyFormat(num) {
   return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -24,9 +27,22 @@ function Dashboard() {
 
   const balanceColorClass = balance >= 0 ? 'green-text' : 'red-text';
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (open) {
+      setOpen(false); 
+    }
+  }, [open]);
+
   return (
     <DashBoardStyled>
       <InnerLayout>
+        {open && <GuidedTour />}
         <div className="stats-con">
           <h1 className='h1-transaction'>{language === 'Portuguese' ? 'Transações' : 'All transactions'}</h1>
           <h2 className='h2-history'>{language === 'Portuguese' ? 'Histórico' : 'Recent history'}</h2>
@@ -56,17 +72,44 @@ function Dashboard() {
           <div className="history-con">
               <History />
           </div>
+          <div className='help'>
+            <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+                {language === 'Portuguese' ? '?' : '?'}
+            </Button>
+          </div>
         </div>
       </InnerLayout>
     </DashBoardStyled>
   );
 }
-
 const DashBoardStyled = styled.div`
   .stats-con {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     column-gap: 2rem;
+
+    .help{
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      border-radius: 50%;
+      height: 45px;
+      width: 45px;
+      background-color: var(--hazel-color);
+      border-radius: 50%;
+      display: inline-block;
+      text-align: center;
+      vertical-align: center;
+
+      .help-button{
+        font-family: inherit;
+        color: white;
+        right: 8px;
+        bottom: 10px;
+        font-size: 30px;
+        border-radius: 20%;
+      }
+    }
 
     .chart-con {
       grid-column: 1 / 4;

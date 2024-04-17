@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
 
+
 function currencyFormat(num) {
     return (num/1).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
@@ -226,7 +227,7 @@ function Chart() {
                           sx={{
                             float: 'left', 
                             width: '50%',  
-                            height: '60vh',
+                            height: '40vh',
                           }}
                         >
                           <ResponsiveContainer width="100%" height="100%">
@@ -262,7 +263,7 @@ function Chart() {
                           sx={{
                             float: 'left', 
                             width: '50%',  
-                            height: '60vh',
+                            height: '40vh',
                           }}
                         >
                           <ResponsiveContainer width="100%" height="100%">
@@ -324,13 +325,14 @@ const Section = styled.section`
           }
         }
         .sales_graph{
-            height: 8rem;
-            width: 100%;
-            .recharts-default-tooltip {
-                background-color: black !important;
-                border-color: black !important;
-                color: white !important;
-            }
+          margin-top: 15vh;
+          height: 8rem;
+          width: 100%;
+          .recharts-default-tooltip {
+              background-color: black !important;
+              border-color: black !important;
+              color: white !important;
+          }
         }
         .text-center {
             text-align: center;
@@ -340,6 +342,7 @@ const Section = styled.section`
         justify-content: space-between; 
         .income_pie,
         .expense_pie {
+          margin-top: 15vh;
           width: 50%; 
           display: flex;
           flex-direction: column;

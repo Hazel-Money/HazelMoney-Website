@@ -178,6 +178,7 @@ function Settings() {
                                     renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
                                 />
                             </div>
+
                         </div>
                     </div>
                 </div>
