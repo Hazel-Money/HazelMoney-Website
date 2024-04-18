@@ -88,11 +88,11 @@ function Income() {
               />
             </div>
           </div>
-          <div className='help'>
-            <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
-                {language === 'Portuguese' ? '?' : '?'}
-            </Button>
-          </div>
+        </div>
+        <div className='help'>
+          <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+              {language === 'Portuguese' ? '?' : '?'}
+          </Button>
         </div>
         
       </InnerLayout>
@@ -140,10 +140,11 @@ const IncomeStyled = styled.div`
         flex: 1;
         height: 50%;
       }
-      .help{
+    }
+    .help{
       position: absolute;
-      bottom: -10px;
-      right: 10px;
+      bottom: 2vh;
+      right: 3vh;
       border-radius: 50%;
       height: 45px;
       width: 45px;
@@ -164,7 +165,6 @@ const IncomeStyled = styled.div`
         bottom: 10px;
         font-size: 30px;
       }
-    }
     }
 
     .arrow-icons {
