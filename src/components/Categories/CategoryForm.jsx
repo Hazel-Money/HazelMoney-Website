@@ -9,14 +9,14 @@ import { plus } from '../../utils/Icons';
 
 function CategoryForm() {
   const {language,error, setError, getUserFromCookies, addCategory } = useGlobalContext();
-  const [selectedIcon, setSelectedIcon] = useState(null);
-  const [selectedIconName, setSelectedIconName] = useState(null);
+  const [selectedIcon, setSelectedIcon] = useState(Icons.transport);
+  const [selectedIconName, setSelectedIconName] = useState("transport");
   const user = getUserFromCookies();
   const [inputState, setInputState] = useState({
     user_id: user.id,
     name: '',
     is_income: '',
-    icon: '',
+    icon: 'transport',
     color: '#000000',
   });
 
@@ -34,12 +34,13 @@ function CategoryForm() {
       user_id: user.id,
       name: '',
       is_income: '',
-      icon: '',
+      icon: 'transport',
       color: '#000000',
     })
   };
 
   const handleIconSelect = (icon, iconName) => {
+    console.log(icon,iconName)
     setSelectedIcon(icon);
     setSelectedIconName(iconName);
     setInputState({ ...inputState, icon: iconName });
@@ -48,7 +49,7 @@ function CategoryForm() {
   return (
     <CategoryFormStyled onSubmit={handleSubmit} autoComplete="off">
       <div className="form-content">
-        <div className="form-inputs">
+        <div className="category-form-inputs">
           <div className="input-control">
             <input
               required
@@ -153,6 +154,7 @@ const CategoryFormStyled = styled.form`
       margin-right: 8vh;
       margin-top: 30vh;
       font-size: 10vh;
+      height: 150%;
       .selected-icon{
         padding: 5px 15px 0px;
         background-color: rgb(240, 234, 234);
@@ -164,7 +166,7 @@ const CategoryFormStyled = styled.form`
       display: flex;
       gap: 3rem;
     }
-    .form-inputs {
+    .category-form-inputs {
       flex: 1;
       display: flex;
       flex-direction: column;

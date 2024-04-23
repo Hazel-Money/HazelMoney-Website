@@ -181,32 +181,36 @@ function Chart() {
             <div className="sales">
                 <div className="sales_details">
                 <div className="top">
-                <FormControl>
-                  <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Gráfico' : 'Chart'}</InputLabel>
-                  <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={chart}
-                      label={language === 'Portuguese' ? 'Gráfico' : 'Chart'}
-                      onChange={handleChange}
-                  >
-                      <MenuItem value={"bar"}>{language === 'Portuguese' ? 'Barras' : 'Bar'}</MenuItem>
-                      <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
-                  </Select>
-                  </FormControl>
-                  
-                  <div className="input-control">
-                    <span className="days-text">{language === 'Portuguese' ? 'ÚLTIMOS' : 'PAST'}</span>
-                    <input
-                        type="text"
-                        value={days}
-                        name={"days"}
-                        placeholder={language === 'Portuguese' ? 'Dias' : 'Days'}
-                        onChange={handleInput} 
-                        className="days-input"
-                    />
-                    <span className="days-text">{language === 'Portuguese' ? 'DIAS' : 'DAYS'}</span>
+                  <div className="chart-selection">
+                    
+                    <FormControl>
+                      <InputLabel id="demo-simple-select-label">{language === 'Portuguese' ? 'Gráfico' : 'Chart'}</InputLabel>
+                      <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={chart}
+                          label={language === 'Portuguese' ? 'Gráfico' : 'Chart'}
+                          onChange={handleChange}
+                      >
+                          <MenuItem value={"bar"}>{language === 'Portuguese' ? 'Barras' : 'Bar'}</MenuItem>
+                          <MenuItem value={"pie"}>{language === 'Portuguese' ? 'Circular' : 'Pie'}</MenuItem>
+                      </Select>
+                    </FormControl>
                   </div>
+                  {chart === "bar" ? 
+                    <div className="input-control">
+                      <span className="days-text">{language === 'Portuguese' ? 'ÚLTIMOS' : 'PAST'}</span>
+                      <input
+                          type="text"
+                          value={days}
+                          name={"days"}
+                          placeholder={language === 'Portuguese' ? 'Dias' : 'Days'}
+                          onChange={handleInput} 
+                          className="days-input"
+                      />
+                      <span className="days-text">{language === 'Portuguese' ? 'DIAS' : 'DAYS'}</span>
+                    </div>
+                  : '' }
                 </div>
                 </div>
                 {chart === "bar" ? 
