@@ -36,7 +36,6 @@ function RegularPaymentForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const amountInCents = (parseFloat(inputState.amount) * 100).toString();
-
     try {
       await addRegularPayment({...inputState, account_id: account_id, amount: amountInCents });
       setInputState({
@@ -49,7 +48,6 @@ function RegularPaymentForm() {
           description: '',
       })
     } catch (error) {
-
     }
   };
 

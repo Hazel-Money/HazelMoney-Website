@@ -47,7 +47,6 @@ function Form() {
     
     try {
         await addIncome({ ...inputState, amount: amountInCents });
-
         setInputState({
           account_id: '',
           category_id: '',

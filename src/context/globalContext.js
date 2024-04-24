@@ -699,6 +699,7 @@ export const GlobalProvider = ({children}) => {
                     showConfirmButton: false,
                     timer: 1500
                     });
+                resolve(response)
             } catch (err) {
                 Swal.fire({
                     position: "center",
