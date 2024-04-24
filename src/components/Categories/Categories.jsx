@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from "styled-components";
 import { InnerLayout } from '../../styles/Layouts';
 import CategoryForm from './CategoryForm';
@@ -14,6 +14,12 @@ function Categories() {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    if (open) {
+      setOpen(false); 
+    }
+  }, [open]);
 
   return (
     <CategoriesStyled>

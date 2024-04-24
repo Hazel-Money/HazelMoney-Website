@@ -44,7 +44,7 @@ function RegularPaymentsItem({
             </div>
         </div>
         <div className="actions">
-            <div className="btn-con">
+            <div className="btn-con-edit">
                 <Button 
                     icon = {pen}
                     bPad = {'0.7rem'}
@@ -67,7 +67,7 @@ function RegularPaymentsItem({
                     )}
                 />
             </div>
-            <div className="btn-con">
+            <div className="btn-con-delete">
                 <Button 
                     icon = {trash}
                     bPad = {'0.7rem'}

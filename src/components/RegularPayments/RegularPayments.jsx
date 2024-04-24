@@ -5,11 +5,25 @@ import RegularPaymentForm from './RegularPaymentForm';
 import { useGlobalContext } from '../../context/globalContext';
 import RegularPaymentsItem from "./Item"
 import DetailedIncomeInfo from './ItemInformation'
+import GuidedTour from '../GuidedTour/RegularPaymentsGuidedTour';
+import Button from '@mui/material/Button';
 
 function RegularPayments() {
   const {language,getAllCategories, getAccountCurrency, getExpensesCategories, slicePayments, paymentsSliced, navigatePayments, currentPaymentIndex, deleteRegularPayments, regularPayments, getIncomesCategories, getFrequencies, getRegularPayments} = useGlobalContext();
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (open) {
+      setOpen(false); 
+    }
+  }, [open]);
 
   useEffect(() => {
     slicePayments();
@@ -31,11 +45,12 @@ function RegularPayments() {
   return (
     <RegularPaymentsStyled>
       <InnerLayout>
+        {open && <GuidedTour />}
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Adicionar pagamento regular' : 'Add regular payment'}</h1> 
         </div>
         <div className='payment-content'>
-          <div className="form-container">
+          <div className="payment-form-container">
             <RegularPaymentForm />
           </div>
           <div className="payment">
@@ -71,6 +86,12 @@ function RegularPayments() {
             </div>
             </div>
         </div>
+
+        <div className='help'>
+          <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+              {language === 'Portuguese' ? '?' : '?'}
+          </Button>
+        </div>
       </InnerLayout>
       {selectedTransaction && <DetailedIncomeInfo transaction={selectedTransaction} setSelectedTransaction={setSelectedTransaction} />}
     </RegularPaymentsStyled>
@@ -89,7 +110,7 @@ const RegularPaymentsStyled = styled.div`
             width: 95%;
         }
     }
-    .form-container{
+    .payment-form-container{
       margin-top: 5vh;
     }
     .payment-content{
@@ -98,6 +119,32 @@ const RegularPaymentsStyled = styled.div`
       .payment{
         margin-top: 5vh;
         flex: 1;
+        height: 50%;
+      }
+    }
+    .help{
+      position: absolute;
+      bottom: 2vh;
+      right: 3vh;
+      border-radius: 50%;
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      display: inline-block;
+      text-align: center;
+      vertical-align: center;
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      background: var(--default-gradient);
+      &:hover{
+        cursor: pointer;
+        opacity: 90%;
+      }
+      .help-button{
+        font-family: inherit;
+        color: white;
+        right: 8px;
+        bottom: 10px;
+        font-size: 30px;
       }
     }
     .arrow-icons {
