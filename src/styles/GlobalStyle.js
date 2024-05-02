@@ -19,6 +19,26 @@ export const GlobalStyle = createGlobalStyle`
         --reverse-gradient: linear-gradient(45deg, #994700, #cc6633);
         --color-green: #42AD00;
         --color-accent: #A64F0D;
+        --background-color: rgba(252, 246, 249, 0.78);
+        --background: #eee2f2;
+
+        --primary-text-color: #0a0a0a;
+        --secondary-text-color: #ffffff;
+        --toggle-bg: #f0eb9d;
+        --toggle-fg: #ffd000;
+    }
+
+    [data-theme=true] {
+        --primary-color: #ffffff;
+        --primary-color2: #ffffff;
+        --primary-color3: #ffffff;
+        --background-color: #222224;
+        --background: #2e3134;
+        
+        --primary-text-color: #f6f6f6;
+        --secondary-text-color: #0a0a0a;
+        --toggle-bg: #283452;
+        --toggle-fg: #00a6ff;
     }
 
     body{

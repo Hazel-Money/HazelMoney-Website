@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import bg from "./img/bg.png";
 import {MainLayout} from "./styles/Layouts";
 import Navigation from "./components/Navigation/Navigation";
 import Dashboard from "./components/Dashboard/Dashboard";
@@ -14,11 +13,13 @@ import Categories from './components/Categories/Categories';
 import RegularPayments from './components/RegularPayments/RegularPayments'
 import Settings from "./components/Settings/Settings"
 import Landing from "./components/Landing/Landing"
+import { Toggle } from "./components/Toggle/Toggle";
 
 function App() {
-  
+  const [isDark, setIsDark] = useState(false); 
   const [active, setActive] = useState(1);
   const cookies = new Cookies();
+
   if (!cookies.get('jwt')) {
     return <Landing/>
   }
@@ -26,53 +27,57 @@ function App() {
   const displayData = () => {
     switch (active) {
       case 1:
-        return <Dashboard />;
+        return <Dashboard isDark={isDark} />;
       case 2:
-        return <Chart />;
+        return <Chart isDark={isDark} />;
       case 3:
-        return <Income />;
+        return <Income isDark={isDark} />;
       case 4:
-        return <Expenses />;
+        return <Expenses isDark={isDark} />;
       case 5:
-        return <Categories />;
+        return <Categories isDark={isDark} />;
       case 6:
-        return <RegularPayments />;
+        return <RegularPayments isDark={isDark} />;
       case 7:
-        return <Settings />;
+        return <Settings isDark={isDark} setIsDark={setIsDark}/>;
       default:
-        return <Dashboard />;
+        return <Dashboard isDark={isDark} />;
     }
   };
 
+  // Determine if the toggle should be displayed based on the current active page
+  const showToggle = false
+
   return (
-    <AppStyled bg={bg} className="App">
+    <AppStyled className="App" data-theme={isDark ? true : false}>
       <MainLayout>
-          <Navigation active={active} setActive={setActive} />
-          <main>{displayData()}</main>
+        {showToggle && <Toggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />}
+        <Navigation active={active} setActive={setActive} />
+        <main>{displayData()}</main>
       </MainLayout>
     </AppStyled>
   );
 }
 
+
+
 const AppStyled = styled.div`
   height: 100vh;
-  background-image: url(${props => props.bg});
+  background: var(--background);
   position: relative;
 
-  main{
+  main {
     flex: 1;
-    background: rgba(252, 246, 249, 0.78);
+    background: var(--background-color);
     border: 3px solid #FFFFFF;
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     overflow: auto;
     overflow-x: hidden;
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
       width: 0;
     }
   }
-
 `;
-
 
 export default App;

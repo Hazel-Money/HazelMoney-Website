@@ -12,8 +12,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import DialogTitle from '@mui/material/DialogTitle';
 import hazelMoneyIcon from '../../img/hazelmoneyIcon.png'
+import { Toggle } from '../Toggle/Toggle';
 
-function Settings() {
+function Settings({isDark, setIsDark}) {
     const {language, setLanguage,  currencies, getCurrencies, setCurrency, currency, changeCurrency, getCurrency, addAccount, getUserFromCookies } = useGlobalContext();
 
     useEffect(() => {
@@ -82,7 +83,7 @@ function Settings() {
     };
 
     return (
-        <SettingsStyled>
+        <SettingsStyled data-theme={isDark ? "dark" : "light"}>
             <InnerLayout>
                 <div className='main'>
                     <div className="top">
@@ -178,7 +179,9 @@ function Settings() {
                                     renderInput={(params) => <TextField {...params} label={language === 'Portuguese' ? 'Moeda' : 'Currency'} />}
                                 />
                             </div>
-
+                            <div className="toggle">
+                                <Toggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,6 +238,53 @@ const SettingsStyled = styled.div`
             }
             .currency h3{
                 margin-bottom: 3%;
+            }
+            .toggle{
+                .toggle-container {
+                    
+                    position: absolute;
+                }
+
+                .h3{
+                    font-family:'Nunito',sans-serif;
+                    margin-top: 0 !important;
+                }
+                
+                .toggle {
+                    visibility: hidden;
+                }
+                
+                .toggle + label {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    color: var(--primary-text-color);
+                }
+                
+                .toggle + label::before {
+                    content: "";
+                    height: 1em;
+                    width: 2em;
+                    border-radius: 1em;
+                    background-color: var(--toggle-bg);
+                    margin-right: 0.5em;
+                    transition: background-color 250ms ease-in-out;
+                }
+                
+                .toggle + label::after {
+                    content: "";
+                    height: 0.8em;
+                    width: 0.8em;
+                    border-radius: 1em;
+                    background-color: var(--toggle-fg);
+                    position: absolute;
+                    left: 0.2em;
+                    transition: background-color 250ms ease-in-out, transform 250ms ease-in-out;
+                }
+                
+                .toggle:checked + label::after {
+                    transform: translateX(100%);
+                }
             }
         }
     }
