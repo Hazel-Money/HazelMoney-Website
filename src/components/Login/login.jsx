@@ -59,7 +59,7 @@ const LoginSignup = () => {
       </div>
       <div className="container">
         <div className="header">
-          <div className="text">{action}</div>
+          <div className="text">{action === 'Login' ? 'Entrar' : 'Registro'}</div>
           <div className="underline"></div>
         </div>
         <div className="inputs">
@@ -70,7 +70,7 @@ const LoginSignup = () => {
               <span>{user}</span>
               <input
                 type="text"
-                placeholder="Username"
+                placeholder={language === 'Portuguese' ? 'Nome' : 'Username'}
                 value={signUpInputState.username}
                 onChange={handleInput('username')}
                 required
@@ -91,7 +91,7 @@ const LoginSignup = () => {
             <span>{pass}</span>
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder={language === 'Portuguese' ? 'Palavra-passe' : 'Password'}
               value={action === 'Sign Up' ? signUpInputState.password : loginInputState.password}
               onChange={handleInput('password')}
               required
@@ -104,7 +104,7 @@ const LoginSignup = () => {
         <div className="submit-container">
           {language === 'Portuguese' ? 'Ir para' : 'Go to'}
           <p className="go" onClick={() => setAction(action === 'Login' ? 'Sign Up' : 'Login')}>
-            {action === 'Login' ? (language === 'Portuguese' ? 'Registro' : 'Sign Up') : (language === 'Portuguese' ? 'Log in' : 'Log in')}
+            {action === 'Login' ? (language === 'Portuguese' ? 'Registro' : 'Sign Up') : (language === 'Portuguese' ? 'Entrar' : 'Log in')}
           </p>
         </div>
         <div className={action === 'Login' ? 'submit-btn login' : 'submit-btn signup'}>

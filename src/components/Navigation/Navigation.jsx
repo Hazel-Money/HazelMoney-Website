@@ -58,7 +58,6 @@ function Navigation({active, setActive}) {
     };
 
     const [open, setOpen] = useState(false);
-    const [openHamburguer, setOpenHamburguer] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -106,7 +105,7 @@ function Navigation({active, setActive}) {
     };
 
     return (
-        <NavStyled open={openHamburguer}>
+        <NavStyled>
             <div className="user-con">
                 <div className="form-container">
                     <div className="pfp-container" onClick={handleClickOpen}> 
@@ -143,6 +142,7 @@ function Navigation({active, setActive}) {
                             }}>
                                 <img
                                     src={profilePicture}
+                                    alt=''
                                     style={{
                                         height: '150px',
                                         borderRadius: '100px',
@@ -172,7 +172,7 @@ function Navigation({active, setActive}) {
                                     type="text"
                                     fullWidth
                                     onChange={handleInputChange('username')}
-                                    label='Username'
+                                    label={language === 'Portuguese' ? 'Nome' : 'Username'}
                                     defaultValue={userUsername}
                                 />
                                 <TextField
@@ -199,12 +199,7 @@ function Navigation({active, setActive}) {
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
                 </div>
             </div>
-            <div className="menu-toggle" onClick={() => setOpenHamburguer(!openHamburguer)}>
-                <div className="bar"></div>
-                <div className="bar"></div>
-                <div className="bar"></div>
-            </div>
-            <ul className={`menu-items ${openHamburguer ? 'open' : ''}`}>
+            <ul className={`menu-items open`}>
                 {menuItems.map((item) => {
                     return (
                         <li
@@ -233,7 +228,7 @@ function Navigation({active, setActive}) {
                             onChange={handleChange}
                             value={`${accountName},${accountId}`}
                         >
-                        <option key="All" value={["All","All"]}>All accounts</option>
+                        <option key="All" value={["All","All"]}>{language === 'Portuguese' ? 'Todas as contas' : 'All accounts'}</option>
                         {accounts.map((account) => (
                             <option key={account.id} value={[account.name,account.id]}>
                             {account.name}
