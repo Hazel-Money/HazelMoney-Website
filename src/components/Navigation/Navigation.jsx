@@ -199,7 +199,7 @@ function Navigation({active, setActive}) {
                     <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
                 </div>
             </div>
-            <ul className={`menu-items open`}>
+            <ul className="menu-items open">
                 {menuItems.map((item) => {
                     return (
                         <li
@@ -267,7 +267,7 @@ const NavStyled = styled.nav`
                 height: 80px;
                 border-radius: 50%;
                 object-fit: cover;
-                background: #fcf6f9;
+                background: var(--white-color);
                 border: 2px solid #FFFFFF;
                 padding: .2rem;
                 box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
@@ -291,12 +291,11 @@ const NavStyled = styled.nav`
         flex: 1;
         display: flex;
         flex-direction: column;
-        margin-top: -2.3rem;
         li{
             display: grid;
             grid-template-columns: 40px auto;
             align-items: center;
-            margin: .6rem 0;
+            margin: .8rem 0;
             font-weight: 500;
             cursor: pointer;
             transition: all .4s ease-in-out;
@@ -387,21 +386,6 @@ const NavStyled = styled.nav`
             }
         }
 
-        .menu-items {
-            align-items: center;
-            display: none;
-            margin-top: 100px;
-            li{
-                i{
-                    font-size: 1rem;
-                }
-            }
-        }
-
-        .menu-items.open li span {
-            display: none;
-        }
-
         .menu-toggle {
             display: block;
             cursor: pointer;
@@ -412,26 +396,10 @@ const NavStyled = styled.nav`
             padding: 1rem;
             background-color: transparent; 
             border: none; 
-            .bar {
-                width: 25px;
-                height: 2px;
-                background-color: black;
-                margin: 4px 0;
-                transition: 0.4s;
-            }
-            .bar:first-child {
-                transform: ${({ open }) => (open ? 'rotate(-45deg) translate(-5px, 5px)' : '')};
-            }
-            .bar:nth-child(2) {
-                opacity: ${({ open }) => (open ? '0' : '1')};
-            }
-            .bar:last-child {
-                transform: ${({ open }) => (open ? 'rotate(45deg) translate(-5px, -5px)' : '')};
-            }
         }
 
-        .open {
-            display: flex;
+        .menu-items li span {
+            display: none; 
         }
 
         .bottom-nav {

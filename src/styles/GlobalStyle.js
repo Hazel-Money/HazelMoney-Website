@@ -21,6 +21,7 @@ export const GlobalStyle = createGlobalStyle`
         --color-accent: #A64F0D;
         --background-color: rgba(252, 246, 249, 0.78);
         --background: #eee2f2;
+        --white-color: #FCF6F9;
 
         --primary-text-color: #0a0a0a;
         --secondary-text-color: #ffffff;
@@ -29,16 +30,24 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     [data-theme=true] {
-        --primary-color: #ffffff;
-        --primary-color2: #ffffff;
-        --primary-color3: #ffffff;
-        --background-color: #222224;
-        --background: #2e3134;
-        
-        --primary-text-color: #f6f6f6;
-        --secondary-text-color: #0a0a0a;
-        --toggle-bg: #283452;
-        --toggle-fg: #00a6ff;
+        --primary-color: #3b3b3c;
+        --primary-color2: #555555;
+        --primary-color3: #b6b1a7;
+        --hazel-color: #A64F0D;
+        --hazel-color-dark: #994700;
+        --hazel-color-light: #cc6633;
+        --default-gradient: linear-gradient(45deg, #cc6633, #994700);
+        --reverse-gradient: linear-gradient(45deg, #994700, #cc6633);
+        --color-green: #42AD00;
+        --color-accent: #A64F0D;
+        --background-color: rgba(252, 246, 249, 0.78);
+        --background: #eee2f2;
+        --white-color: #FCF6F9;
+
+        --primary-text-color: #0a0a0a;
+        --secondary-text-color: #ffffff;
+        --toggle-bg: #f0eb9d;
+        --toggle-fg: #ffd000;
     }
 
     body{

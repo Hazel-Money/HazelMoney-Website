@@ -92,7 +92,6 @@ const DashBoardStyled = styled.div`
       position: absolute;
       bottom: 30px;
       right: 30px;
-      border-radius: 50%;
       height: 45px;
       width: 45px;
       border-radius: 50%;
@@ -144,7 +143,7 @@ const DashBoardStyled = styled.div`
           align-items: center;
           display: flex;
           flex-direction: column;
-          background: #FCF6F9;
+          background: var(--white-color);
           border: 2px solid #FFFFFF;
           box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
           border-radius: 20px;
@@ -259,6 +258,18 @@ const DashBoardStyled = styled.div`
             font-size: 1.1rem;
           }
         }
+      }
+    }
+
+    .help{
+      height: 30px !important;
+      width: 30px !important;
+      bottom: 10px !important;
+      right: 10px !important;
+      .help-button{
+        bottom: 7px !important;
+        right: 15px !important;
+        font-size: 20px !important;
       }
     }
   }

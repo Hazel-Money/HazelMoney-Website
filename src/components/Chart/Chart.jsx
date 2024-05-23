@@ -19,19 +19,38 @@ function Chart() {
     const { accountId, getBarChartData, refreshAccountContent, language, transactions, getAllTransactions, getUserFromCookies, Incomescategories, Expensescategories, getIncomesCategories, getExpensesCategories, getAccountCurrency, accountCurrency } = useGlobalContext();
 
     useEffect(() => {
-        getAllTransactions();
-        getIncomesCategories();
-        getExpensesCategories();
-        fetchDataAndProcess(startDate, endDate);
-        getAccountCurrency();
-    }, []);
-
-    useEffect(() => {
         fetchDataAndProcess(startDate, endDate);
     }, [accountId]);
 
     const [chartData, setChartData] = useState([]);
-    const [days, setDays] = useState(30);
+    const initialDays = window.innerWidth <= 650 ? 5 : 30;
+    const [days, setDays] = useState(initialDays);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+        if (screenWidth <= 650) {
+          setDays(5);
+        } else {  
+          setDays(30);
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
+    useEffect(() => {
+      getAllTransactions();
+      getIncomesCategories();
+      getExpensesCategories();
+      fetchDataAndProcess(startDate, endDate);
+      getAccountCurrency();
+  }, []);
 
     const handleInput = (event) => {
       const inputValue = event.target.value;
@@ -399,4 +418,26 @@ const Section = styled.section`
         }
       }
     }
+    @media only screen and (max-width: 600px) {
+      .input-control span{
+        display: none;
+      }
+      .input-control input{
+        display: none;
+      }
+      .sales_graph {
+        margin-top: 4rem !important;
+        margin-left: -2rem !important;
+        width: 20rem !important;
+        height: 8rem !important;
+      }
+      .input-control input {
+        width: 30%;
+      }
+      .top{
+        margin-left: 0rem !important;
+        margin-top: 3rem !important;
+      }
+    }
+
 `;

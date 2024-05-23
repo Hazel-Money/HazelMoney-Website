@@ -88,7 +88,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                     minWidth: '35%',
                     borderRadius: '20px',
                     padding: '1rem',
-                    background: '#FCF6F9',
+                    background: 'var(--white-color)',
                     border: '2px solid #FFFFFF',
                     boxShadow: '0px 1px 15px rgba(0, 0, 0, 0.06)',
                     flexDirection: 'column',
