@@ -52,7 +52,7 @@ function Income() {
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
         </div>
-        <h2 className="total-income">{language === 'Portuguese' ? 'Total ganho: ' : 'Total income: '}<span>{accountCurrency}{currencyFormat(accountIncomeAmount)}</span></h2>
+        <h2 className="total-income"><h3>{language === 'Portuguese' ? 'Total ganho: ' : 'Total income: '}</h3><span>{accountCurrency}{currencyFormat(accountIncomeAmount)}</span></h2>
         <div className="income-content">
           <div className="income-form-container">
               <Form />
@@ -170,7 +170,7 @@ const IncomeStyled = styled.div`
     .arrow-icons {
       position: relative;
       display: flex;
-      gap: 92%;
+      gap: 31rem !important;
       i {
         font-size: 24px; 
         cursor: pointer;
@@ -184,6 +184,36 @@ const IncomeStyled = styled.div`
 
       }
     }
+    @media only screen and (max-width: 600px) {
+      .total-income{  
+        margin-top: -0.6rem;
+        h3{
+          display: none;
+        }
+        padding: 0.5rem;
+        margin: 0.5 0;
+        font-size: 2rem;
+        gap: .5rem;
+        span{
+          font-size: 2rem;
+          font-weight: 800;
+        }
+      }
+      .income-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .income-form-container {
+        margin-bottom: 2rem; 
+      }
+      .arrow-icons {
+        gap: 82% !important;
+      }
+      .help{
+        bottom: 1.5vh;
+      }
+    }
+
 `;
 
 export default Income

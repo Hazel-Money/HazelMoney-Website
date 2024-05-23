@@ -288,7 +288,22 @@ const SettingsStyled = styled.div`
             }
         }
     }
+    @media only screen and (max-width: 600px) {
+        .main {
+            flex-direction: column; 
+        }
 
+        .left-side {
+            order: -1; 
+            width: 100%;
+            margin-bottom: 2rem; 
+        }
+
+        .right-side {
+            order: 1; 
+            width: 100%; 
+        }
+    }
 `;
 
 export default Settings;

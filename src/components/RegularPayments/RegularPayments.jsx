@@ -163,6 +163,35 @@ const RegularPaymentsStyled = styled.div`
         cursor: not-allowed; 
       }
     }
+    @media only screen and (max-width: 600px) {
+      .total-payment{  
+        margin-top: -0.6rem;
+        h3{
+          display: none;
+        }
+        padding: 0.5rem;
+        margin: 0.5 0;
+        font-size: 2rem;
+        gap: .5rem;
+        span{
+          font-size: 2rem;
+          font-weight: 800;
+        }
+      }
+      .payment-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .payment-form-container {
+        margin-bottom: 2rem; 
+      }
+      .arrow-icons {
+        gap: 82% !important;
+      }
+      .help{
+        bottom: -15vh;
+      }
+    }
 `;
 
 export default RegularPayments

@@ -244,6 +244,25 @@ const CategoryFormStyled = styled.form`
         float: left;
       }
     }
+
+    @media only screen and (max-width: 600px) {
+      .form-content {
+        flex-direction: column; 
+      }
+
+      .preview-section {
+        margin: 0 auto;
+        order: 2;
+      }
+
+      .icon-selection {
+        order: 3 ;
+      }
+
+      .category-form-inputs {
+        order: 1; 
+      }
+    }
 `;
 
 export default CategoryForm

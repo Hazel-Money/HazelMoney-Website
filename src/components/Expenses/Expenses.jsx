@@ -52,7 +52,7 @@ function Expenses() {
         <div className="top">
           <h1>{language === 'Portuguese' ? 'Despesas' : 'Expenses'}</h1>
         </div>
-        <h2 className="total-expense">{language === 'Portuguese' ? 'Total gasto: ' : 'Total expense: '}<span>{accountCurrency}{currencyFormat(accountExpenseAmount)}</span></h2>
+        <h2 className="total-expense"><h3>{language === 'Portuguese' ? 'Total gasto: ' : 'Total expense: '}</h3><span>{accountCurrency}{currencyFormat(accountExpenseAmount)}</span></h2>
         <div className="expense-content">
           <div className="expense-form-container">
               <ExpenseForm />
@@ -180,6 +180,39 @@ const ExpenseStyled = styled.div`
       .disabled {
         color: rgba(70, 70, 97, 0.176) !important;
         cursor: not-allowed; 
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      .total-expense{  
+        margin-top: -0.6rem;
+        h3{
+          display: none;
+        }
+        padding: 0.5rem;
+        margin: 0.5 0;
+        font-size: 2rem;
+        gap: .5rem;
+        span{
+          font-size: 2rem;
+          font-weight: 800;
+        }
+      }
+      .expense-content {
+        flex-direction: column;
+        align-items: center;
+        .expenses{
+          width: 17rem;
+        }
+      }
+      .expense-form-container {
+        margin-bottom: 2rem; 
+      }
+      .arrow-icons {
+        gap: 82%;
+      }
+      .help{
+        bottom: 1.5vh;
       }
     }
 `;
