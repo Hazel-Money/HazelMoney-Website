@@ -14,10 +14,15 @@ import RegularPayments from './components/RegularPayments/RegularPayments'
 import Settings from "./components/Settings/Settings"
 import Landing from "./components/Landing/Landing"
 import { Toggle } from "./components/Toggle/Toggle";
+import { IconButton, SwipeableDrawer, Toolbar } from '@mui/material';
+import { menuItems } from './utils/menuItems';
 
 function App() {
   const [isDark, setIsDark] = useState(false); 
   const [active, setActive] = useState(1);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isDrawerPermanent = window.innerWidth > 1000;
+
   const cookies = new Cookies();
 
   if (!cookies.get('jwt')) {
@@ -52,8 +57,26 @@ function App() {
     <AppStyled className="App" data-theme={isDark ? true : false}>
       <MainLayout>
         {showToggle && <Toggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />}
-        <Navigation active={active} setActive={setActive} />
-        <main>{displayData()}</main>
+        {!isDrawerPermanent &&
+          <Toolbar style={{height: 50}}>
+            <IconButton
+              color='inherit'
+              edge='end'
+              style={{display: 'flex', justifyContent: 'flex-end'}}
+              onClick={() => setDrawerOpen(!drawerOpen)}
+            >
+              {menuItems[0].icon}
+            </IconButton>
+          </Toolbar>
+        }
+        <Navigation
+          active={active}
+          setActive={setActive}
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+          permanent={isDrawerPermanent}
+        />
+        <main style={{ marginLeft: isDrawerPermanent ? 374 : 0 }}>{displayData()}</main>
       </MainLayout>
     </AppStyled>
   );

@@ -8,12 +8,14 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import { Divider, Drawer, ListItemButton, SwipeableDrawer } from '@mui/material';
+import { LogOutIcon } from 'lucide-react';
 
 function currencyFormat(num) {
     return (num/100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
-function Navigation({active, setActive}) {
+function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
     const {userUsername, userEmail,getUserInformation, uploadProfilePicture,changeUserInformation,language,getProfilePicture, setProfilePicture, profilePicture, refreshAccountContent, setAccountId, setAccountName, accountName, accountId, logout, getAccounts, getUserFromCookies, totalBalance, currency, accounts, getCurrency, balance, getBalance} = useGlobalContext();
 
     useEffect(() => {
@@ -57,14 +59,14 @@ function Navigation({active, setActive}) {
         localStorage.setItem('accountName', selectedAccountName);
     };
 
-    const [open, setOpen] = useState(false);
+    const [userDialogOpen, setUserDialogOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleOpenUserDialog = () => {
+        setUserDialogOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleCloseUserDialog = () => {
+        setUserDialogOpen(false);
     };
 
     const [inputState, setInputState] = useState({
@@ -74,7 +76,7 @@ function Navigation({active, setActive}) {
       });
 
     useEffect(() => {
-    setInputState(prevState => ({
+        setInputState(prevState => ({
             ...prevState,
             username: userUsername || '',
             email: userEmail || ''
@@ -91,7 +93,7 @@ function Navigation({active, setActive}) {
             username: '',
             email: ''
         })
-        handleClose();
+        handleCloseUserDialog();
     };
 
     const handleInputChange = (name) => (e) => {
@@ -101,144 +103,162 @@ function Navigation({active, setActive}) {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         uploadProfilePicture(file);
-        handleClose();
+        handleCloseUserDialog();
     };
 
+    const handleMenuItemPress = (id) => {
+        setActive(id);
+        setDrawerOpen(false);
+    }
+
     return (
-        <NavStyled>
-            <div className="user-con">
-                <div className="form-container">
-                    <div className="pfp-container" onClick={handleClickOpen}> 
-                        <img src={profilePicture} />
-                    </div>
-                    <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        PaperProps={{
-                            component: 'form',
-                            onSubmit: handleSubmit,
-                            style: { 
-                                minHeight: '40%', 
-                                minWidth: '35%',
-                                borderRadius: '14px',
-                                paddingBottom: '20px',
-                                background: 'white' 
-                            }
-                        }}
-                    >
-                        <div className='gradient' style={{
-                            backgroundImage: 'linear-gradient(45deg, #cc6633, #994700)',
-                            height: '125px',
-                            borderRadius: '4px 4px 0px 0px',
-                        }}>
+        <Drawer
+            open={drawerOpen} 
+            handleClose={() => setDrawerOpen(false)}
+            variant={permanent ? 'permanent' : 'temporary'}
+        >
+            <NavStyled>
+                <div className="user-con">
+                    <div className="form-container">
+                        <div className="pfp-container" onClick={handleOpenUserDialog}> 
+                            <img src={profilePicture} />
                         </div>
-                        <div className="profile-information" style={{ textAlign: 'center' }}>
-                            <div style={{
-                                position: 'relative',
-                                display: 'inline-block',
-                                marginTop: '-75px',
-                                padding: '5px',
-                                background: 'transparent',
+                        <Dialog
+                            open={userDialogOpen}
+                            onClose={handleCloseUserDialog}
+                            PaperProps={{
+                                component: 'form',
+                                onSubmit: handleSubmit,
+                                style: { 
+                                    minHeight: '40%', 
+                                    minWidth: '35%',
+                                    borderRadius: '14px',
+                                    paddingBottom: '20px',
+                                    background: 'white' 
+                                }
+                            }}
+                        >
+                            <div className='gradient' style={{
+                                backgroundImage: 'linear-gradient(45deg, #cc6633, #994700)',
+                                height: '125px',
+                                borderRadius: '4px 4px 0px 0px',
                             }}>
-                                <img
-                                    src={profilePicture}
-                                    alt=''
-                                    style={{
-                                        height: '150px',
-                                        borderRadius: '100px',
-                                    }}
-                                />
-                                <input
-                                    type="file"
-                                    name="image"
-                                    onChange={handleFileChange}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '0',
-                                        left: '0',
-                                        opacity: '0',
-                                        width: '100%',
-                                        height: '100%',
-                                        borderRadius:'14px',
-                                        cursor: 'pointer'
-                                    }} />
                             </div>
-                            <DialogContent>
-                                <TextField
-                                    required
-                                    margin="dense"
-                                    id="username"
-                                    name="username"
-                                    type="text"
-                                    fullWidth
-                                    onChange={handleInputChange('username')}
-                                    label={language === 'Portuguese' ? 'Nome' : 'Username'}
-                                    defaultValue={userUsername}
-                                />
-                                <TextField
-                                    required
-                                    margin="dense"
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    fullWidth
-                                    onChange={handleInputChange('email')}
-                                    label='Email'
-                                    defaultValue={userEmail}
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
-                                <Button style={{color:'var(--hazel-color)'}} onClick={handleClose}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
-                            </DialogActions>
-                        </div>
-                    </Dialog>
+                            <div className="profile-information" style={{ textAlign: 'center' }}>
+                                <div style={{
+                                    position: 'relative',
+                                    display: 'inline-block',
+                                    marginTop: '-75px',
+                                    padding: '5px',
+                                    background: 'transparent',
+                                }}>
+                                    <img
+                                        src={profilePicture}
+                                        alt=''
+                                        style={{
+                                            height: '150px',
+                                            borderRadius: '100px',
+                                        }}
+                                    />
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        onChange={handleFileChange}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '0',
+                                            left: '0',
+                                            opacity: '0',
+                                            width: '100%',
+                                            height: '100%',
+                                            borderRadius:'14px',
+                                            cursor: 'pointer'
+                                        }} />
+                                </div>
+                                <DialogContent>
+                                    <TextField
+                                        required
+                                        margin="dense"
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        fullWidth
+                                        onChange={handleInputChange('username')}
+                                        label={language === 'Portuguese' ? 'Nome' : 'Username'}
+                                        defaultValue={userUsername}
+                                    />
+                                    <TextField
+                                        required
+                                        margin="dense"
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        fullWidth
+                                        onChange={handleInputChange('email')}
+                                        label='Email'
+                                        defaultValue={userEmail}
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                                    <Button style={{color:'var(--hazel-color)'}} onClick={handleCloseUserDialog}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
+                                </DialogActions>
+                            </div>
+                        </Dialog>
+                    </div>
+                    <div className="text">
+                        <h2>{userUsername}</h2>
+                        <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
+                    </div>
+                    {!permanent &&
+                        <ListItemButton onClick={() => setDrawerOpen(false)} style={{alignSelf: 'center', display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                            {menuItems[0].icon}
+                        </ListItemButton>
+                    }
                 </div>
-                <div className="text">
-                    <h2>{userUsername}</h2>
-                    <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
-                </div>
-            </div>
-            <ul className="menu-items open">
-                {menuItems.map((item) => {
-                    return (
-                        <li
-                            key={item.id}
-                            onClick={() => setActive(item.id)}
-                            className={active === item.id ? 'active' : ''}
-                        >
-                            {item.icon}
-                            <span>{language === 'Portuguese' ? item.title_pt : item.title}</span>
+                {/* <Divider /> */}
+                <ul className="menu-items open">
+                    {menuItems.map((item) => {
+                        return (
+                            <li
+                                key={item.id}
+                                onClick={() => handleMenuItemPress(item.id)}
+                                className={active === item.id ? 'active' : ''}
+                            >
+                                {item.icon}
+                                <span>{language === 'Portuguese' ? item.title_pt : item.title}</span>
+                            </li>
+                        );
+                    })}
+                </ul>
+                {/* <Divider /> */}
+                <div className="bottom-nav">
+                    <div className="bottom-nav-left">
+                        <li onClick={handleSignOut}>
+                            {signout} {language === 'Portuguese' ? 'Sair' : 'Sign Out'}
                         </li>
-                    );
-                })}
-            </ul>
-            <div className="bottom-nav">
-                <div className="bottom-nav-left">
-                    <li onClick={handleSignOut}>
-                        {signout} {language === 'Portuguese' ? 'Sair' : 'Sign Out'}
-                    </li>
-                </div>
-                <div className="bottom-nav-right">
-                    <div className="account-select">
-                        <select
-                            required
-                            name="account_id"
-                            id="account_id"
-                            onChange={handleChange}
-                            value={`${accountName},${accountId}`}
-                        >
-                        <option key="All" value={["All","All"]}>{language === 'Portuguese' ? 'Todas as contas' : 'All accounts'}</option>
-                        {accounts.map((account) => (
-                            <option key={account.id} value={[account.name,account.id]}>
-                            {account.name}
-                            </option>
-                        ))}
-                        </select>
+                    </div>
+                    <div className="bottom-nav-right">
+                        <div className="account-select">
+                            <select
+                                required
+                                name="account_id"
+                                id="account_id"
+                                onChange={handleChange}
+                                value={`${accountName},${accountId}`}
+                            >
+                            <option key="All" value={["All","All"]}>{language === 'Portuguese' ? 'Todas as contas' : 'All accounts'}</option>
+                            {accounts.map((account) => (
+                                <option key={account.id} value={[account.name,account.id]}>
+                                {account.name}
+                                </option>
+                            ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </NavStyled>
+            </NavStyled>
+        </Drawer>
     );
 }
 
@@ -361,7 +381,7 @@ const NavStyled = styled.nav`
         }
     }
 
-    @media only screen and (max-width: 600px) {
+    /* @media only screen and (max-width: 600px) {
         padding: 3%;
         width: 25%;
         .user-con {
@@ -431,7 +451,7 @@ const NavStyled = styled.nav`
                 }
             }
         }
-    }
+    } */
 `;
 
 export default Navigation

@@ -4,6 +4,7 @@ export const MainLayout = styled.div`
     padding: 2rem;
     height: 100%;
     display: flex;
+    flex-direction: column;
     gap: 2rem;
 
     @media only screen and (max-width: 600px) {
