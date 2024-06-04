@@ -48,17 +48,19 @@ function Dashboard() {
           <h2 className='h2-history'>{language === 'Portuguese' ? 'Histórico' : 'Recent history'}</h2>
           <div className="chart-con">
             <div className="amount-con">
-              <div className="income">
-                <h2>{language === 'Portuguese' ? 'Total Receitas' : 'Total Income'}</h2>
-                <p>
-                  {accountCurrency} {currencyFormat(accountIncomeAmount)}
-                </p>
-              </div>
-              <div className="expense">
-                <h2>{language === 'Portuguese' ? 'Total Despesas' : 'Total Expense'}</h2>
-                <p>
-                  {accountCurrency} {currencyFormat(accountExpenseAmount)}
-                </p>
+              <div className="income-expense-container">
+                <div className="income">
+                  <h2>{language === 'Portuguese' ? 'Total Receitas' : 'Total Income'}</h2>
+                  <p>
+                    {accountCurrency} {currencyFormat(accountIncomeAmount)}
+                  </p>
+                </div>
+                <div className="expense">
+                  <h2>{language === 'Portuguese' ? 'Total Despesas' : 'Total Expense'}</h2>
+                  <p>
+                    {accountCurrency} {currencyFormat(accountExpenseAmount)}
+                  </p>
+                </div>
               </div>
               <div className="balance">
                 <h2>{language === 'Portuguese' ? 'Total Saldo' : 'Total Balance'}</h2>
@@ -115,13 +117,19 @@ const DashBoardStyled = styled.div`
 
     .chart-con {
       grid-column: 1 / 4;
-      height: 40vh;
 
       .amount-con {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: 2rem;
         margin-top: 2rem;
+
+        .income-expense-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          gap: 2rem;
+        }
 
         .income p {
           color: var(--color-green) !important;
@@ -129,11 +137,6 @@ const DashBoardStyled = styled.div`
 
         .expense p {
           color: red !important;
-        }
-
-        .income,
-        .expense {
-          grid-column: span 2;
         }
 
         .income,
@@ -148,12 +151,12 @@ const DashBoardStyled = styled.div`
           box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
           border-radius: 20px;
           padding: 0.8rem;
-
+          flex: 1;
           p {
             font-size: 1.5rem;
             font-weight: 700;
           }
-
+          
           h2 {
             font-size: 1.5rem;
           }
@@ -165,13 +168,8 @@ const DashBoardStyled = styled.div`
         }
 
         .balance {
-          grid-column: 2 / 4;
-
-          p {
-            color: var(--color-green);
-            opacity: 0.6;
-            font-size: 1.7rem;
-          }
+          width: 50%;
+          align-self: center;
         }
       }
     }
@@ -209,7 +207,7 @@ const DashBoardStyled = styled.div`
     color: red !important;
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 800px) {
     .stats-con {
       display: flex;
       flex-direction: column;
@@ -233,17 +231,9 @@ const DashBoardStyled = styled.div`
               font-size: 1rem;
               font-weight: 700;
             }
-
             h2 {
               margin: 0.3rem;
               font-size: 1rem;
-            }
-          }
-
-          .balance {
-            width: 8rem;
-            p {
-              font-size: 1.2rem;
             }
           }
         }
@@ -253,7 +243,6 @@ const DashBoardStyled = styled.div`
         order: 2;
         .salary-title {
           font-size: 0.5rem;
-
           span {
             font-size: 1.1rem;
           }

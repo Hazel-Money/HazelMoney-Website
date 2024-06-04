@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { signout } from '../../utils/Icons'
+import { chevron, signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 import { useGlobalContext } from '../../context/globalContext';
 import TextField from '@mui/material/TextField';
@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { Divider, Drawer, ListItemButton, SwipeableDrawer } from '@mui/material';
+import { Divider, Drawer, IconButton, ListItemButton, SwipeableDrawer } from '@mui/material';
 import { LogOutIcon } from 'lucide-react';
 
 function currencyFormat(num) {
@@ -112,11 +112,12 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
     }
 
     return (
-        <Drawer
+         <Drawer
             open={drawerOpen} 
             handleClose={() => setDrawerOpen(false)}
             variant={permanent ? 'permanent' : 'temporary'}
-        >
+            PaperProps={ permanent && { sx: { background: 'transparent', borderWidth: 0 } } }
+         >
             <NavStyled>
                 <div className="user-con">
                     <div className="form-container">
@@ -205,15 +206,20 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
                                 </DialogActions>
                             </div>
                         </Dialog>
-                    </div>
-                    <div className="text">
-                        <h2>{userUsername}</h2>
-                        <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
+                        <div className="text">
+                            <h2>{userUsername}</h2>
+                            <p><strong>{currency}</strong> {currencyFormat(balance)}</p>
+                        </div>
                     </div>
                     {!permanent &&
-                        <ListItemButton onClick={() => setDrawerOpen(false)} style={{alignSelf: 'center', display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            {menuItems[0].icon}
-                        </ListItemButton>
+                        <IconButton
+                            color='inherit'
+                            edge='end'
+                            onClick={() => setDrawerOpen(!drawerOpen)}
+                            style={{ aspectRatio: 1, width: 50 }}
+                        >
+                        {chevron}
+                      </IconButton>
                     }
                 </div>
                 {/* <Divider /> */}
@@ -274,15 +280,16 @@ const NavStyled = styled.nav`
     flex-direction: column;
     justify-content: space-between;
     gap: 2rem;
-    .user-con{
+    .user-con {
         height: 100px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 1rem;
 
         .pfp-container {
             cursor: pointer;
-            img{
+            img {
                 width: 80px;
                 height: 80px;
                 border-radius: 50%;
@@ -297,7 +304,12 @@ const NavStyled = styled.nav`
                     transform: scale(1.1);
                 }
             }
-            
+        }
+        .form-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
         }
         h2{
             color: var(--primary-color);

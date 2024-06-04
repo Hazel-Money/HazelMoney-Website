@@ -53,7 +53,7 @@ function Chart() {
   }, []);
 
     const handleInput = (event) => {
-      const inputValue = event.target.value;
+      const inputValue = Math.min(365, event.target.value);
 
       // Check if inputValue is a valid number
       if (inputValue == 0 ){
@@ -220,12 +220,12 @@ function Chart() {
                     <div className="input-control">
                       <span className="days-text">{language === 'Portuguese' ? 'ÚLTIMOS' : 'PAST'}</span>
                       <input
-                          type="text"
-                          value={days}
-                          name={"days"}
-                          placeholder={language === 'Portuguese' ? 'Dias' : 'Days'}
-                          onChange={handleInput} 
-                          className="days-input"
+                        type="text"
+                        value={days}
+                        name={"days"}
+                        placeholder={language === 'Portuguese' ? 'Dias' : 'Days'}
+                        onChange={handleInput} 
+                        className="days-input"
                       />
                       <span className="days-text">{language === 'Portuguese' ? 'DIAS' : 'DAYS'}</span>
                     </div>
@@ -260,26 +260,17 @@ function Chart() {
                     <div className="sales_pies">
                       <div className="income_pie  text-center">
                         <h1>{language === 'Portuguese' ? 'Receitas' : 'Incomes'}</h1>
-                        <Box
-                          sx={{
-                            float: 'left', 
-                            width: '50%',  
-                            height: '40vh',
-                          }}
-                        >
+                        <Box sx={{ width: '100%', height: '100%' }}>
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart style={{ cursor: 'pointer' }}>
                               <Pie
                                 dataKey="value"
                                 data={incomeChartData}
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={'70%'}
                                 nameKey="name"
                               >
-                                {incomeChartData.map((entry, index) => (
-                                  <Cell key={`cell-income-${index}`} fill={entry.fill} />
-                                ))}
+                              {incomeChartData.map((entry, index) => (
+                                <Cell key={`cell-income-${index}`} fill={entry.fill} />
+                              ))}
                               </Pie>
         
                               <Tooltip content={<CustomTooltip />} />
@@ -288,29 +279,19 @@ function Chart() {
                                 formatter={(value, entry, index) => (
                                     <span style={{ color: 'var(--primary-color)' }}>{value}</span>
                                 )}
-                                />
-                            </PieChart>
+                              />
+                              </PieChart>
                           </ResponsiveContainer>
                         </Box>
                       </div>        
                       {/* Expenses Pie */}
                       <div className="expense_pie text-center">
                         <h1>{language === 'Portuguese' ? 'Despesas' : 'Expenses'}</h1>
-                        <Box
-                          sx={{
-                            float: 'left', 
-                            width: '50%',  
-                            height: '40vh',
-                          }}
-                        >
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart style={{ cursor: 'pointer' }}>
                               <Pie
                                 dataKey="value"
                                 data={expenseChartData}
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={'70%'}
                                 nameKey="name"
                               >
                                 {expenseChartData.map((entry, index) => (
@@ -327,7 +308,6 @@ function Chart() {
                               />
                             </PieChart>
                           </ResponsiveContainer>
-                        </Box>
                       </div>
                       <div style={{ clear: 'both' }}></div>
                     </div>
@@ -341,66 +321,66 @@ function Chart() {
 export default Chart
 const Section = styled.section`
     .sales{
-        color: black;
+      color: black;
+      width: 100%;
+      .top{
+        justify-content: space-evenly;
+        margin: 1rem 0;
+        display: flex;
         width: 100%;
-        .top{
-          justify-content: space-evenly;
-          margin: 1rem 0;
-          display: flex;
-          width: 100%;
-          height: 4rem;
-          h5{
-            float: left;
-            width: 75%;
-            margin-top: 2%;
-          }
-          img{
-            margin-top: -2%;
-            margin-bottom: 1%;
-            float: right;
-            transform: rotate(30deg);
+        height: 4rem;
+        h5{
+          float: left;
+          width: 75%;
+          margin-top: 2%;
+        }
+        img{
+          margin-top: -2%;
+          margin-bottom: 1%;
+          float: right;
+          transform: rotate(30deg);
+        }
+      }
+      .input-control{
+        display: flex;
+        align-items: center;
+        .days-text {
+          margin-left: 25px;
+          margin-right: 25px;
+        }
+        input{
+          text-align: center;
+          width: 15%;
+          font-family: inherit;
+          font-size: inherit;
+          outline: none;
+          border: none;
+          padding: .5rem 1rem;
+          border-radius: 5px;
+          border: 2px solid #fff;
+          background: transparent;
+          resize: none;
+          box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+          color: rgba(34, 34, 96, 0.9);
+          &::placeholder{
+              color: rgba(34, 34, 96, 0.4);
           }
         }
-        .input-control{
-          display: flex;
-          align-items: center;
-          .days-text {
-            margin-left: 25px;
-            margin-right: 25px;
-          }
-          input{
-            text-align: center;
-            width: 15%;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            border: none;
-            padding: .5rem 1rem;
-            border-radius: 5px;
-            border: 2px solid #fff;
-            background: transparent;
-            resize: none;
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-            color: rgba(34, 34, 96, 0.9);
-            &::placeholder{
-                color: rgba(34, 34, 96, 0.4);
-            }
-          }
+      }
+      .sales_graph {
+        margin-top: 15vh;
+        height: 8rem;
+        width: 100%;
+        .recharts-default-tooltip {
+            background-color: black !important;
+            border-color: black !important;
+            color: white !important;
         }
-        .sales_graph{
-          margin-top: 15vh;
-          height: 8rem;
-          width: 100%;
-          .recharts-default-tooltip {
-              background-color: black !important;
-              border-color: black !important;
-              color: white !important;
-          }
-        }
-        .text-center {
-            text-align: center;
-        }  
-        .sales_pies {
+      }
+      .text-center {
+          text-align: center;
+      }  
+      .sales_pies {
         display: flex;
         justify-content: space-between; 
         .income_pie,
@@ -417,27 +397,6 @@ const Section = styled.section`
           }
         }
       }
-    }
-    @media only screen and (max-width: 600px) {
-      .input-control span{
-        display: none;
-      }
-      .input-control input{
-        display: none;
-      }
-      .sales_graph {
-        margin-top: 4rem !important;
-        margin-left: -2rem !important;
-        width: 20rem !important;
-        height: 8rem !important;
-      }
-      .input-control input {
-        width: 30%;
-      }
-      .top{
-        margin-left: 0rem !important;
-        margin-top: 3rem !important;
-      }
-    }
-
+    } 
+  
 `;

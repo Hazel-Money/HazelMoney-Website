@@ -49,7 +49,7 @@ const HistoryStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    .history-item{
+    .history-item {
         background: var(--white-color);
         border: 2px solid #FFFFFF;
         box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
@@ -58,13 +58,9 @@ const HistoryStyled = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-
-    @media only screen and (max-width: 600px) {
-        gap: 0.7rem;
-        .history-item{
-            height: 1.5rem;
-        }
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 `;
 
