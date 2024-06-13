@@ -50,13 +50,9 @@ function App() {
     }
   };
 
-  // Determine if the toggle should be displayed based on the current active page
-  const showToggle = false
-
   return (
     <AppStyled className="App" data-theme={isDark ? true : false}>
       <MainLayout>
-        {showToggle && <Toggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />}
         {!isDrawerPermanent &&
           <Toolbar style={{height: 50}}>
             <IconButton
@@ -92,7 +88,7 @@ const AppStyled = styled.div`
   main {
     flex: 1;
     background: var(--background-color);
-    border: 3px solid #FFFFFF;
+    border: 3px solid var(--border-color);
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     overflow: auto;

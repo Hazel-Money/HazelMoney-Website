@@ -119,7 +119,6 @@ const ExpenseStyled = styled.div`
       justify-content: center;
       align-items: center;
       background: var(--white-color);
-      border: 2px solid #FFFFFF;
       box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
       border-radius: 20px;
       padding: 1rem;
@@ -146,7 +145,6 @@ const ExpenseStyled = styled.div`
         border-radius: 50%;
         height: 45px;
         width: 45px;
-        border-radius: 50%;
         display: inline-block;
         text-align: center;
         vertical-align: center;

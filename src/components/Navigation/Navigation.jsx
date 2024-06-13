@@ -116,7 +116,8 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
             open={drawerOpen} 
             handleClose={() => setDrawerOpen(false)}
             variant={permanent ? 'permanent' : 'temporary'}
-            PaperProps={ permanent && { sx: { background: 'transparent', borderWidth: 0 } } }
+            PaperProps={ permanent && { sx: { background: 'transparent', borderWidth: 0, paddingY: '30px', paddingLeft: '10px' } } }
+            // ModalProps={ permanent && {  } }
          >
             <NavStyled>
                 <div className="user-con">
@@ -152,13 +153,17 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
                                     marginTop: '-75px',
                                     padding: '5px',
                                     background: 'transparent',
+                                    height: '150px',
+                                    width: '150px',
                                 }}>
                                     <img
                                         src={profilePicture}
                                         alt=''
                                         style={{
-                                            height: '150px',
+                                            height: '100%',
+                                            width: '100%',
                                             borderRadius: '100px',
+                                            objectFit: 'cover'
                                         }}
                                     />
                                     <input
@@ -173,8 +178,10 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
                                             width: '100%',
                                             height: '100%',
                                             borderRadius:'14px',
-                                            cursor: 'pointer'
-                                        }} />
+                                            cursor: 'pointer',
+                                            aspectRatio: 1
+                                        }}
+                                    />
                                 </div>
                                 <DialogContent>
                                     <TextField
@@ -229,7 +236,7 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
                             <li
                                 key={item.id}
                                 onClick={() => handleMenuItemPress(item.id)}
-                                className={active === item.id ? 'active' : ''}
+                                className={active === item.id ? 'active' : 'inactive'}
                             >
                                 {item.icon}
                                 <span>{language === 'Portuguese' ? item.title_pt : item.title}</span>
@@ -273,7 +280,7 @@ const NavStyled = styled.nav`
     width: 374px;
     height: 100%;
     background: var(--background-color);
-    border: 3px solid #FFFFFF;
+    border: 3px solid var(--border-color);
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     display: flex;
@@ -295,7 +302,7 @@ const NavStyled = styled.nav`
                 border-radius: 50%;
                 object-fit: cover;
                 background: var(--white-color);
-                border: 2px solid #FFFFFF;
+                border: 2px solid var(--border-color);
                 padding: .2rem;
                 box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
                 transition: ease-in-out 0.4s;
@@ -358,7 +365,15 @@ const NavStyled = styled.nav`
             border-radius: 0 10px 10px 0;
         }
     }
-    
+    .inactive {
+        color: var(--primary-color3) !important;
+        i {
+            color: var(--primary-color2) !important;
+        }
+        span {
+            color: var(--primary-color3) !important;   
+        }
+    }
     .bottom-nav {
         display: flex;
         justify-content: space-between;
@@ -367,6 +382,7 @@ const NavStyled = styled.nav`
             li {
                 margin: 10px 10px;
             }
+            color: var(--primary-color2);
         }
         .bottom-nav-right {
             display: grid;
@@ -381,13 +397,17 @@ const NavStyled = styled.nav`
                 border: none;
                 padding: .5rem 1rem;
                 border-radius: 5px;
-                border: 2px solid #fff;
+                border: 2px solid var(--border-color);
                 background: transparent;
                 resize: none;
                 box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
                 color: var(--primary-color);
                 &::placeholder{
                     color: var(--primary-color);
+                }
+                option{
+                    color: var(--primary-color);
+                    background: var(--background-color);
                 }
             }
         }

@@ -23,7 +23,7 @@ function History() {
                         placement='top'
                     >
                         <div key={id} className="history-item">
-                            <IconCategory category={icon} />
+                            <IconCategory category={icon} className="icon-category"/>
                             <p style={{
                                 color: is_income == '0' ? 'red' : 'var(--color-green)'
                             }}>
@@ -51,7 +51,7 @@ const HistoryStyled = styled.div`
     gap: 1rem;
     .history-item {
         background: var(--white-color);
-        border: 2px solid #FFFFFF;
+        border: 2px solid var(--border-color);
         box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
         padding: 1rem;
         border-radius: 20px;
@@ -61,6 +61,9 @@ const HistoryStyled = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        i {
+            color: var(--primary-color2) !important
+        }
     }
 `;
 

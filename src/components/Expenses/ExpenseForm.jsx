@@ -161,18 +161,18 @@ const ExpenseFormStyled = styled.form`
       border: none;
       padding: .5rem 1rem;
       border-radius: 5px;
-      border: 2px solid #fff;
+      border: 2px solid var(--border-color);
       background: transparent;
       resize: none;
       box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-      color: rgba(34, 34, 96, 0.9);
+      color: var(--primary-color);
       &::placeholder{
-          color: rgba(34, 34, 96, 0.4);
+          color: var(--primary-color3);
       }
     }
 
     .datepicker-disabled {
-      color: rgba(34, 34, 96, 0.4);
+      color: var(--primary-color3);
       cursor: not-allowed; 
     }
 
@@ -194,7 +194,7 @@ const ExpenseFormStyled = styled.form`
       align-items:center;
       
       select{
-          color: rgba(34, 34, 96, 0.4);
+          color: var(--primary-color3);
           &:focus, &:active{
               color: rgba(34, 34, 96, 1);
           }

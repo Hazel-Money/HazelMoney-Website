@@ -119,7 +119,7 @@ const IncomeStyled = styled.div`
       justify-content: center;
       align-items: center;
       background: var(--white-color);
-      border: 2px solid #FFFFFF;
+      border: 2px solid var(--border-color)FFF;
       box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
       border-radius: 20px;
       padding: 1rem;

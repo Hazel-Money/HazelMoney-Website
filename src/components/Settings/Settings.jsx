@@ -159,6 +159,7 @@ function Settings({isDark, setIsDark}) {
                                     id="demo-simple-select"
                                     value={language}
                                     onChange={handleLanguageChange}
+                                    className='language-select'
                                 >
                                     <MenuItem value={"English"}>English</MenuItem>
                                     <MenuItem value={"Portuguese"}>Português</MenuItem>
