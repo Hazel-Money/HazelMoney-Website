@@ -1,37 +1,39 @@
 import React, { useEffect } from 'react';
 import IntroJs from 'intro.js';
 import 'intro.js/introjs.css';
+import { useGlobalContext } from '../../context/globalContext';
 
 function GuidedTour() {
+    const { language } = useGlobalContext();
     useEffect(() => {
         const tour = IntroJs();
 
         tour.setOptions({
             steps: [
                 {
-                    title: 'Total income',
+                    title: language === 'Portuguese' ? 'Total receitas' : 'Total income',
                     element: document.querySelector('.total-income'),
-                    intro: 'Here you can check your total income',
+                    intro: language === 'Portuguese' ? 'Aqui pode ver o total de receitas' : 'Here you can check your total income',
                 },
                 {
-                    title: 'Add income',
+                    title: language === 'Portuguese' ? 'Adicionar receita' : 'Add income',
                     element: document.querySelector('.income-form-container'),
-                    intro: 'Here you can add an income',
+                    intro: language === 'Portuguese' ? 'Aqui pode adicionar uma receita' : 'Here you can add an income',
                 },
                 {
-                    title: 'Income history',
+                    title: language === 'Portuguese' ? 'Histórico de receitas' : 'Income history',
                     element: document.querySelector('.incomes'),
-                    intro: 'Here you can check your income history',
+                    intro: language === 'Portuguese' ? 'Aqui pode ver o histórico de receitas' : 'Here you can check your income history',
                 },
                 {
-                    title: 'Edit income',
+                    title: language === 'Portuguese' ? 'Editar receita' : 'Edit income',
                     element: document.querySelector('.btn-con-edit'),
-                    intro: 'Here you can edit your income',
+                    intro: language === 'Portuguese' ? 'Aqui pode editar uma receita' : 'Here you can edit your income',
                 },
                 {
-                    title: 'Delete income',
+                    title: language === 'Portuguese' ? 'Excluir receita' : 'Delete income',
                     element: document.querySelector('.btn-con-delete'),
-                    intro: 'Here you can delete your income',
+                    intro: language === 'Portuguese' ? 'Aqui pode excluir uma receita' : 'Here you can delete your income',
                 },
             ]
         });

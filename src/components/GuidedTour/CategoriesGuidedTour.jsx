@@ -9,21 +9,21 @@ function GuidedTour() {
         const tour = IntroJs();
 
         tour.setOptions({
-            steps: [
+            steps: [    
                 {
                     title: language === 'Portuguese' ? 'Adicionar categoria' : 'Add category',
                     element: document.querySelector('.category-form-inputs'),
                     intro: language === 'Portuguese' ? 'Aqui pode adicionar uma categoria' : 'Here you can add a category',
                 },
                 {
-                    title: 'Select icon',
+                    title: language === 'Portuguese' ? 'Selecione um icone' : 'Select icon',
                     element: document.querySelector('.icon-selection'),
-                    intro: 'Here you can select an icon for your category',
+                    intro: language === 'Portuguese' ? 'Aqui pode selecionar um icone' : 'Here you can select an icon for your category',
                 },
                 {
-                    title: 'Preview section',
+                    title: language === 'Portuguese' ? 'Pre-visualização' : 'Preview section',
                     element: document.querySelector('.preview-section'),
-                    intro: 'Here you can check what is your icon looking like',
+                    intro: language === 'Portuguese' ? 'Aqui pode ver como o icone está' : 'Here you can check what is your icon looking like',
                 },
             ]
         });
