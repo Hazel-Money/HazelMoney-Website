@@ -82,7 +82,7 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                     minWidth: '35%',
                     borderRadius: '20px',
                     padding: '1rem',
-                    background: 'var(--white-color)',
+                    background: 'var(--background2)',
                     border: '2px solid var(--border-color)FFF',
                     boxShadow: '0px 1px 15px rgba(0, 0, 0, 0.06)',
                     flexDirection: 'column',
@@ -202,7 +202,7 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                     </InnerContent>
                     <div className='btn'>
                         <DialogActions>
-                            <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                            <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Change'}</Button>
                             <Button style={{color:'var(--hazel-color)'}} onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                         </DialogActions>
                     </div>

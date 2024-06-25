@@ -107,7 +107,7 @@ function CategoryForm() {
             )}
           </div>
         <div className="icon-selection">
-          <label>{language === 'Portuguese' ? 'Selecionar Icon:' : 'Select Icon:'}</label>
+          <h3>{language === 'Portuguese' ? 'Selecionar Icon:' : 'Select Icon:'}</h3>
           <div className="icon-container">
             {Object.keys(Icons).map((iconName) => (
               <div
@@ -191,6 +191,7 @@ const CategoryFormStyled = styled.form`
         height: 2vh;
       }
       .icon-container {
+        color:var(--primary-color);
         float: right;
         margin-top: 5vh;
         display: grid;

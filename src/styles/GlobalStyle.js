@@ -21,6 +21,7 @@ export const GlobalStyle = createGlobalStyle`
         --color-green: #42AD00;
         --color-accent: #A64F0D;
         --background-color: rgba(252, 246, 249, 0.78);
+        --background2: #eee2f2;
         --background: #eee2f2;
         --white-color: #FCF6F9;
 
@@ -30,6 +31,7 @@ export const GlobalStyle = createGlobalStyle`
         --toggle-fg: #ffd000;
     }
 
+    // Dark Theme
     [data-theme=true] {
         /* Primary Colors */
         --primary-color: #c4c4c5;         /* Inverted Dark Gray */
@@ -50,8 +52,9 @@ export const GlobalStyle = createGlobalStyle`
         /* Accent and Other Colors */
         --color-green: #42AD00;
         --color-accent: #5ab0f3;          /* Blue (Inverted Hazel) */
-        --background-color: rgba(36, 39, 43, 0.78);  /* Dark Transparent Background */
+        --background-color: rgba(36, 39, 43, 0.8);  /* Dark Transparent Background */
         --background: #1e1e2e;            /* Dark Blue Background */
+        --background2: #1e1e2e;
         --white-color: #1e1e2e;           /* Near-Black */
 
         /* Text Colors */
@@ -70,7 +73,7 @@ export const GlobalStyle = createGlobalStyle`
         color: rgba(34, 34, 96, .6);
     }
 
-    h1, h2, h3, h4, h5, h6{
+    h1, h2, h3, h4, h5, h6, label{
         color: var(--primary-color);
     }
 

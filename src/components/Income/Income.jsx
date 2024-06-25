@@ -171,6 +171,7 @@ const IncomeStyled = styled.div`
       position: relative;
       display: flex;
       gap: 31rem !important;
+      color: var(--primary-color2);
       i {
         font-size: 24px; 
         cursor: pointer;

@@ -151,6 +151,7 @@ const RegularPaymentsStyled = styled.div`
       position: relative;
       display: flex;
       gap: 92%;
+      color: var(--primary-color2);
       i {
         font-size: 24px; 
         cursor: pointer;
