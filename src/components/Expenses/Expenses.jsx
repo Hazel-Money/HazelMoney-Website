@@ -88,11 +88,11 @@ function Expenses() {
               />
             </div>
           </div>
-          <div className='help'>
-            <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
-                {language === 'Portuguese' ? '?' : '?'}
-            </Button>
-          </div>
+        </div>
+        <div className='help'>
+          <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+              {language === 'Portuguese' ? '?' : '?'}
+          </Button>
         </div>
         
       </InnerLayout>
@@ -114,6 +114,29 @@ const ExpenseStyled = styled.div`
             width: 95%;
         }
     }
+    .help{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        text-align: center;
+        vertical-align: center;
+        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: var(--default-gradient);
+        &:hover{
+          cursor: pointer;
+          opacity: 90%;
+        }
+        .help-button{
+          font-family: inherit;
+          color: white;
+          right: 8px;
+          bottom: 10px;
+          font-size: 30px;
+        }
+      }
     .total-expense{
       display: flex;
       justify-content: center;
@@ -137,30 +160,6 @@ const ExpenseStyled = styled.div`
       .expenses{
         flex: 1;
         height: 50%;
-      }
-      .help{
-        position: absolute;
-        bottom: 2vh;
-        right: 3vh;
-        border-radius: 50%;
-        height: 45px;
-        width: 45px;
-        display: inline-block;
-        text-align: center;
-        vertical-align: center;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-        background: var(--default-gradient);
-        &:hover{
-          cursor: pointer;
-          opacity: 90%;
-        }
-        .help-button{
-          font-family: inherit;
-          color: white;
-          right: 8px;
-          bottom: 10px;
-          font-size: 30px;
-        }
       }
     }
 
