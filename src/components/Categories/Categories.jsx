@@ -7,9 +7,20 @@ import GuidedTour from '../GuidedTour/CategoriesGuidedTour';
 import Button from '@mui/material/Button';
 
 function Categories() {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const { language } = useGlobalContext();
-
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,11 +42,13 @@ function Categories() {
         <div className="categories-form-container">
           <CategoryForm />
         </div>
-        <div className='help'>
-          <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+        {screenWidth > 600 && (
+          <div className='help'>
+            <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
               {language === 'Portuguese' ? '?' : '?'}
-          </Button>
-        </div>
+            </Button>
+          </div>
+        )}
       </InnerLayout>
     </CategoriesStyled>
   )
