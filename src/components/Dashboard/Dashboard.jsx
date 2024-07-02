@@ -15,6 +15,19 @@ function currencyFormat(num) {
 function Dashboard() {
   const {language, accountBalance, accountCurrency, getAccountCurrency, accountIncome, accountExpense, accountIncomeAmount, accountExpenseAmount, balance, getIncomes, getExpenses, getAllTransactions} = useGlobalContext()
 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   //Render data when running website
   useEffect(() => {
     getAccountCurrency()
@@ -74,11 +87,13 @@ function Dashboard() {
           <div className="history-con">
               <History />
           </div>
-          <div className='help'>
-            <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
+          {screenWidth > 600 && (
+            <div className='help'>
+              <Button className='help-button' variant="help-button" onClick={handleClickOpen}> 
                 {language === 'Portuguese' ? '?' : '?'}
-            </Button>
-          </div>
+              </Button>
+            </div>
+          )}
         </div>
       </InnerLayout>
     </DashBoardStyled>
