@@ -202,7 +202,7 @@ const ItemInformation = ({ transaction, setSelectedTransaction }) => {
                     </InnerContent>
                     <div className='btn'>
                         <DialogActions>
-                            <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Change'}</Button>
+                            <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Save'}</Button>
                             <Button style={{color:'var(--hazel-color)'}} onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                         </DialogActions>
                     </div>

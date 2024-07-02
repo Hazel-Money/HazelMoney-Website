@@ -208,7 +208,7 @@ function Navigation({active, setActive, drawerOpen, setDrawerOpen, permanent}) {
                                     />
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                                    <Button style={{color:'var(--hazel-color)'}} type="submit">{language === 'Portuguese' ? 'Alterar' : 'Save'}</Button>
                                     <Button style={{color:'var(--hazel-color)'}} onClick={handleCloseUserDialog}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                                 </DialogActions>
                             </div>

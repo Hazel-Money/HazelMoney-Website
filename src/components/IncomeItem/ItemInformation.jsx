@@ -186,7 +186,7 @@ const DetailedIncomeInfo = ({ transaction, setSelectedTransaction }) => {
                     </InnerContent>
                     <div className='btn'>
                         <DialogActions>
-                            <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Alter'}</Button>
+                            <Button type="submit">{language === 'Portuguese' ? 'Alterar' : 'Save'}</Button>
                             <Button onClick={() => setSelectedTransaction(null)}>{language === 'Portuguese' ? 'Cancelar' : 'Cancel'}</Button>
                         </DialogActions>
                     </div>
