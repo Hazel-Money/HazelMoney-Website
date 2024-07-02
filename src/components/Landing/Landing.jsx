@@ -37,7 +37,7 @@ function Landing() {
                         <h1>{language === 'Portuguese' ? 'do teu dinheiro' : 'of your money'}</h1>
                         <p>{language === 'Portuguese' ? 'O orçamento pessoal é o segredo para a liberdade financeira. Comece hoje a sua viagem.' : 'Personal budgeting is the secret to financial freedom. Start your journey today.'}</p>
                         <Button
-                            name={language === 'Portuguese' ? 'Registro' : 'Sign up'}
+                            name={language === 'Portuguese' ? 'Entrar' : 'Login'}
                             bPad={".8rem 1.6rem"}
                             icon={plus}
                             bRad={"30px"}
