@@ -179,9 +179,9 @@ const IncomeStyled = styled.div`
     }
   }
   .arrow-icons {
-    position: relative;
     display: flex;
-    gap: 31rem !important;
+    justify-content: space-between;
+    margin-top: 1rem;
     color: var(--primary-color2);
     i {
       font-size: 24px;
@@ -218,7 +218,7 @@ const IncomeStyled = styled.div`
       margin-bottom: 2rem;
     }
     .arrow-icons {
-      gap: 82% !important;
+      justify-content: space-between;
     }
   }
 `;

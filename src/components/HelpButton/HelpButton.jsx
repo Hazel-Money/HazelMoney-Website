@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 
 const HelpButton = ({ onClick }) => {
   const { language } = useGlobalContext();
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  return (
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (screenWidth >= 600 ) {
+     return (
     <HelpButtonStyled>
       <Button className='help-button' variant="help-button" onClick={onClick}> 
         {language === 'Portuguese' ? '?' : '?'}
       </Button>
     </HelpButtonStyled>
   );
+  } else {
+    return null
+  }
+
+ 
 };
 
 const HelpButtonStyled = styled.div`

@@ -6,7 +6,7 @@ import ExpenseForm from '../Expenses/ExpenseForm';
 import IncomeItem from '../IncomeItem/IncomeItem';
 import DetailedIncomeInfo from '../IncomeItem/ItemInformation';
 import GuidedTour from '../GuidedTour/ExpenseGuidedTour';
-import HelpButton from '../HelpButton/HelpButton'; // Import the new HelpButton component
+import HelpButton from '../HelpButton/HelpButton'; 
 
 function currencyFormat(num) {
   return (num / 100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -96,6 +96,7 @@ function Expenses() {
                   key={id}
                   id={id}
                   account_id={account_id}
+                  currency={currency}
                   category={categoryName}
                   amount={amount}
                   is_income={is_income}
@@ -103,9 +104,8 @@ function Expenses() {
                   description={description}
                   icon={icon}
                   color={categoryColor}
-                  indicatorColor="red"
+                  indicatorColor="var(--color-green)"
                   deleteItem={deleteExpense}
-                  currency={currency}
                   onSelect={handleTransactionItemClick}
                 />
               );
@@ -159,6 +159,7 @@ const ExpenseStyled = styled.div`
     justify-content: center;
     align-items: center;
     background: var(--white-color);
+    border: 2px solid var(--border-color)FFF;
     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 1rem;
@@ -168,46 +169,22 @@ const ExpenseStyled = styled.div`
     span {
       font-size: 2.5rem;
       font-weight: 800;
-      color: red;
+      color: var(--color-green);
     }
   }
   .expense-content {
     display: flex;
     gap: 2rem;
-    position: relative; 
+    position: relative;
     .expenses {
       flex: 1;
       height: 50%;
     }
   }
-  .help {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    border-radius: 50%;
-    height: 45px;
-    width: 45px;
-    display: inline-block;
-    text-align: center;
-    vertical-align: center;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-    background: var(--default-gradient);
-    &:hover {
-      cursor: pointer;
-      opacity: 90%;
-    }
-    .help-button {
-      font-family: inherit;
-      color: white;
-      right: 8px;
-      bottom: 10px;
-      font-size: 30px;
-    }
-  }
   .arrow-icons {
-    position: relative;
     display: flex;
-    gap: 92%;
+    justify-content: space-between;
+    margin-top: 1rem;
     color: var(--primary-color2);
     i {
       font-size: 24px;
@@ -239,18 +216,12 @@ const ExpenseStyled = styled.div`
     .expense-content {
       flex-direction: column;
       align-items: center;
-      .expenses {
-        width: 17rem;
-      }
     }
     .expense-form-container {
       margin-bottom: 2rem;
     }
     .arrow-icons {
-      gap: 82%;
-    }
-    .help {
-      bottom: 1.5vh;
+      justify-content: space-between;
     }
   }
 `;

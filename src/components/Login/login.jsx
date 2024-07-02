@@ -59,7 +59,12 @@ const LoginSignup = () => {
       </div>
       <div className="container">
         <div className="header">
-          <div className="text">{action === 'Login' ? 'Entrar' : 'Registro'}</div>
+          <div className="text">
+            {action === 'Login' ? 
+              (language === 'Portuguese' ? 'Entrar' : 'Login') : 
+              (language === 'Portuguese' ? 'Registro' : 'Sign Up')
+            }
+          </div>
           <div className="underline"></div>
         </div>
         <div className="inputs">
